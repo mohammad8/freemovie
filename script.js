@@ -113,7 +113,7 @@ function generateSeriesDownloadLinks(imdbID) {
 function generateQualityLinks(imdbID, season) {
     let qualityLinks = '';
     for (let quality = 1; quality <= 4; quality++) {
-        const downloadLink = `https://subtitle.saymyname.website/DL/filmgir/?i=${imdbID}&f=${season}&q=${quality}`;
+        const downloadLink = `https://subtitle.saymyname.website/DL/filmgir/?i=tt${imdbID}&f=${season}&q=${quality}`;
         qualityLinks += `<a href="${downloadLink}" class="btn btn-success mb-2">دانلود فصل ${season} با کیفیت ${quality}</a><br>`;
     }
     return qualityLinks;
