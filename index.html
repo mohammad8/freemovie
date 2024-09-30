@@ -42,6 +42,24 @@
             position: sticky;
             bottom: 0;
         }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            form {
+                padding: 0 10px;
+            }
+
+            footer {
+                font-size: 0.875rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -54,18 +72,22 @@
     <div class="container mt-5">
         <h1 class="text-center mb-4">فیری مووی - دانلود فیلم و سریال رایگان</h1>
 
-        <form id="searchForm">
-            <div class="mb-3">
+        <p class="text-center">
+            در این وبسایت از <a href="https://www.omdbapi.com/" target="_blank">وب سرویس OMDB</a> برای جستجو و اطلاعات فیلم‌ها و از <a href="https://almasmovie.website/" target="_blank">الماس مووی</a> برای دانلود فیلم‌ها استفاده می‌شود.
+        </p>
+
+        <form id="searchForm" class="row g-3">
+            <div class="col-12">
                 <label for="title" class="form-label">نام فیلم یا سریال:</label>
                 <input type="text" class="form-control" id="title" name="title" required>
             </div>
 
-            <div class="mb-3">
+            <div class="col-12">
                 <label for="year" class="form-label">سال تولید (اختیاری):</label>
                 <input type="number" class="form-control" id="year" name="year" min="1900" max="2099">
             </div>
 
-            <div class="mb-3">
+            <div class="col-12">
                 <label for="genre" class="form-label">ژانر (اختیاری):</label>
                 <select class="form-select" id="genre" name="genre">
                     <option value="">انتخاب ژانر</option>
@@ -77,7 +99,9 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">جستجو کن</button>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary w-100">جستجو کن</button>
+            </div>
         </form>
 
         <div id="results" class="mt-5"></div>
