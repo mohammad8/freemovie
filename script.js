@@ -8,7 +8,7 @@ fetch('tokens.json')
         // تابعی برای ارسال درخواست با توکن
         function fetchWithToken(title, year, genre) {
             let apiKey = tokens[currentTokenIndex];  // توکن جاری
-            let url = `http://www.omdbapi.com/?apikey=${apiKey}&s=${encodeURIComponent(title)}`;
+            let url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${encodeURIComponent(title)}`;  // تغییر به https
 
             if (year) {
                 url += `&y=${year}`;
