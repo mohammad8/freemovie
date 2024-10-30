@@ -17,31 +17,31 @@ async function fetchWithToken(title) {
         resultsContainer.innerHTML = '';  // پاک کردن نتایج قبلی
 
         if (data.Response === 'True') {
-            let moviesHtml = '<div class="row">';
-            data.Search.forEach(movie => {
-                const poster = movie.Poster !== 'N/A' ? movie.Poster : 'default.jpg';
-                const imdbID = movie.imdbID.replace('tt', '');  // حذف 'tt' از ابتدای imdbID
+    let moviesHtml = '<div class="row">';
+    data.Search.forEach(movie => {
+        const poster = movie.Poster !== 'N/A' ? movie.Poster : 'default.jpg';
+        const imdbID = movie.imdbID.replace('tt', '');  // حذف 'tt' از ابتدای imdbID
 
-                moviesHtml += `
-                    <div class="col-md-2">
-                        <div class="card mb-4">
-                            <img src="${poster}" class="card-img-top" alt="${movie.Title}">
-                            <div class="card-body">
-                                <h5 class="card-title">${movie.Title}</h5>
-                                <p class="card-text">سال: ${movie.Year}</p>
-                                <p class="card-text">نوع: ${movie.Type}</p>
-                                ${generateDownloadLinks(imdbID, movie.Year, movie.Type)}
-                            </div>
-                        </div>
+        moviesHtml += `
+            <div class="col-6 col-md-4 col-lg-2 mb-4">
+                <div class="card">
+                    <img src="${poster}" class="card-img-top" alt="${movie.Title}">
+                    <div class="card-body">
+                        <h5 class="card-title">${movie.Title}</h5>
+                        <p class="card-text">سال: ${movie.Year}</p>
+                        <p class="card-text">نوع: ${movie.Type}</p>
+                        ${generateDownloadLinks(imdbID, movie.Year, movie.Type)}
                     </div>
-                `;
-            });
-            moviesHtml += '</div>';
-            resultsContainer.innerHTML = moviesHtml;
+                </div>
+            </div>
+        `;
+    });
+    moviesHtml += '</div>';
+    resultsContainer.innerHTML = moviesHtml;
 
-            // اسکرول به بخش نتایج بعد از نمایش آن‌ها
-            resultsContainer.scrollIntoView({ behavior: "smooth" });
-        } else {
+    // اسکرول به بخش نتایج بعد از نمایش آن‌ها
+    resultsContainer.scrollIntoView({ behavior: "smooth" });
+} else {
             resultsContainer.innerHTML = '<div class="alert alert-danger">هیچ نتیجه‌ای پیدا نشد.</div>';
         }
     } catch (error) {
