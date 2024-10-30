@@ -67,6 +67,21 @@
             margin: 5px 0;
         }
 
+        .movie-card {
+            margin-bottom: 20px;
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .movie-card h5 {
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.5rem;
@@ -124,12 +139,33 @@
             </div>
         </form>
 
-        <div id="results" class="mt-5"></div>
+        <div id="results" class="mt-5 row">
+            <!-- نمونه ای از کارت های فیلم -->
+            <div class="col-lg-2 col-md-4 col-sm-6 movie-card">
+                <img src="movie-poster.jpg" alt="Movie Title">
+                <h5 class="text-center">Movie Title</h5>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 movie-card">
+                <img src="movie-poster.jpg" alt="Movie Title">
+                <h5 class="text-center">Movie Title</h5>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 movie-card">
+                <img src="movie-poster.jpg" alt="Movie Title">
+                <h5 class="text-center">Movie Title</h5>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 movie-card">
+                <img src="movie-poster.jpg" alt="Movie Title">
+                <h5 class="text-center">Movie Title</h5>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 movie-card">
+                <img src="movie-poster.jpg" alt="Movie Title">
+                <h5 class="text-center">Movie Title</h5>
+            </div>
+        </div>
     </div>
 
     <footer class="footer-dark">
         <div class="container text-center">
-           
             <p class="mt-3">
                 فیری مووی - ساخته شده توسط ریک سانچز با 🤍 | 
                 استفاده از <a href="https://github.com/rastikerdar/vazir-font" class="text-white">فونت وزیر</a> به یاد صابر راستی کردار
@@ -140,7 +176,6 @@
             </p>
 			
 			 <div class="social-icons mb-2">
-				<!-- GitHub Star Button -->
 				<a class="github-button" href="https://github.com/m4tinbeigi-official/freemovie" data-icon="octicon-star" data-show-count="true" aria-label="Star m4tinbeigi-official/freemovie on GitHub">Star</a>
 				<script async defer src="https://buttons.github.io/buttons.js"></script>
                 <a href="https://github.com/m4tinbeigi-official" role="button"><i class="fab fa-github"></i></a>
@@ -148,8 +183,6 @@
                 <a href="https://linkedin.com/in/matinbeigi" role="button"><i class="fab fa-linkedin"></i></a>
                 <a href="https://instagram.com/m4tinbeigi" role="button"><i class="fab fa-instagram"></i></a>
             </div>
-
-            
         </div>
     </footer>
 
