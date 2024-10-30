@@ -23,7 +23,7 @@ async function fetchWithToken(title) {
                 const imdbID = movie.imdbID.replace('tt', '');  // حذف 'tt' از ابتدای imdbID
 
                 moviesHtml += `
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="card mb-4">
                             <img src="${poster}" class="card-img-top" alt="${movie.Title}">
                             <div class="card-body">
