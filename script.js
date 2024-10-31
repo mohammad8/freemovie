@@ -30,7 +30,6 @@ fetch('tokens.json')
                                     <div class="card-body">
                                         <h5 class="card-title">${movie.Title}</h5>
                                         <p class="card-text">سال: ${movie.Year}</p>
-                                        <p class="card-text">نوع: ${movie.Type}</p>
                                         ${generateDownloadLinks(imdbID, movie.Year, movie.Type)}
                                     </div>
                                 </div>
