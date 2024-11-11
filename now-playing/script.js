@@ -1,4 +1,4 @@
-const tmdbApiUrl = 'https://api.themoviedb.org/3/discover/movie';
+const tmdbApiUrl = 'https://api.themoviedb.org/3/movie/now_playing';
 const tmdbApiKey = '1dc4cbf81f0accf4fa108820d551dafc';  // کلید API TMDb شما
 const omdbApiKey = 'abb7cdf7';  // کلید API OMDb شما
 
