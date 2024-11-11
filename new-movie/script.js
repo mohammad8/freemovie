@@ -13,8 +13,8 @@ async function getMovies() {
 
         // دریافت اطلاعات و تصاویر از OMDb
         for (const movie of movies) {
-            const omdbPoster = await getOmdbImage(movie.title);
-            const imdbID = await getImdbID(movie.title);  // دریافت IMDb ID از OMDb
+            const omdbPoster = await getOmdbImage(movie.original_title);  // ارسال عنوان اصلی فیلم (به انگلیسی)
+            const imdbID = await getImdbID(movie.original_title);  // دریافت IMDb ID از OMDb با عنوان اصلی
             
             const movieCard = document.createElement('div');
             movieCard.classList.add('movie-card');
@@ -71,15 +71,17 @@ async function getOmdbImage(title) {
     }
 }
 
-// تابع برای دریافت IMDb ID از OMDb با استفاده از نام فیلم
+// تابع برای دریافت اطلاعات IMDb ID از OMDb با استفاده از نام فیلم به زبان انگلیسی
 async function getImdbID(title) {
     try {
-        const response = await fetch(`http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${omdbApiKey}`);
+        const response = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${omdbApiKey}`);
         const data = await response.json();
-        if (data.Response === 'True') {
+        
+        // بررسی صحت پاسخ
+        if (data.Response === 'True' && data.imdbID) {
             return data.imdbID.replace('tt', '');  // حذف "tt" از IMDb ID
         } else {
-            console.error('IMDb ID not found for:', title);
+            console.error('IMDb ID not found for:', title, data.Error);
             return '';  // در صورت پیدا نکردن IMDb ID
         }
     } catch (error) {
@@ -87,7 +89,6 @@ async function getImdbID(title) {
         return '';  // در صورت بروز خطا
     }
 }
-
 // تابع برای تولید لینک‌های دانلود
 function generateDownloadLinks(imdbID, year, type) {
     if (type === 'movie') {
