@@ -62,9 +62,14 @@ async function getMovies() {
 // تابع برای دریافت تصویر فیلم از OMDb
 async function getOmdbImage(title) {
     try {
-        const response = await fetch(`http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${omdbApiKey}`);
+        const response = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${omdbApiKey}`);
         const data = await response.json();
-        return data.Poster !== 'N/A' ? data.Poster : null;  // اگر تصویری وجود نداشته باشد، null بر می‌گرداند
+        if (data.Response === 'True') {
+            return data.Poster !== 'N/A' ? data.Poster : null;  // اگر تصویری وجود نداشته باشد، null بر می‌گرداند
+        } else {
+            console.error('Error fetching poster from OMDb:', data.Error);
+            return null;
+        }
     } catch (error) {
         console.error('Error fetching poster from OMDb:', error);
         return null;
@@ -89,6 +94,7 @@ async function getImdbID(title) {
         return '';  // در صورت بروز خطا
     }
 }
+
 // تابع برای تولید لینک‌های دانلود
 function generateDownloadLinks(imdbID, year, type) {
     if (type === 'movie') {
