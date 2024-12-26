@@ -1,3 +1,15 @@
+// Toggling the theme mode
+function onToggleThemePress() {
+  document.body.classList.toggle("dark-mode");
+  const isDarkMode = document.body.classList.contains("dark-mode");
+  localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const themeToggle = document.getElementById("theme-toggle");
+  themeToggle.addEventListener("click", onToggleThemePress);
+});
+
 // توکن‌ها را از فایل JSON می‌خوانیم
 fetch("tokens.json")
   .then((response) => response.json())

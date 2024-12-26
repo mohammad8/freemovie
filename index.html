@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>فیری مووی - دانلود فیلم و سریال رایگان</title>
-
     <!-- Google Tag Manager -->
     <script>
       (function (w, d, s, l, i) {
@@ -33,89 +32,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <style>
-      body,
-      html {
-        height: 100%;
-        margin: 0;
-        display: flex;
-        flex-direction: column; /* همه محتوا در یک ستون */
-      }
-
-      body {
-        font-family: "Vazir", sans-serif;
-        direction: rtl;
-        text-align: right;
-      }
-
-      /* فضای موجود را برای .container به درستی تنظیم کنیم */
-      .container {
-        flex: 1; /* فضای باقی‌مانده صفحه */
-        padding: 20px;
-      }
-
-      footer {
-        background-color: #f1f1f1;
-        text-align: center;
-        padding: 5px;
-        width: 100%;
-      }
-
-      .footer-dark {
-        background-color: #333;
-        color: white;
-        padding: 10px 0;
-        font-size: 0.875rem;
-      }
-
-      .footer-dark .social-icons {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .footer-dark .social-icons a {
-        margin: 0 10px;
-        color: white;
-        font-size: 1rem;
-      }
-
-      .footer-dark p {
-        font-size: 0.75rem;
-        margin: 5px 0;
-      }
-
-      @media (max-width: 768px) {
-        h1 {
-          font-size: 1.5rem;
-        }
-
-        .container {
-          padding: 0 15px;
-        }
-
-        footer {
-          font-size: 0.875rem;
-        }
-      }
-
-      /* استایل برای لوگو */
-      .logo-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-      }
-
-      .logo-container img {
-        height: 50px; /* ارتفاع لوگو */
-        margin-left: 10px;
-      }
-
-      h1 {
-        margin: 0;
-      }
-    </style>
+    <link rel="stylesheet" href="./global.css" />
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -154,7 +71,7 @@
         <a
           href="https://m4tinbeigi-official.github.io/freemovie/new-movie/"
           target="_blank"
-          class="text-black"
+          class="alert-link"
           >اینجا کلیک کنید</a
         >.
       </p>
@@ -235,6 +152,29 @@
       </div>
     </footer>
 
+    <button
+      id="theme-toggle"
+      class="btn btn-secondary position-fixed top-0 end-0 m-3"
+    >
+      تغییر تم
+    </button>
+
+    <script>
+      // Load the theme from local storage or use device scheme
+      (function () {
+        const savedTheme = localStorage.getItem("theme");
+        if (
+          !savedTheme &&
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+          return document.body.classList.add("dark-mode");
+        }
+        if (savedTheme === "dark") {
+          document.body.classList.add("dark-mode");
+        }
+      })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
   </body>
