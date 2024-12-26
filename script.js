@@ -72,7 +72,7 @@ fetch("tokens.json")
       .getElementById("searchForm")
       .addEventListener("submit", function (event) {
         event.preventDefault();
-        const title = document.getElementById("title").value;
+        const title = document.getElementById("title").value.trim();
         fetchWithToken(title); // ارسال درخواست فقط با نام فیلم
       });
   })
