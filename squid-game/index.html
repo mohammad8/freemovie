@@ -14,6 +14,7 @@
             color: #fff;
             margin: 0;
             padding: 0;
+            position: relative;
         }
 
         .header {
@@ -190,6 +191,39 @@
                 font-size: 0.9rem;
             }
         }
+
+        .useful-links {
+            background-color: #333;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .useful-links h3 {
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .useful-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .useful-links ul li {
+            margin: 10px 0;
+        }
+
+        .useful-links ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .useful-links ul li a:hover {
+            color: #d32739;
+        }
     </style>
 </head>
 <body>
@@ -217,12 +251,24 @@
                     <p><strong>تاریخ انتشار:</strong> 17 سپتامبر 2021</p>
                     <p><strong>امتیاز کاربران:</strong> 8.0/10 (بر اساس 443,274 رای)</p>
                     <p><strong>زرفیلم:</strong> 88% (606 رای)</p>
-                    <p><strong>خلاصه:</strong> افراد در شرایط سخت مالی، وارد یک بازی مرگبار می‌شوند تا برنده جوایز مالی کلانی شوند. هر مرحله از بازی، چالش‌های تازه‌ای پیش‌روی آن‌ها قرار می‌دهد که زندگی و مرگشان را رقم می‌زند.</p>
+                    <p><strong>خلاصه:</strong> افراد در شرایط سخت مالی، وارد یک بازی مرگبار می‌شوند که در آن باید از میان بازی‌های بچه‌گانه، جان خود را حفظ کنند تا برنده شوند.
+                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- دانلود اکاردئونی -->
+        <!-- لینک‌های مفید -->
+        <div class="useful-links">
+            <h3>لینک‌های مفید</h3>
+            <ul>
+                <li><a href="https://www.netflix.com/de-en/title/81040344" target="_blank">مشاهده در نتفلیکس</a></li>
+                <li><a href="https://www.imdb.com/title/tt10919420/" target="_blank">صفحه IMDb</a></li>
+                <li><a href="https://zarfilm.com/series/squid-game/" target="_blank">دانلود از زرفیلم</a></li>
+                <li><a href="https://digimoviez.com/serie/squid-game-2021/" target="_blank">دانلود از دیجی موویز</a></li>
+            </ul>
+        </div>
+
+        <!-- دانلود سریال -->
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
@@ -230,7 +276,7 @@
                         دانلود فصل 1
                     </button>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <ul>
                             <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=1" target="_blank">1080p WEBRip 6CH x265 10bit PSA</a></li>
@@ -272,12 +318,12 @@
                 </video>
             </div>
         </div>
-
-        <!-- فوتر -->
-        <footer>
-            <p>تمام حقوق محفوظ است &copy; 2024</p>
-        </footer>
     </div>
+
+    <!-- فوتر -->
+    <footer>
+        <p>تمام حقوق محفوظ است &copy; 2024</p>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
