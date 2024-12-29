@@ -18,25 +18,30 @@
 
         .header {
             background-color: #d32739;
-            padding: 20px;
+            padding: 30px;
             text-align: center;
             border-bottom: 5px solid #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
         }
 
         .header h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #fff;
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
         }
 
+        .header p {
+            font-size: 1.2rem;
+        }
+
         .container {
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
         .series-info img {
             max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease;
         }
 
@@ -44,16 +49,11 @@
             transform: scale(1.05);
         }
 
-        .series-info p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
         .btn-custom {
             background-color: #d32739;
             color: #fff;
             border-radius: 50px;
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-weight: bold;
             transition: background-color 0.3s ease, transform 0.3s ease;
             text-decoration: none;
@@ -67,97 +67,60 @@
             transform: scale(1.1);
         }
 
-        /* استایل بازیگران */
-        .actor-card {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .actor-card img {
-            border-radius: 50%;
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            margin-bottom: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .actor-card p {
-            font-weight: bold;
-            color: #d32739;
-        }
-
-        /* استایل باکس لینک‌های مفید */
-        .useful-links .btn-custom {
-            background-color: #1e1e1e;
+        /* استایل دانلود */
+        .accordion-button {
+            background-color: #d32739;
             color: #fff;
-            border-radius: 50px;
-            padding: 12px 25px;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            font-weight: bold;
         }
 
-        .useful-links .btn-custom:hover {
+        .accordion-button:not(.collapsed) {
             background-color: #fff;
             color: #d32739;
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* تنظیمات ریسپانسیو */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .container {
-                margin-top: 15px;
-            }
-
-            .series-info p {
-                font-size: 1rem;
-            }
-
-            .actor-card img {
-                width: 120px;
-                height: 120px;
-            }
-
-            .actor-card p {
-                font-size: 1rem;
-            }
-
-            .useful-links .btn-custom {
-                font-size: 1rem;
-                padding: 10px 20px;
-            }
+        .accordion-body ul li a {
+            display: block;
+            background-color: #222;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
         }
 
-        @media (max-width: 576px) {
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .container {
-                margin-top: 10px;
-            }
-
-            .series-info img {
-                max-width: 80%;
-                margin: 0 auto;
-            }
-
-            .actor-card img {
-                width: 100px;
-                height: 100px;
-            }
-
-            .actor-card p {
-                font-size: 0.9rem;
-            }
+        .accordion-body ul li a:hover {
+            background-color: #d32739;
+            color: #fff;
         }
 
-        /* پس‌زمینه متحرک */
+        /* استایل تریلر */
+        .trailer video {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* فوتر */
+        footer {
+            background-color: #222;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        footer p {
+            font-size: 1rem;
+        }
+
+        /* پس‌زمینه */
         .background {
             position: absolute;
             top: 0;
@@ -179,17 +142,54 @@
             }
         }
 
-        footer {
-            background-color: #222;
-            padding: 20px;
-            text-align: center;
-            color: #fff;
-            margin-top: 30px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+        /* استایل ریسپانسیو */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .btn-custom {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+
+            .accordion-body ul li a {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
         }
 
+        @media (max-width: 576px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 0.9rem;
+            }
+
+            .btn-custom {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
+
+            .accordion-body ul li a {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+            }
+
+            .series-info img {
+                max-width: 90%;
+            }
+
+            footer {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -201,7 +201,7 @@
     </div>
 
     <div class="container">
-        <!-- سریال اطلاعات -->
+        <!-- اطلاعات سریال -->
         <div class="series-info">
             <div class="row">
                 <div class="col-md-4">
@@ -213,7 +213,6 @@
                         سریال "بازی مرکب" داستانی جذاب و هیجان‌انگیز درباره افرادی است که هر کدام به نوعی در زندگی خود با مشکلات مالی یا اجتماعی دست و پنجه نرم می‌کنند. این افراد وارد یک بازی مرموز می‌شوند که تنها یک نفر از آن‌ها با جایزه ۴۰ میلیون دلاری به زندگی باز می‌گردد.
                     </p>
                     <p><strong>ژانرها:</strong> اکشن، درام، هیجان‌انگیز</p>
-                    <p><strong>ستارگان:</strong> Hoyeon, Lee Jung-jae, Park Hae-soo, Wi Ha-joon, O Yeong-su</p>
                     <p><strong>تعداد فصل‌ها:</strong> 2 فصل (فصل 2 در حال پخش)</p>
                     <p><strong>تاریخ انتشار:</strong> 17 سپتامبر 2021</p>
                     <p><strong>امتیاز کاربران:</strong> 8.0/10 (بر اساس 443,274 رای)</p>
@@ -231,7 +230,7 @@
                         دانلود فصل 1
                     </button>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <ul>
                             <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=1" target="_blank">1080p WEBRip 6CH x265 10bit PSA</a></li>
@@ -249,7 +248,7 @@
                         دانلود فصل 2
                     </button>
                 </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <ul>
                             <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=1" target="_blank">2160p (4K) WEB-DL 6CH x265 10bit PSA</a></li>
@@ -263,71 +262,22 @@
             </div>
         </div>
 
-        <!-- بازیگران -->
-        <div class="actors">
-            <h3>بازیگران</h3>
-            <div class="row text-center">
-                <div class="col-md-3 actor-card">
-                    <img src="https://via.placeholder.com/150" alt="Hoyeon">
-                    <p>Hoyeon (Jung Ho-yeon)</p>
-                </div>
-                <div class="col-md-3 actor-card">
-                    <img src="https://via.placeholder.com/150" alt="Lee Jung-jae">
-                    <p>Lee Jung-jae</p>
-                </div>
-                <div class="col-md-3 actor-card">
-                    <img src="https://via.placeholder.com/150" alt="Park Hae-soo">
-                    <p>Park Hae-soo</p>
-                </div>
-                <div class="col-md-3 actor-card">
-                    <img src="https://via.placeholder.com/150" alt="Wi Ha-joon">
-                    <p>Wi Ha-joon</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- لینک‌های مفید -->
-        <div class="useful-links">
-            <h3 class="text-center">لینک‌های مفید</h3>
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <a href="https://www.netflix.com/de-en/title/81040344" class="btn-custom" target="_blank">
-                        <i class="fab fa-netflix"></i> لینک نتفیلیکس
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="https://www.imdb.com/title/tt10919420/" class="btn-custom" target="_blank">
-                        <i class="fab fa-imdb"></i> لینک IMDB
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="https://zarfilm.com/series/squid-game/" class="btn-custom" target="_blank">
-                        <i class="fas fa-download"></i> لینک دانلود از زرفیلم
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="https://digimoviez.com/serie/squid-game-2021/" class="btn-custom" target="_blank">
-                        <i class="fas fa-download"></i> لینک دانلود از دیجی موویز
-                    </a>
-                </div>
-            </div>
-        </div>
-
         <!-- پخش تریلر -->
         <div class="trailer">
             <h3 class="text-center">تریلر سریال</h3>
             <div class="text-center">
-                <video width="80%" controls>
+                <video controls>
                     <source src="https://digimoviez.com/wp-content/uploads/2023/06/Squid_Game_Season_2_Cast_Announcement_Netflix.mp4" type="video/mp4">
                     مرورگر شما از پخش ویدئو پشتیبانی نمی‌کند.
                 </video>
             </div>
         </div>
-    </div>
 
-    <footer>
-        <p>تمام حقوق محفوظ است &copy; 2024</p>
-    </footer>
+        <!-- فوتر -->
+        <footer>
+            <p>تمام حقوق محفوظ است &copy; 2024</p>
+        </footer>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
