@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Squid Game Downloads</title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>دانلود سریال Squid Game</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Vazir', sans-serif;
@@ -29,6 +31,11 @@
             background-color: #222;
             border: none;
             border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: scale(1.05);
         }
         .card a {
             text-decoration: none;
@@ -43,27 +50,42 @@
         .series-info img {
             max-width: 100%;
             border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .series-info p {
             font-size: 1.1rem;
             line-height: 1.6;
         }
+        .btn {
+            margin: 5px;
+        }
+        .actors {
+            margin-top: 30px;
+        }
+        .actors img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>Squid Game</h1>
-        <p>Download your favorite episodes in various qualities</p>
+        <h1>بازی مرکب</h1>
+        <p>دانلود قسمت‌های مختلف با کیفیت‌های متفاوت</p>
+        <button class="btn btn-light" id="language-toggle">English</button>
     </div>
 
     <div class="container">
         <div class="series-info">
             <div class="row">
                 <div class="col-md-4">
-                    <img src="https://via.placeholder.com/300x400" alt="Squid Game Poster">
+                    <img src="https://via.placeholder.com/300x400" alt="پوستر سریال بازی مرکب">
                 </div>
                 <div class="col-md-8">
-                    <h2>About the Series</h2>
+                    <h2>درباره سریال</h2>
                     <p>
                         داستان افرادی که هر کدام به نوعی در زندگی خود مشکل بزرگی دارند و برای جبران آن وارد بازی مرموزی می‌شوند که فقط یک برنده با جایزه ۴۰ میلیون دلاری خواهد داشت.
                     </p>
@@ -73,52 +95,107 @@
                     <p><strong>امتیاز کاربران:</strong> 8/10 (443,274 رای)</p>
                     <p><strong>زرفیلم:</strong> 88% (606 رای)</p>
                     <div>
-                        <a href="#" class="btn btn-danger">تماشای کل</a>
-                        <a href="#" class="btn btn-success">پخش آخرین قسمت</a>
-                        <a href="#" class="btn btn-primary">مشاهده تریلر</a>
+                        <a href="#" class="btn btn-danger"><i class="fas fa-play"></i> تماشای کل</a>
+                        <a href="#" class="btn btn-success"><i class="fas fa-video"></i> پخش آخرین قسمت</a>
+                        <a href="#" class="btn btn-primary"><i class="fas fa-film"></i> مشاهده تریلر</a>
+                        <a href="https://www.netflix.com/watch/81040344?source=35" target="_blank" class="btn btn-secondary"><i class="fas fa-link"></i> پخش در نتفلیکس</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card text-center p-3 mb-4">
-                    <h5>Episode 1</h5>
-                    <p>Choose quality:</p>
-                    <a href="#">480p</a> | <a href="#">720p</a> | <a href="#">1080p</a>
+        <div id="episodes-container" class="row">
+            <!-- Episodes will be loaded dynamically -->
+        </div>
+
+        <div class="actors">
+            <h3>بازیگران</h3>
+            <div class="row text-center">
+                <div class="col-md-3">
+                    <img src="https://via.placeholder.com/100" alt="Hoyeon">
+                    <p>Hoyeon</p>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-center p-3 mb-4">
-                    <h5>Episode 2</h5>
-                    <p>Choose quality:</p>
-                    <a href="#">480p</a> | <a href="#">720p</a> | <a href="#">1080p</a>
+                <div class="col-md-3">
+                    <img src="https://via.placeholder.com/100" alt="Lee Jung-jae">
+                    <p>Lee Jung-jae</p>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-center p-3 mb-4">
-                    <h5>Episode 3</h5>
-                    <p>Choose quality:</p>
-                    <a href="#">480p</a> | <a href="#">720p</a> | <a href="#">1080p</a>
+                <div class="col-md-3">
+                    <img src="https://via.placeholder.com/100" alt="Park Hae-soo">
+                    <p>Park Hae-soo</p>
                 </div>
             </div>
         </div>
-        <!-- Add more episodes as needed -->
 
         <div class="mt-4 text-center">
-            <h3>Watch a Clip</h3>
+            <h3>تماشای کلیپ</h3>
             <video width="100%" height="auto" controls>
                 <source src="https://via.placeholder.com/video.mp4" type="video/mp4">
-                Your browser does not support the video tag.
+                مرورگر شما از تگ ویدیو پشتیبانی نمی‌کند.
             </video>
         </div>
     </div>
 
     <footer class="text-center mt-4">
-        <p>&copy; 2024 Squid Game Downloads | All rights reserved</p>
+        <p>&copy; 2024 دانلود سریال Squid Game | تمامی حقوق محفوظ است</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const episodes = {
+            "season1": {
+                "episodes": [
+                    {"number": 1, "qualities": {"480p": "link1_480p", "720p": "link1_720p", "1080p": "link1_1080p"}},
+                    {"number": 2, "qualities": {"480p": "link2_480p", "720p": "link2_720p", "1080p": "link2_1080p"}},
+                    {"number": 3, "qualities": {"480p": "link3_480p", "720p": "link3_720p", "1080p": "link3_1080p"}}
+                ]
+            },
+            "season2": {
+                "episodes": [
+                    {"number": 1, "qualities": {"480p": "link4_480p", "720p": "link4_720p", "1080p": "link4_1080p"}},
+                    {"number": 2, "qualities": {"480p": "link5_480p", "720p": "link5_720p", "1080p": "link5_1080p"}}
+                ]
+            }
+        };
+
+        const episodesContainer = document.getElementById('episodes-container');
+
+        for (const season in episodes) {
+            episodes[season].episodes.forEach(ep => {
+                const episodeCard = document.createElement('div');
+                episodeCard.classList.add('col-md-4');
+                episodeCard.innerHTML = `
+                    <div class="card text-center p-3 mb-4">
+                        <h5>فصل ${season.replace('season', '')} - قسمت ${ep.number}</h5>
+                        <p>انتخاب کیفیت:</p>
+                        <a href="${ep.qualities['480p']}" target="_blank">480p</a> |
+                        <a href="${ep.qualities['720p']}" target="_blank">720p</a> |
+                        <a href="${ep.qualities['1080p']}" target="_blank">1080p</a>
+                    </div>
+                `;
+                episodesContainer.appendChild(episodeCard);
+            });
+        }
+
+        // Restrict access to IPs outside Iran
+        document.body.innerHTML = '<h1 style="text-align:center; color:white; margin-top:20%;">در حال بارگذاری...</h1>';
+        fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.country !== 'IR') {
+                    document.body.innerHTML = '<h1 style="text-align:center; color:red; margin-top:20%;">این سایت فقط برای کاربران داخل ایران در دسترس است.</h1>';
+                } else {
+                    location.reload();
+                }
+            });
+
+        // Toggle language
+        const langToggle = document.getElementById('language-toggle');
+        langToggle.addEventListener('click', () => {
+            const currentLang = document.documentElement.lang;
+            document.documentElement.lang = currentLang === 'fa' ? 'en' : 'fa';
+            document.documentElement.dir = currentLang === 'fa' ? 'ltr' : 'rtl';
+            location.reload();
+        });
+    </script>
 </body>
 </html>
