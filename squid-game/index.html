@@ -33,10 +33,6 @@
             margin-top: 30px;
         }
 
-        .series-info {
-            margin-bottom: 30px;
-        }
-
         .series-info img {
             max-width: 100%;
             border-radius: 10px;
@@ -53,18 +49,6 @@
             line-height: 1.6;
         }
 
-        .actors img {
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            margin-bottom: 10px;
-        }
-
-        h5 {
-            color: #d32739;
-        }
-
         .btn-custom {
             background-color: #d32739;
             color: #fff;
@@ -72,6 +56,9 @@
             padding: 10px 20px;
             font-weight: bold;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px 0;
         }
 
         .btn-custom:hover {
@@ -80,99 +67,10 @@
             transform: scale(1.1);
         }
 
-        /* تنظیمات ریسپانسیو */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .container {
-                margin-top: 15px;
-            }
-
-            .series-info p {
-                font-size: 1rem;
-            }
-
-            .actors img {
-                width: 80px;
-                height: 80px;
-            }
-
-            .card h5 {
-                font-size: 1rem;
-            }
-
-            .card ul li a {
-                font-size: 0.9rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .container {
-                margin-top: 10px;
-            }
-
-            .series-info {
-                text-align: center;
-            }
-
-            .series-info img {
-                max-width: 80%;
-                margin: 0 auto;
-            }
-
-            .actors img {
-                width: 70px;
-                height: 70px;
-            }
-
-            .card h5 {
-                font-size: 0.9rem;
-            }
-
-            .card ul li a {
-                font-size: 0.8rem;
-            }
-
-            .actors .col-md-3 {
-                margin-bottom: 10px;
-            }
-        }
-
-        .card {
-            background-color: #222;
-            border: 2px solid #d32739;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            padding: 15px;
-        }
-
-        .card a {
-            text-decoration: none;
-            color: #d32739;
-        }
-
-        .card a:hover {
-            text-decoration: underline;
-        }
-
-        footer {
-            background-color: #222;
-            padding: 20px;
-            text-align: center;
-            color: #fff;
+        .trailer-section {
             margin-top: 30px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
         }
 
-        /* پس‌زمینه متحرک */
         .background {
             position: absolute;
             top: 0;
@@ -193,6 +91,51 @@
                 background-position: 100% 100%;
             }
         }
+
+        footer {
+            background-color: #222;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            margin-top: 30px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* تنظیمات ریسپانسیو */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                margin-top: 15px;
+            }
+
+            .series-info p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                margin-top: 10px;
+            }
+
+            .series-info {
+                text-align: center;
+            }
+
+            .series-info img {
+                max-width: 80%;
+                margin: 0 auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -204,6 +147,7 @@
     </div>
 
     <div class="container">
+        <!-- سریال اطلاعات -->
         <div class="series-info">
             <div class="row">
                 <div class="col-md-4">
@@ -220,64 +164,46 @@
                     <p><strong>تاریخ انتشار:</strong> 17 سپتامبر 2021</p>
                     <p><strong>امتیاز کاربران:</strong> 8.0/10 (بر اساس 443,274 رای)</p>
                     <p><strong>زرفیلم:</strong> 88% (606 رای)</p>
-                    <p><strong>خلاصه:</strong> افراد در شرایط سخت مالی، وارد یک بازی مرگبار می‌شوند تا برنده جوایز مالی کلانی شوند. هر مرحله از بازی، چالش‌های تازه‌ای پیش‌روی آن‌ها قرار می‌دهد که زندگی و مرگشان را رقم می‌زند.
-                    </p>
+                    <p><strong>خلاصه:</strong> افراد در شرایط سخت مالی، وارد یک بازی مرگبار می‌شوند تا برنده جوایز مالی کلانی شوند. هر مرحله از بازی، چالش‌های تازه‌ای پیش‌روی آن‌ها قرار می‌دهد که زندگی و مرگشان را رقم می‌زند.</p>
                 </div>
             </div>
         </div>
 
-        <div id="episodes-container" class="row">
-            <div class="col-md-12">
-                <h3 class="text-center">لینک‌های دانلود به تفکیک فصل</h3>
-            </div>
-
-            <div class="col-md-12">
-                <h4 class="mt-4">فصل 1</h4>
-                <div class="card">
-                    <h5>کیفیت‌ها:</h5>
-                    <ul>
-                        <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=1" target="_blank">1080p WEBRip 6CH x265 10bit PSA</a></li>
-                        <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=2" target="_blank">720p WEB-DL 2CH x264 Pahe</a></li>
-                        <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=3" target="_blank">720p WEBRip 2CH x265 10bit PSA</a></li>
-                        <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=4" target="_blank">480p WEB-DL 2CH x264 Pahe</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <h4 class="mt-4">فصل 2</h4>
-                <div class="card">
-                    <h5>کیفیت‌ها:</h5>
-                    <ul>
-                        <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=1" target="_blank">2160p (4K) WEB-DL 6CH x265 10bit PSA</a></li>
-                        <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=2" target="_blank">1080p WEBRip 6CH x265 10bit PSA</a></li>
-                        <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=3" target="_blank">1080p WEBRip 6CH x265 10bit PaHe</a></li>
-                        <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=4" target="_blank">720p WEBRip 2CH x265 10bit PSA</a></li>
-                        <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=5" target="_blank">720p WEBRip 2CH x264 PaHe</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="actors">
-            <h3>بازیگران</h3>
+        <!-- لینک‌های مفید -->
+        <div class="series-info">
+            <h2>لینک‌های مفید</h2>
             <div class="row text-center">
                 <div class="col-md-3">
-                    <img src="https://via.placeholder.com/100" alt="Hoyeon">
-                    <p>Hoyeon (Jung Ho-yeon)</p>
+                    <a href="https://www.netflix.com/de-en/title/81040344" target="_blank" class="btn-custom">
+                        <i class="fab fa-netflix"></i> Netflix
+                    </a>
                 </div>
                 <div class="col-md-3">
-                    <img src="https://via.placeholder.com/100" alt="Lee Jung-jae">
-                    <p>Lee Jung-jae</p>
+                    <a href="https://www.imdb.com/title/tt10919420/" target="_blank" class="btn-custom">
+                        <i class="fab fa-imdb"></i> IMDb
+                    </a>
                 </div>
                 <div class="col-md-3">
-                    <img src="https://via.placeholder.com/100" alt="Park Hae-soo">
-                    <p>Park Hae-soo</p>
+                    <a href="https://zarfilm.com/series/squid-game/" target="_blank" class="btn-custom">
+                        <i class="fas fa-download"></i> Zarfilm
+                    </a>
                 </div>
                 <div class="col-md-3">
-                    <img src="https://via.placeholder.com/100" alt="Wi Ha-joon">
-                    <p>Wi Ha-joon</p>
+                    <a href="https://digimoviez.com/serie/squid-game-2021/" target="_blank" class="btn-custom">
+                        <i class="fas fa-download"></i> DigiMoviez
+                    </a>
                 </div>
+            </div>
+        </div>
+
+        <!-- بخش تریلر -->
+        <div class="trailer-section">
+            <h2 class="text-center">پخش تریلر</h2>
+            <div class="text-center">
+                <video controls width="80%">
+                    <source src="https://digimoviez.com/wp-content/uploads/2023/06/Squid_Game_Season_2_Cast_Announcement_Netflix.mp4" type="video/mp4">
+                    مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                </video>
             </div>
         </div>
     </div>
@@ -285,7 +211,7 @@
     <footer>
         <p>تمام حقوق محفوظ است &copy; 2024</p>
     </footer>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
