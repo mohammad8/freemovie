@@ -1,7 +1,6 @@
 // این فایل جاوا اسکریپت مربوط به فرم جستجو است که در آن نتیجه‌ها را می‌آورد.
 document.getElementById('searchForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    
     const title = document.getElementById('title').value;
     const resultsDiv = document.getElementById('results');
     
