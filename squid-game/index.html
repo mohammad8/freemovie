@@ -173,18 +173,6 @@
             });
         }
 
-        // Restrict access to IPs outside Iran
-        document.body.innerHTML = '<h1 style="text-align:center; color:white; margin-top:20%;">در حال بارگذاری...</h1>';
-        fetch('https://ipapi.co/json/')
-            .then(response => response.json())
-            .then(data => {
-                if (data.country !== 'IR') {
-                    document.body.innerHTML = '<h1 style="text-align:center; color:red; margin-top:20%;">این سایت فقط برای کاربران داخل ایران در دسترس است.</h1>';
-                } else {
-                    location.reload();
-                }
-            });
-
         // Toggle language
         const langToggle = document.getElementById('language-toggle');
         langToggle.addEventListener('click', () => {
