@@ -67,10 +67,97 @@
             transform: scale(1.1);
         }
 
-        .trailer-section {
-            margin-top: 30px;
+        /* استایل بازیگران */
+        .actor-card {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
+        .actor-card img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .actor-card p {
+            font-weight: bold;
+            color: #d32739;
+        }
+
+        /* استایل باکس لینک‌های مفید */
+        .useful-links .btn-custom {
+            background-color: #1e1e1e;
+            color: #fff;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .useful-links .btn-custom:hover {
+            background-color: #fff;
+            color: #d32739;
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* تنظیمات ریسپانسیو */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                margin-top: 15px;
+            }
+
+            .series-info p {
+                font-size: 1rem;
+            }
+
+            .actor-card img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .actor-card p {
+                font-size: 1rem;
+            }
+
+            .useful-links .btn-custom {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                margin-top: 10px;
+            }
+
+            .series-info img {
+                max-width: 80%;
+                margin: 0 auto;
+            }
+
+            .actor-card img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .actor-card p {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* پس‌زمینه متحرک */
         .background {
             position: absolute;
             top: 0;
@@ -103,39 +190,6 @@
             width: 100%;
         }
 
-        /* تنظیمات ریسپانسیو */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .container {
-                margin-top: 15px;
-            }
-
-            .series-info p {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .container {
-                margin-top: 10px;
-            }
-
-            .series-info {
-                text-align: center;
-            }
-
-            .series-info img {
-                max-width: 80%;
-                margin: 0 auto;
-            }
-        }
     </style>
 </head>
 <body>
@@ -169,40 +223,103 @@
             </div>
         </div>
 
-        <!-- لینک‌های مفید -->
-        <div class="series-info">
-            <h2>لینک‌های مفید</h2>
+        <!-- دانلود اکاردئونی -->
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        دانلود فصل 1
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <ul>
+                            <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=1" target="_blank">1080p WEBRip 6CH x265 10bit PSA</a></li>
+                            <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=2" target="_blank">720p WEB-DL 2CH x264 Pahe</a></li>
+                            <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=3" target="_blank">720p WEBRip 2CH x265 10bit PSA</a></li>
+                            <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=4" target="_blank">480p WEB-DL 2CH x264 Pahe</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        دانلود فصل 2
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <ul>
+                            <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=1" target="_blank">2160p (4K) WEB-DL 6CH x265 10bit PSA</a></li>
+                            <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=2" target="_blank">1080p WEBRip 6CH x265 10bit PSA</a></li>
+                            <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=3" target="_blank">1080p WEBRip 6CH x265 10bit PaHe</a></li>
+                            <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=4" target="_blank">720p WEBRip 2CH x265 10bit PSA</a></li>
+                            <li><a href="https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=5" target="_blank">720p WEBRip 2CH x264 PaHe</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- بازیگران -->
+        <div class="actors">
+            <h3>بازیگران</h3>
             <div class="row text-center">
-                <div class="col-md-3">
-                    <a href="https://www.netflix.com/de-en/title/81040344" target="_blank" class="btn-custom">
-                        <i class="fab fa-netflix"></i> Netflix
+                <div class="col-md-3 actor-card">
+                    <img src="https://via.placeholder.com/150" alt="Hoyeon">
+                    <p>Hoyeon (Jung Ho-yeon)</p>
+                </div>
+                <div class="col-md-3 actor-card">
+                    <img src="https://via.placeholder.com/150" alt="Lee Jung-jae">
+                    <p>Lee Jung-jae</p>
+                </div>
+                <div class="col-md-3 actor-card">
+                    <img src="https://via.placeholder.com/150" alt="Park Hae-soo">
+                    <p>Park Hae-soo</p>
+                </div>
+                <div class="col-md-3 actor-card">
+                    <img src="https://via.placeholder.com/150" alt="Wi Ha-joon">
+                    <p>Wi Ha-joon</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- لینک‌های مفید -->
+        <div class="useful-links">
+            <h3 class="text-center">لینک‌های مفید</h3>
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <a href="https://www.netflix.com/de-en/title/81040344" class="btn-custom" target="_blank">
+                        <i class="fab fa-netflix"></i> لینک نتفیلیکس
                     </a>
                 </div>
-                <div class="col-md-3">
-                    <a href="https://www.imdb.com/title/tt10919420/" target="_blank" class="btn-custom">
-                        <i class="fab fa-imdb"></i> IMDb
+                <div class="col-md-4">
+                    <a href="https://www.imdb.com/title/tt10919420/" class="btn-custom" target="_blank">
+                        <i class="fab fa-imdb"></i> لینک IMDB
                     </a>
                 </div>
-                <div class="col-md-3">
-                    <a href="https://zarfilm.com/series/squid-game/" target="_blank" class="btn-custom">
-                        <i class="fas fa-download"></i> Zarfilm
+                <div class="col-md-4">
+                    <a href="https://zarfilm.com/series/squid-game/" class="btn-custom" target="_blank">
+                        <i class="fas fa-download"></i> لینک دانلود از زرفیلم
                     </a>
                 </div>
-                <div class="col-md-3">
-                    <a href="https://digimoviez.com/serie/squid-game-2021/" target="_blank" class="btn-custom">
-                        <i class="fas fa-download"></i> DigiMoviez
+                <div class="col-md-4">
+                    <a href="https://digimoviez.com/serie/squid-game-2021/" class="btn-custom" target="_blank">
+                        <i class="fas fa-download"></i> لینک دانلود از دیجی موویز
                     </a>
                 </div>
             </div>
         </div>
 
-        <!-- بخش تریلر -->
-        <div class="trailer-section">
-            <h2 class="text-center">پخش تریلر</h2>
+        <!-- پخش تریلر -->
+        <div class="trailer">
+            <h3 class="text-center">تریلر سریال</h3>
             <div class="text-center">
-                <video controls width="80%">
+                <video width="80%" controls>
                     <source src="https://digimoviez.com/wp-content/uploads/2023/06/Squid_Game_Season_2_Cast_Announcement_Netflix.mp4" type="video/mp4">
-                    مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                    مرورگر شما از پخش ویدئو پشتیبانی نمی‌کند.
                 </video>
             </div>
         </div>
