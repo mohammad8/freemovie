@@ -144,15 +144,14 @@
         const episodes = {
             "season1": {
                 "episodes": [
-                    {"number": 1, "qualities": {"480p": "link1_480p", "720p": "link1_720p", "1080p": "link1_1080p"}},
-                    {"number": 2, "qualities": {"480p": "link2_480p", "720p": "link2_720p", "1080p": "link2_1080p"}},
-                    {"number": 3, "qualities": {"480p": "link3_480p", "720p": "link3_720p", "1080p": "link3_1080p"}}
+                    {"number": 1, "qualities": {"480p": "https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=4", "720p": "https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=2", "1080p": "https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=1"}},
+                    {"number": 2, "qualities": {"720p": "https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=1&q=3"}}
                 ]
             },
             "season2": {
                 "episodes": [
-                    {"number": 1, "qualities": {"480p": "link4_480p", "720p": "link4_720p", "1080p": "link4_1080p"}},
-                    {"number": 2, "qualities": {"480p": "link5_480p", "720p": "link5_720p", "1080p": "link5_1080p"}}
+                    {"number": 1, "qualities": {"720p": "https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=5", "1080p": "https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=3", "2160p": "https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=1"}},
+                    {"number": 2, "qualities": {"720p": "https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=4", "1080p": "https://subtitle.saymyname.website/DL/filmgir/?i=tt10919420&f=2&q=2"}}
                 ]
             }
         };
@@ -167,8 +166,33 @@
                     <div class="card text-center p-3 mb-4">
                         <h5>فصل ${season.replace('season', '')} - قسمت ${ep.number}</h5>
                         <p>انتخاب کیفیت:</p>
-                        <a href="${ep.qualities['480p']}" target="_blank">480p</a> |
-                        <a href="${ep.qualities['720p']}" target="_blank">720p</a> |
-                        <a href="${ep.qualities['1080p']}" target="_blank">1080p</a>
+                        ${Object.keys(ep.qualities).map(quality => `<a href="${ep.qualities[quality]}" target="_blank">${quality}</a>`).join(' | ')}
                     </div>
                 `;
+                episodesContainer.appendChild(episodeCard);
+            });
+        }
+
+        // Restrict access to IPs outside Iran
+        document.body.innerHTML = '<h1 style="text-align:center; color:white; margin-top:20%;">در حال بارگذاری...</h1>';
+        fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.country !== 'IR') {
+                    document.body.innerHTML = '<h1 style="text-align:center; color:red; margin-top:20%;">این سایت فقط برای کاربران داخل ایران در دسترس است.</h1>';
+                } else {
+                    location.reload();
+                }
+            });
+
+        // Toggle language
+        const langToggle = document.getElementById('language-toggle');
+        langToggle.addEventListener('click', () => {
+            const currentLang = document.documentElement.lang;
+            document.documentElement.lang = currentLang === 'fa' ? 'en' : 'fa';
+            document.documentElement.dir = currentLang === 'fa' ? 'ltr' : 'rtl';
+            location.reload();
+        });
+    </script>
+</body>
+</html>
