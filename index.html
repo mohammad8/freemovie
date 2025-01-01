@@ -1,9 +1,23 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>فیری مووی - دانلود فیلم و سریال رایگان</title>
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-5LFXCX69");
+    </script>
+    <!-- End Google Tag Manager -->
 
     <link
       href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@latest/dist/font-face.css"
@@ -20,82 +34,64 @@
     />
     <style>
       body {
-        font-family: Vazir, sans-serif;
-        background-color: #f8f9fa;
-        color: #212529;
-        transition: background-color 0.3s, color 0.3s;
+        font-family: 'Vazir', sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
       }
-      .dark-mode {
-        background-color: #121212;
-        color: #f8f9fa;
+      .container {
+        flex: 1;
       }
-      .footer-dark {
+      footer {
         background-color: #343a40;
-        color: #f8f9fa;
-        padding: 20px 0;
+        color: #fff;
+        padding: 15px 0;
+        text-align: center;
       }
-      .footer-dark a {
-        color: #adb5bd;
+      footer a {
+        color: #ffc107;
         text-decoration: none;
       }
-      .footer-dark a:hover {
-        color: #f8f9fa;
-      }
-      .btn-primary {
-        background-color: #007bff;
-        border: none;
-      }
-      .btn-primary:hover {
-        background-color: #0056b3;
-      }
-      .btn-secondary {
-        background-color: #6c757d;
-        border: none;
-      }
-      .btn-secondary:hover {
-        background-color: #5a6268;
-      }
-      .logo-container img {
-        max-width: 150px;
-      }
-      .alert {
-        font-size: 1.1rem;
-      }
-      .social-icons i {
-        font-size: 1.5rem;
-        margin: 0 10px;
-        color: #adb5bd;
-      }
-      .social-icons i:hover {
-        color: #f8f9fa;
-      }
-      #theme-toggle {
-        z-index: 1000;
+      footer a:hover {
+        text-decoration: underline;
       }
     </style>
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-5LFXCX69"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div class="container mt-5">
+      <!-- لوگو و عنوان -->
       <div class="logo-container text-center mb-4">
-        <img src="logo.png" alt="Logo" class="img-fluid" />
+        <img src="logo.png" alt="لوگو" class="img-fluid" />
       </div>
 
+      <!-- اطلاع‌رسانی لینک کوتاه‌شده -->
       <div class="alert alert-info text-center my-4" role="alert">
-        <strong>لینک کوتاه سایت:</strong>
+        <strong>لینک راحت سایت:</strong>
         <a href="https://b2n.ir/FreeMovie" class="alert-link" target="_blank">b2n.ir/FreeMovie</a>
         <br />
-        با استفاده از این لینک، به راحتی می‌تونید به سایت ما دسترسی پیدا کنید!
+        با این لینک، راحت می‌تونید بیاید تو سایت ما!
       </div>
 
-      <p class="text-center mb-4">اگه فیلتر شکن روشنه خاموشش کن</p>
+      <p class="text-center mb-4">فیلترشکن روشنه؟ خاموشش کن داداش!</p>
       <p class="text-center mb-4">
-        برای دانلود جدیدترین فیلم‌ها
+        واسه دانلود جدیدترین فیلما
         <a
           href="https://B2n.ir/freemovie-newmovie"
           target="_blank"
           class="alert-link"
         >
-          اینجا کلیک کنید
+          اینجا بزن
         </a>
         .
       </p>
@@ -107,36 +103,36 @@
             class="form-control"
             id="title"
             name="title"
-            placeholder="نام فیلم را به انگلیسی جستجو کنید"
+            placeholder="اسم فیلمو انگلیسی وارد کن"
             required
           />
         </div>
 
         <div class="col-12">
-          <button type="submit" class="btn btn-primary w-100">جستجو کن</button>
+          <button type="submit" class="btn btn-primary w-100">بگرد</button>
         </div>
       </form>
 
       <div id="results" class="mt-5"></div>
     </div>
 
-    <footer class="footer-dark">
-      <div class="container text-center">
-        <p class="mt-3">
-          فیری مووی - ساخته شده توسط ریک سانچز با 🤍 | استفاده از
+    <footer>
+      <div class="container">
+        <p>
+          فیری مووی - ساخته شده با 🤍 توسط ریک سانچز | استفاده از
           <a href="https://github.com/rastikerdar/vazir-font">فونت وزیر</a>
-          به یاد صابر راستی کردار
+          به یاد صابر راستی کردار.
         </p>
 
         <p>
-          در این وبسایت از
+          تو این سایت از
           <a href="https://www.omdbapi.com/" target="_blank">وب سرویس OMDB</a>
-          برای جستجو و اطلاعات فیلم‌ها و از
+          واسه جستجو و اطلاعات فیلم‌ها و از
           <a href="https://almasmovie.website/" target="_blank">الماس مووی</a>
-          برای دانلود فیلم‌ها استفاده می‌شود.
+          واسه دانلود استفاده می‌کنیم.
         </p>
 
-        <div class="social-icons mb-2">
+        <div class="social-icons">
           <a href="https://github.com/m4tinbeigi-official" role="button">
             <i class="fab fa-github"></i>
           </a>
@@ -161,6 +157,7 @@
     </button>
 
     <script>
+      // Load the theme from local storage or use default (light mode)
       (function () {
         const savedTheme = localStorage.getItem("theme");
         const body = document.body;
