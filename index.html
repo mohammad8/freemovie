@@ -4,20 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>فیری مووی - دانلود فیلم و سریال رایگان</title>
-    <!-- Google Tag Manager -->
-    <script>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
-        j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-5LFXCX69");
-    </script>
-    <!-- End Google Tag Manager -->
 
     <link
       href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@latest/dist/font-face.css"
@@ -32,35 +18,71 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <link rel="stylesheet" href="./global.css" />
+    <style>
+      body {
+        font-family: Vazir, sans-serif;
+        background-color: #f8f9fa;
+        color: #212529;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      .dark-mode {
+        background-color: #121212;
+        color: #f8f9fa;
+      }
+      .footer-dark {
+        background-color: #343a40;
+        color: #f8f9fa;
+        padding: 20px 0;
+      }
+      .footer-dark a {
+        color: #adb5bd;
+        text-decoration: none;
+      }
+      .footer-dark a:hover {
+        color: #f8f9fa;
+      }
+      .btn-primary {
+        background-color: #007bff;
+        border: none;
+      }
+      .btn-primary:hover {
+        background-color: #0056b3;
+      }
+      .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+      }
+      .btn-secondary:hover {
+        background-color: #5a6268;
+      }
+      .logo-container img {
+        max-width: 150px;
+      }
+      .alert {
+        font-size: 1.1rem;
+      }
+      .social-icons i {
+        font-size: 1.5rem;
+        margin: 0 10px;
+        color: #adb5bd;
+      }
+      .social-icons i:hover {
+        color: #f8f9fa;
+      }
+      #theme-toggle {
+        z-index: 1000;
+      }
+    </style>
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-5LFXCX69"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
     <div class="container mt-5">
-      <!-- لوگو و عنوان -->
-      <div class="logo-container">
-        <img src="logo.png" alt="Logo" />
+      <div class="logo-container text-center mb-4">
+        <img src="logo.png" alt="Logo" class="img-fluid" />
       </div>
-      <!-- <div class="logo-container">
-            <h1>فیری مووی - دانلود فیلم و سریال رایگان</h1>
-        </div> -->
 
-      <!-- اطلاع‌رسانی لینک کوتاه‌شده -->
       <div class="alert alert-info text-center my-4" role="alert">
         <strong>لینک کوتاه سایت:</strong>
-        <a href="https://b2n.ir/FreeMovie" class="alert-link" target="_blank"
-          >b2n.ir/FreeMovie</a
-        >
+        <a href="https://b2n.ir/FreeMovie" class="alert-link" target="_blank">b2n.ir/FreeMovie</a>
         <br />
         با استفاده از این لینک، به راحتی می‌تونید به سایت ما دسترسی پیدا کنید!
       </div>
@@ -72,8 +94,10 @@
           href="https://B2n.ir/freemovie-newmovie"
           target="_blank"
           class="alert-link"
-          >اینجا کلیک کنید</a
-        >.
+        >
+          اینجا کلیک کنید
+        </a>
+        .
       </p>
 
       <form id="searchForm" class="row g-3">
@@ -100,54 +124,31 @@
       <div class="container text-center">
         <p class="mt-3">
           فیری مووی - ساخته شده توسط ریک سانچز با 🤍 | استفاده از
-          <a href="https://github.com/rastikerdar/vazir-font" class="text-white"
-            >فونت وزیر</a
-          >
+          <a href="https://github.com/rastikerdar/vazir-font">فونت وزیر</a>
           به یاد صابر راستی کردار
         </p>
 
         <p>
           در این وبسایت از
-          <a href="https://www.omdbapi.com/" target="_blank" class="text-white"
-            >وب سرویس OMDB</a
-          >
+          <a href="https://www.omdbapi.com/" target="_blank">وب سرویس OMDB</a>
           برای جستجو و اطلاعات فیلم‌ها و از
-          <a
-            href="https://almasmovie.website/"
-            target="_blank"
-            class="text-white"
-            >الماس مووی</a
-          >
+          <a href="https://almasmovie.website/" target="_blank">الماس مووی</a>
           برای دانلود فیلم‌ها استفاده می‌شود.
         </p>
 
         <div class="social-icons mb-2">
-          <!-- GitHub Star Button -->
-          <a
-            class="github-button"
-            href="https://github.com/m4tinbeigi-official/freemovie"
-            data-icon="octicon-star"
-            data-show-count="true"
-            aria-label="Star m4tinbeigi-official/freemovie on GitHub"
-            >Star</a
-          >
-          <script
-            async
-            defer
-            src="https://buttons.github.io/buttons.js"
-          ></script>
-          <a href="https://github.com/m4tinbeigi-official" role="button"
-            ><i class="fab fa-github"></i
-          ></a>
-          <a href="https://twitter.com/m4tinbeigi" role="button"
-            ><i class="fab fa-twitter"></i
-          ></a>
-          <a href="https://linkedin.com/in/matinbeigi" role="button"
-            ><i class="fab fa-linkedin"></i
-          ></a>
-          <a href="https://instagram.com/m4tinbeigi" role="button"
-            ><i class="fab fa-instagram"></i
-          ></a>
+          <a href="https://github.com/m4tinbeigi-official" role="button">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://twitter.com/m4tinbeigi" role="button">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="https://linkedin.com/in/matinbeigi" role="button">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://instagram.com/m4tinbeigi" role="button">
+            <i class="fab fa-instagram"></i>
+          </a>
         </div>
       </div>
     </footer>
@@ -156,26 +157,31 @@
       id="theme-toggle"
       class="btn btn-secondary position-fixed top-0 end-0 m-3"
     >
-      تغییر تم
+      حالت تاریک
     </button>
 
     <script>
-      // Load the theme from local storage or use device scheme
       (function () {
         const savedTheme = localStorage.getItem("theme");
-        if (
-          !savedTheme &&
-          window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches
-        ) {
-          return document.body.classList.add("dark-mode");
-        }
+        const body = document.body;
+        const themeToggleBtn = document.getElementById("theme-toggle");
+
         if (savedTheme === "dark") {
-          document.body.classList.add("dark-mode");
+          body.classList.add("dark-mode");
+          themeToggleBtn.textContent = "حالت روشن";
+        } else {
+          body.classList.remove("dark-mode");
+          themeToggleBtn.textContent = "حالت تاریک";
         }
+
+        themeToggleBtn.addEventListener("click", () => {
+          body.classList.toggle("dark-mode");
+          const isDarkMode = body.classList.contains("dark-mode");
+          localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+          themeToggleBtn.textContent = isDarkMode ? "حالت روشن" : "حالت تاریک";
+        });
       })();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
   </body>
 </html>
