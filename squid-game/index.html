@@ -186,6 +186,40 @@
             color: #d32739;
             transform: scale(1.05);
         }
+
+        .table-container {
+            margin-top: 20px;
+        }
+
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .table-container th, .table-container td {
+            border: 1px solid #444;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .table-container th {
+            background-color: #d32739;
+            color: white;
+        }
+
+        .table-container td {
+            background-color: #333;
+        }
+
+        .table-container a {
+            color: #d32739;
+            text-decoration: none;
+        }
+
+        .table-container a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -219,8 +253,19 @@
         <div class="download-box">
             <h3>دانلود فصل اول</h3>
             <div class="quality-title">720p WEBRip 2CH x265 10bit PSA</div>
-            <div class="download-links" id="season1-links">
-                <!-- لینک‌ها به صورت دینامیک اضافه می‌شوند -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>قسمت</th>
+                            <th>لینک دانلود فیلم</th>
+                            <th>لینک دانلود زیرنویس</th>
+                        </tr>
+                    </thead>
+                    <tbody id="season1-links">
+                        <!-- لینک‌ها به صورت دینامیک اضافه می‌شوند -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -228,8 +273,19 @@
         <div class="download-box">
             <h3>دانلود فصل دوم</h3>
             <div class="quality-title">720p WEBRip 2CH x264 PaHe / 450MB</div>
-            <div class="download-links" id="season2-links">
-                <!-- لینک‌ها به صورت دینامیک اضافه می‌شوند -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>قسمت</th>
+                            <th>لینک دانلود فیلم</th>
+                            <th>لینک دانلود زیرنویس</th>
+                        </tr>
+                    </thead>
+                    <tbody id="season2-links">
+                        <!-- لینک‌ها به صورت دینامیک اضافه می‌شوند -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -248,37 +304,58 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // تابع برای ایجاد لینک‌های دانلود
+        // تابع برای ایجاد لینک‌های دانلود در جدول
         function createDownloadLinks(season, episodes, containerId) {
             const container = document.getElementById(containerId);
+            if (!container) {
+                console.error(`عنصر با شناسه ${containerId} یافت نشد!`);
+                return;
+            }
             episodes.forEach(episode => {
-                const episodeDiv = document.createElement('div');
-                episodeDiv.className = 'episode-links';
+                const row = document.createElement('tr');
 
+                const episodeCell = document.createElement('td');
+                episodeCell.textContent = `قسمت ${episode.episode}`;
+
+                const videoCell = document.createElement('td');
                 const videoLink = document.createElement('a');
                 videoLink.href = episode.video_link;
-                videoLink.innerHTML = `<i class="fas fa-download"></i> دانلود قسمت ${episode.episode}`;
-                videoLink.className = 'download-link';
+                videoLink.textContent = 'دانلود فیلم';
+                videoLink.target = "_blank";
+                videoCell.appendChild(videoLink);
 
+                const subtitleCell = document.createElement('td');
                 const subtitleLink = document.createElement('a');
                 subtitleLink.href = episode.subtitle_link;
-                subtitleLink.innerHTML = `<i class="fas fa-closed-captioning"></i> زیرنویس قسمت ${episode.episode}`;
-                subtitleLink.className = 'download-link';
+                subtitleLink.textContent = 'دانلود زیرنویس';
+                subtitleLink.target = "_blank";
+                subtitleCell.appendChild(subtitleLink);
 
-                episodeDiv.appendChild(videoLink);
-                episodeDiv.appendChild(subtitleLink);
-                container.appendChild(episodeDiv);
+                row.appendChild(episodeCell);
+                row.appendChild(videoCell);
+                row.appendChild(subtitleCell);
+                container.appendChild(row);
             });
         }
 
         // خواندن فایل JSON و ایجاد لینک‌ها
         fetch('link.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('فایل JSON یافت نشد!');
+                }
+                return response.json();
+            })
             .then(data => {
-                data.seasons.forEach(season => {
-                    const containerId = season.season === 1 ? 'season1-links' : 'season2-links';
-                    createDownloadLinks(season.season, season.episodes, containerId);
-                });
+                console.log('داده‌های JSON:', data); // بررسی داده‌های JSON
+                if (data.seasons && data.seasons.length > 0) {
+                    data.seasons.forEach(season => {
+                        const containerId = season.season === 1 ? 'season1-links' : 'season2-links';
+                        createDownloadLinks(season.season, season.episodes, containerId);
+                    });
+                } else {
+                    console.error('داده‌های JSON نامعتبر هستند!');
+                }
             })
             .catch(error => console.error('خطا در خواندن فایل JSON:', error));
     </script>
