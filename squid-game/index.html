@@ -34,142 +34,56 @@
             margin-top: 30px;
         }
 
-        /* بخش ریتوییت */
-        .retweet-section {
+        /* استایل‌های سفارشی برای باکس دانلود */
+        .download-box {
             background-color: #222;
-            padding: 20px;
             border-radius: 15px;
+            padding: 20px;
             margin-top: 30px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .download-box h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
             text-align: center;
         }
 
-        .retweet-section h3 {
-            color: #fff;
-            font-size: 1.5rem;
+        .download-box .quality-title {
+            color: #ffcc00;
+            font-size: 1.2rem;
             margin-bottom: 15px;
+            text-align: center;
         }
 
-        .retweet-button {
-            background-color: #1DA1F2;
+        .download-box .download-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .download-box .download-links a {
+            background-color: #d32739;
             color: white;
             padding: 10px 20px;
-            font-size: 1.1rem;
             border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .retweet-button:hover {
-            background-color: #0d8dff;
-        }
-
-        .retweet-button i {
-            margin-left: 10px;
-        }
-
-        /* سایر بخش‌ها */
-        .useful-links {
-            background-color: #222;
-            padding: 20px;
-            margin-top: 30px;
-            border-radius: 15px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .useful-links h3 {
-            color: #fff;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .useful-links ul {
-            list-style: none;
-            padding: 0;
-            text-align: center;
-        }
-
-        .useful-links ul li {
-            margin: 12px 0;
-        }
-
-        .useful-links ul li a {
-            color: #fff;
             text-decoration: none;
-            font-size: 1.1rem;
-            padding: 12px 20px;
-            border-radius: 8px;
-            background-color: #d32739;
-            display: inline-block;
-            width: 80%;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .useful-links ul li a i {
-            margin-left: 8px;
-        }
-
-        .useful-links ul li a:hover {
+        .download-box .download-links a:hover {
             background-color: #fff;
             color: #d32739;
             transform: scale(1.05);
         }
 
-        .useful-links ul li a i {
+        .download-box .download-links a i {
             font-size: 1.2rem;
-        }
-
-        /* دانلود سریال */
-        .accordion-item {
-            background-color: #222;
-            border: 1px solid #d32739;
-            margin-bottom: 15px;
-            border-radius: 10px;
-        }
-
-        .accordion-button {
-            background-color: #d32739;
-            color: white;
-            font-weight: bold;
-            border-radius: 10px;
-            padding: 15px;
-            transition: background-color 0.3s;
-        }
-
-        .accordion-button:hover {
-            background-color: #fff;
-            color: #d32739;
-        }
-
-        .accordion-body {
-            background-color: #333;
-            color: #fff;
-            padding: 15px;
-        }
-
-        .accordion-body a {
-            color: #d32739;
-            text-decoration: none;
-            display: block;
-            margin: 8px 0;
-        }
-
-        .accordion-body a:hover {
-            text-decoration: underline;
-        }
-
-        /* پخش تریلر */
-        .trailer {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .trailer video {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
         }
 
         /* فوتر */
@@ -215,21 +129,17 @@
                 margin-top: 15px;
             }
 
-            .series-info p {
-                font-size: 1rem;
-            }
-
-            .accordion-button {
-                font-size: 1.1rem;
-            }
-
-            .useful-links ul li a {
-                width: 100%;
-                font-size: 1rem;
-            }
-
-            .useful-links h3 {
+            .download-box h3 {
                 font-size: 1.2rem;
+            }
+
+            .download-box .quality-title {
+                font-size: 1rem;
+            }
+
+            .download-box .download-links a {
+                padding: 8px 15px;
+                font-size: 0.9rem;
             }
         }
 
@@ -242,16 +152,17 @@
                 margin-top: 10px;
             }
 
-            .useful-links ul li a {
+            .download-box h3 {
                 font-size: 1rem;
             }
 
-            .useful-links h3 {
-                font-size: 1rem;
-            }
-
-            .accordion-body {
+            .download-box .quality-title {
                 font-size: 0.9rem;
+            }
+
+            .download-box .download-links a {
+                padding: 6px 12px;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -283,38 +194,34 @@
             </div>
         </div>
 
-        <div class="useful-links">
-            <h3>لینک‌های مفید</h3>
-            <ul>
-                <li><a href="https://www.netflix.com/de-en/title/81040344" target="_blank"><i class="fab fa-netflix"></i> مشاهده در نتفلیکس</a></li>
-                <li><a href="https://www.imdb.com/title/tt10919420/" target="_blank"><i class="fab fa-imdb"></i> صفحه IMDb</a></li>
-                <li><a href="https://zarfilm.com/series/squid-game/" target="_blank"><i class="fas fa-download"></i> دانلود از زرفیلم</a></li>
-                <li><a href="https://digimoviez.com/serie/squid-game-2021/" target="_blank"><i class="fas fa-download"></i> دانلود از دیجی موویز</a></li>
-            </ul>
+        <!-- باکس دانلود فصل اول -->
+        <div class="download-box">
+            <h3>دانلود فصل اول</h3>
+            <div class="quality-title">720p WEBRip 2CH x265 10bit PSA</div>
+            <div class="download-links">
+                <a href="https://nairobi.saymyname.website/Series/S/Squid%20Game/S01/720p%20WEBRip%202CH%20x265%2010bit%20PSA/Squid%20Game%20S01E01%20DUAL%20AUDIO%20KOR%20ENG%20720p%2010bit%20WEBRip%202CH%20x265%20HEVC%20PSA.mkv" title="">
+                    <i class="fas fa-download"></i> دانلود قسمت 1
+                </a>
+                <a href="https://subtitle.saymyname.website/DL/?select=aHR0cHM6Ly9zdWJ0aXRsZS5ta3NlcnZlcnMuaXIvQWxtYXNFZGl0aW9uL1Nlcmllcy9TL1NxdWlkJTIwR2FtZS9GYXJzaS9GYXJzaS5TMDEuU3F1aWQuR2FtZS9XRUItREwlMjAlMjYlMjBXRUJSaXAvU3F1aWQlMjBHYW1lJTIwLSUyMFdFQiUyMC0lMjBTMDFFMDEuc3J0KlNxdWlkJTIwR2FtZSUyMFMwMUUwMSUyMERVQUwlMjBBVURJTyUyMEtPUiUyMEVORyUyMDcyMHAlMjAxMGJpdCUyMFdFQlJpcCUyMDJDSCUyMHgyNjUlMjBIRVZDJTIwUFNBKnNydA==" title="">
+                    <i class="fas fa-closed-captioning"></i> زیرنویس قسمت 1
+                </a>
+                <!-- ادامه لینک‌های دانلود برای قسمت‌های دیگر -->
+            </div>
         </div>
 
-        <!-- بخش ریتوییت -->
-        <div class="retweet-section">
-            <h3>از پروژه حمایت کنید!</h3>
-            <p>جهت حمایت از این کار و پخش بیشتر آن، لطفاً توییت من را ریتوییت کنید:</p>
-            <!-- دکمه ریتوییت -->
-            <a href="https://x.com/m4tinbeigi/status/1873285735136342070?t=5ztExNKMOsjiLBXbhcJx8A&s=19" class="retweet-button" target="_blank">
-                ریتوییت کنید <i class="fab fa-twitter"></i>
-            </a>
-        </div>
-
-        <!-- بخش دانلود فصل اول -->
-        <div class="bg2 brb-5px p-3">
-            <div class="text-center mb-2" style="color:yellow;">720p WEBRip 2CH x265 10bit PSA</div>
-            <div class="text-center my-1">
-                <a class="display-inline-block px-3 py-1 br-5px bg1" href="https://nairobi.saymyname.website/Series/S/Squid%20Game/S01/720p%20WEBRip%202CH%20x265%2010bit%20PSA/Squid%20Game%20S01E01%20DUAL%20AUDIO%20KOR%20ENG%20720p%2010bit%20WEBRip%202CH%20x265%20HEVC%20PSA.mkv" title="">دانلود قسمت 1</a> | 
-                <a class="display-inline-block px-3 py-1 br-5px bg1" href="https://subtitle.saymyname.website/DL/?select=aHR0cHM6Ly9zdWJ0aXRsZS5ta3NlcnZlcnMuaXIvQWxtYXNFZGl0aW9uL1Nlcmllcy9TL1NxdWlkJTIwR2FtZS9GYXJzaS9GYXJzaS5TMDEuU3F1aWQuR2FtZS9XRUItREwlMjAlMjYlMjBXRUJSaXAvU3F1aWQlMjBHYW1lJTIwLSUyMFdFQiUyMC0lMjBTMDFFMDEuc3J0KlNxdWlkJTIwR2FtZSUyMFMwMUUwMSUyMERVQUwlMjBBVURJTyUyMEtPUiUyMEVORyUyMDcyMHAlMjAxMGJpdCUyMFdFQlJpcCUyMDJDSCUyMHgyNjUlMjBIRVZDJTIwUFNBKnNydA==" title="">دانلود زیرنویس قسمت 1</a>
+        <!-- باکس دانلود فصل دوم -->
+        <div class="download-box">
+            <h3>دانلود فصل دوم</h3>
+            <div class="quality-title">720p WEBRip 2CH x264 PaHe / 450MB</div>
+            <div class="download-links">
+                <a href="https://rio.ggusers.com/Series/S/Squid%20Game/S01/720p%20WEBRip%202CH%20x264%20PaHe/Squid.Game.S02E01.720p.WEB-DL.Pahe.mkv" title="">
+                    <i class="fas fa-download"></i> دانلود قسمت 1
+                </a>
+                <a href="https://subtitle.saymyname.website/DL/?select=aHR0cHM6Ly9zdWJ0aXRsZS5ta3NlcnZlcnMuaXIvQWxtYXNFZGl0aW9uL1Nlcmllcy9TL1NxdWlkJTIwR2FtZS9GYXJzaS9GYXJzaS5TMDIuU3F1aWQuR2FtZS9XRUItREwlMjAlMjYlMjBXRUJSaXAvU3F1aWQlMjBHYW1lJTIwLSUyMFdFQiUyMC0lMjBTMDJFMDEuc3J0KlNxdWlkLkdhbWUuUzAyRTAxLjcyMHAuV0VCLURMLlBhaGUqc3J0" title="">
+                    <i class="fas fa-closed-captioning"></i> زیرنویس قسمت 1
+                </a>
+                <!-- ادامه لینک‌های دانلود برای قسمت‌های دیگر -->
             </div>
-            <div class="text-center my-1">
-                <a class="display-inline-block px-3 py-1 br-5px bg1" href="https://nairobi.saymyname.website/Series/S/Squid%20Game/S01/720p%20WEBRip%202CH%20x265%2010bit%20PSA/Squid%20Game%20S01E02%20DUAL%20AUDIO%20KOR%20ENG%20720p%2010bit%20WEBRip%202CH%20x265%20HEVC%20PSA.mkv" title="">دانلود قسمت 2</a> | 
-                <a class="display-inline-block px-3 py-1 br-5px bg1" href="https://subtitle.saymyname.website/DL/?select=aHR0cHM6Ly9zdWJ0aXRsZS5ta3NlcnZlcnMuaXIvQWxtYXNFZGl0aW9uL1Nlcmllcy9TL1NxdWlkJTIwR2FtZS9GYXJzaS9GYXJzaS5TMDEuU3F1aWQuR2FtZS9XRUItREwlMjAlMjYlMjBXRUJSaXAvU3F1aWQlMjBHYW1lJTIwLSUyMFdFQiUyMC0lMjBTMDFFMDIuc3J0KlNxdWlkJTIwR2FtZSUyMFMwMUUwMiUyMERVQUwlMjBBVURJTyUyMEtPUiUyMEVORyUyMDcyMHAlMjAxMGJpdCUyMFdFQlJpcCUyMDJDSCUyMHgyNjUlMjBIRVZDJTIwUFNBKnNydA==" title="">دانلود زیرنویس قسمت 2</a>
-            </div>
-            <!-- ادامه لینک‌های دانلود برای قسمت‌های دیگر -->
         </div>
 
         <div class="trailer">
