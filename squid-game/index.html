@@ -142,6 +142,7 @@
             display: flex;
             justify-content: center;
             gap: 15px;
+            flex-wrap: wrap;
         }
 
         .player-link {
@@ -254,6 +255,17 @@
                         <p>مدت زمان: 50 دقیقه</p>
                         <a href="${episode.video_link}" target="_blank">دانلود فیلم</a>
                         <a href="${episode.subtitle_link}" target="_blank">دانلود زیرنویس</a>
+                        <div class="player-links">
+                            <a href="potplayer://${episode.video_link}" class="player-link" target="_blank">
+                                <i class="fas fa-play"></i> پخش در PotPlayer
+                            </a>
+                            <a href="vlc://${episode.video_link}" class="player-link" target="_blank">
+                                <i class="fas fa-play"></i> پخش در VLC
+                            </a>
+                            <a href="mxplay://${episode.video_link}" class="player-link" target="_blank">
+                                <i class="fas fa-play"></i> پخش در MX Player
+                            </a>
+                        </div>
                         <div class="episode-player">
                             <video controls>
                                 <source src="${episode.video_link}" type="video/mp4">
