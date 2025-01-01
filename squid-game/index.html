@@ -34,7 +34,6 @@
             margin-top: 30px;
         }
 
-        /* استایل‌های سفارشی برای باکس دانلود */
         .download-box {
             background-color: #222;
             border-radius: 15px;
@@ -86,7 +85,6 @@
             font-size: 1.2rem;
         }
 
-        /* فوتر */
         footer {
             background-color: #222;
             padding: 20px;
@@ -119,7 +117,6 @@
             }
         }
 
-        /* ریسپانسیو */
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
@@ -165,6 +162,30 @@
                 font-size: 0.8rem;
             }
         }
+
+        .episode-links {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .download-link {
+            background-color: #d32739;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-link:hover {
+            background-color: #fff;
+            color: #d32739;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -198,14 +219,8 @@
         <div class="download-box">
             <h3>دانلود فصل اول</h3>
             <div class="quality-title">720p WEBRip 2CH x265 10bit PSA</div>
-            <div class="download-links">
-                <a href="https://nairobi.saymyname.website/Series/S/Squid%20Game/S01/720p%20WEBRip%202CH%20x265%2010bit%20PSA/Squid%20Game%20S01E01%20DUAL%20AUDIO%20KOR%20ENG%20720p%2010bit%20WEBRip%202CH%20x265%20HEVC%20PSA.mkv" title="">
-                    <i class="fas fa-download"></i> دانلود قسمت 1
-                </a>
-                <a href="https://subtitle.saymyname.website/DL/?select=aHR0cHM6Ly9zdWJ0aXRsZS5ta3NlcnZlcnMuaXIvQWxtYXNFZGl0aW9uL1Nlcmllcy9TL1NxdWlkJTIwR2FtZS9GYXJzaS9GYXJzaS5TMDEuU3F1aWQuR2FtZS9XRUItREwlMjAlMjYlMjBXRUJSaXAvU3F1aWQlMjBHYW1lJTIwLSUyMFdFQiUyMC0lMjBTMDFFMDEuc3J0KlNxdWlkJTIwR2FtZSUyMFMwMUUwMSUyMERVQUwlMjBBVURJTyUyMEtPUiUyMEVORyUyMDcyMHAlMjAxMGJpdCUyMFdFQlJpcCUyMDJDSCUyMHgyNjUlMjBIRVZDJTIwUFNBKnNydA==" title="">
-                    <i class="fas fa-closed-captioning"></i> زیرنویس قسمت 1
-                </a>
-                <!-- ادامه لینک‌های دانلود برای قسمت‌های دیگر -->
+            <div class="download-links" id="season1-links">
+                <!-- لینک‌ها به صورت دینامیک اضافه می‌شوند -->
             </div>
         </div>
 
@@ -213,14 +228,8 @@
         <div class="download-box">
             <h3>دانلود فصل دوم</h3>
             <div class="quality-title">720p WEBRip 2CH x264 PaHe / 450MB</div>
-            <div class="download-links">
-                <a href="https://rio.ggusers.com/Series/S/Squid%20Game/S01/720p%20WEBRip%202CH%20x264%20PaHe/Squid.Game.S02E01.720p.WEB-DL.Pahe.mkv" title="">
-                    <i class="fas fa-download"></i> دانلود قسمت 1
-                </a>
-                <a href="https://subtitle.saymyname.website/DL/?select=aHR0cHM6Ly9zdWJ0aXRsZS5ta3NlcnZlcnMuaXIvQWxtYXNFZGl0aW9uL1Nlcmllcy9TL1NxdWlkJTIwR2FtZS9GYXJzaS9GYXJzaS5TMDIuU3F1aWQuR2FtZS9XRUItREwlMjAlMjYlMjBXRUJSaXAvU3F1aWQlMjBHYW1lJTIwLSUyMFdFQiUyMC0lMjBTMDJFMDEuc3J0KlNxdWlkLkdhbWUuUzAyRTAxLjcyMHAuV0VCLURMLlBhaGUqc3J0" title="">
-                    <i class="fas fa-closed-captioning"></i> زیرنویس قسمت 1
-                </a>
-                <!-- ادامه لینک‌های دانلود برای قسمت‌های دیگر -->
+            <div class="download-links" id="season2-links">
+                <!-- لینک‌ها به صورت دینامیک اضافه می‌شوند -->
             </div>
         </div>
 
@@ -238,5 +247,40 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // تابع برای ایجاد لینک‌های دانلود
+        function createDownloadLinks(season, episodes, containerId) {
+            const container = document.getElementById(containerId);
+            episodes.forEach(episode => {
+                const episodeDiv = document.createElement('div');
+                episodeDiv.className = 'episode-links';
+
+                const videoLink = document.createElement('a');
+                videoLink.href = episode.video_link;
+                videoLink.innerHTML = `<i class="fas fa-download"></i> دانلود قسمت ${episode.episode}`;
+                videoLink.className = 'download-link';
+
+                const subtitleLink = document.createElement('a');
+                subtitleLink.href = episode.subtitle_link;
+                subtitleLink.innerHTML = `<i class="fas fa-closed-captioning"></i> زیرنویس قسمت ${episode.episode}`;
+                subtitleLink.className = 'download-link';
+
+                episodeDiv.appendChild(videoLink);
+                episodeDiv.appendChild(subtitleLink);
+                container.appendChild(episodeDiv);
+            });
+        }
+
+        // خواندن فایل JSON و ایجاد لینک‌ها
+        fetch('link.json')
+            .then(response => response.json())
+            .then(data => {
+                data.seasons.forEach(season => {
+                    const containerId = season.season === 1 ? 'season1-links' : 'season2-links';
+                    createDownloadLinks(season.season, season.episodes, containerId);
+                });
+            })
+            .catch(error => console.error('خطا در خواندن فایل JSON:', error));
+    </script>
 </body>
 </html>
