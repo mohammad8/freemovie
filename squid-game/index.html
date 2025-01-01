@@ -161,6 +161,19 @@
             color: #d32739;
             transform: scale(1.05);
         }
+
+        .episode-player {
+            margin-top: 20px;
+        }
+
+        .episode-player video {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            background-color: #000;
+        }
     </style>
 </head>
 <body>
@@ -168,7 +181,7 @@
 
     <div class="header">
         <h1>بازی مرکب (Squid Game)</h1>
-        <p>دانلود قسمت‌های مختلف با کیفیت‌های متفاوت</p>
+        <p>دانلود و پخش قسمت‌های مختلف با کیفیت‌های متفاوت</p>
     </div>
 
     <div class="container">
@@ -190,37 +203,21 @@
             </div>
         </div>
 
-        <!-- باکس دانلود فصل اول -->
+        <!-- باکس دانلود و پخش فصل اول -->
         <div class="download-box">
-            <h3>دانلود فصل اول</h3>
+            <h3>فصل اول</h3>
             <div class="quality-title">720p WEBRip 2CH x265 10bit PSA</div>
             <div id="season1-links" class="row">
-                <!-- لینک‌ها به صورت دینامیک اضافه می‌شوند -->
+                <!-- لینک‌ها و پلیرها به صورت دینامیک اضافه می‌شوند -->
             </div>
         </div>
 
-        <!-- باکس دانلود فصل دوم -->
+        <!-- باکس دانلود و پخش فصل دوم -->
         <div class="download-box">
-            <h3>دانلود فصل دوم</h3>
+            <h3>فصل دوم</h3>
             <div class="quality-title">720p WEBRip 2CH x264 PaHe / 450MB</div>
             <div id="season2-links" class="row">
-                <!-- لینک‌ها به صورت دینامیک اضافه می‌شوند -->
-            </div>
-        </div>
-
-        <!-- بخش پخش آنلاین -->
-        <div class="online-play">
-            <h3>پخش آنلاین</h3>
-            <div class="player-links">
-                <a href="vlc://https://nairobi.saymyname.website/Series/S/Squid%20Game/S01/720p%20WEBRip%202CH%20x265%2010bit%20PSA/Squid%20Game%20S01E01%20DUAL%20AUDIO%20KOR%20ENG%20720p%2010bit%20WEBRip%202CH%20x265%20HEVC%20PSA.mkv --sub-file=https://subtitle.saymyname.website/DL/?select=aHR0cHM6Ly9zdWJ0aXRsZS5ta3NlcnZlcnMuaXIvQWxtYXNFZGl0aW9uL1Nlcmllcy9TL1NxdWlkJTIwR2FtZS9GYXJzaS9GYXJzaS5TMDEuU3F1aWQuR2FtZS9XRUItREwlMjAlMjYlMjBXRUJSaXAvU3F1aWQlMjBHYW1lJTIwLSUyMFdFQiUyMC0lMjBTMDFFMDEuc3J0KlNxdWlkJTIwR2FtZSUyMFMwMUUwMSUyMERVQUwlMjBBVURJTyUyMEtPUiUyMEVORyUyMDcyMHAlMjAxMGJpdCUyMFdFQlJpcCUyMDJDSCUyMHgyNjUlMjBIRVZDJTIwUFNBKnNydA==" class="player-link">
-                    <i class="fas fa-play"></i> پخش در VLC Player
-                </a>
-                <a href="potplayer://https://nairobi.saymyname.website/Series/S/Squid%20Game/S01/720p%20WEBRip%202CH%20x265%2010bit%20PSA/Squid%20Game%20S01E01%20DUAL%20AUDIO%20KOR%20ENG%20720p%2010bit%20WEBRip%202CH%20x265%20HEVC%20PSA.mkv?sub=https://subtitle.saymyname.website/DL/?select=aHR0cHM6Ly9zdWJ0aXRsZS5ta3NlcnZlcnMuaXIvQWxtYXNFZGl0aW9uL1Nlcmllcy9TL1NxdWlkJTIwR2FtZS9GYXJzaS9GYXJzaS5TMDEuU3F1aWQuR2FtZS9XRUItREwlMjAlMjYlMjBXRUJSaXAvU3F1aWQlMjBHYW1lJTIwLSUyMFdFQiUyMC0lMjBTMDFFMDEuc3J0KlNxdWlkJTIwR2FtZSUyMFMwMUUwMSUyMERVQUwlMjBBVURJTyUyMEtPUiUyMEVORyUyMDcyMHAlMjAxMGJpdCUyMFdFQlJpcCUyMDJDSCUyMHgyNjUlMjBIRVZDJTIwUFNBKnNydA==" class="player-link">
-                    <i class="fas fa-play"></i> پخش در PotPlayer
-                </a>
-                <a href="intent://nairobi.saymyname.website/Series/S/Squid%20Game/S01/720p%20WEBRip%202CH%20x265%2010bit%20PSA/Squid%20Game%20S01E01%20DUAL%20AUDIO%20KOR%20ENG%20720p%2010bit%20WEBRip%202CH%20x265%20HEVC%20PSA.mkv#Intent;package=com.mxtech.videoplayer.ad;scheme=https;end" class="player-link">
-                    <i class="fas fa-play"></i> پخش در MX Player
-                </a>
+                <!-- لینک‌ها و پلیرها به صورت دینامیک اضافه می‌شوند -->
             </div>
         </div>
 
@@ -240,7 +237,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // تابع برای ایجاد کارت‌های دانلود
+        // تابع برای ایجاد کارت‌های دانلود و پلیرها
         function createDownloadCards(season, episodes, containerId) {
             const container = document.getElementById(containerId);
             if (!container) {
@@ -257,6 +254,12 @@
                         <p>مدت زمان: 50 دقیقه</p>
                         <a href="${episode.video_link}" target="_blank">دانلود فیلم</a>
                         <a href="${episode.subtitle_link}" target="_blank">دانلود زیرنویس</a>
+                        <div class="episode-player">
+                            <video controls>
+                                <source src="${episode.video_link}" type="video/mp4">
+                                مرورگر شما از این فرمت پشتیبانی نمی‌کند.
+                            </video>
+                        </div>
                     </div>
                 `;
                 card.innerHTML = cardContent;
