@@ -101,6 +101,38 @@ async function generateDownloadLinks(imdbID, year, type) {
   return "";
 }
 
+// تابع برای دریافت پیشنهادات از OMDB API
+async function fetchSuggestions(query) {
+  try {
+    const apiKey = tokens[currentTokenIndex];
+    const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${encodeURIComponent(query)}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.Response === "True") {
+      return data.Search.map(movie => movie.Title);
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("خطا در دریافت پیشنهادات:", error);
+    return [];
+  }
+}
+
+// فعال کردن Typeahead برای فیلد جستجو
+$(document).ready(function() {
+  $('#title').typeahead({
+    source: async function(query, process) {
+      const suggestions = await fetchSuggestions(query);
+      process(suggestions);
+    },
+    minLength: 2, // حداقل تعداد کاراکترها برای شروع پیشنهادات
+    delay: 300 // تاخیر قبل از شروع جستجو
+  });
+});
+
 // Fetch movie data from OMDB API
 fetch("tokens.json")
   .then((response) => response.json())
