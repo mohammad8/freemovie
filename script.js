@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (savedTheme === "dark") {
     document.body.classList.add("dark-mode");
     themeToggle.textContent = "حالت روشن";
+  } else {
+    themeToggle.textContent = "حالت تاریک";
   }
 });
 
@@ -41,7 +43,7 @@ fetch("tokens.json")
             const imdbID = movie.imdbID.replace("tt", "");
 
             moviesHtml += `
-              <div class="col-6 col-md-4 col-lg-2 mb-4">
+              <div class="col-6 col-md-4 col-lg-3 mb-4">
                 <div class="card">
                   <img src="${poster}" class="card-img-top" alt="${movie.Title}">
                   <div class="card-body">
@@ -76,6 +78,7 @@ fetch("tokens.json")
     document.getElementById("results").innerHTML = '<div class="alert alert-danger">خطا در بارگذاری فایل توکن‌ها</div>';
   });
 
+// Function for generating movie download links
 function generateDownloadLinks(imdbID, year, type) {
   if (type === "movie") {
     const originalDownloadLink = `https://berlin.saymyname.website/Movies/${year}/${imdbID}`;
@@ -91,6 +94,7 @@ function generateDownloadLinks(imdbID, year, type) {
   return "";
 }
 
+// Function for generating series download links
 function generateSeriesDownloadLinks(imdbID) {
   let seasonsHtml = '<div class="accordion" id="seasonsAccordion">';
   for (let i = 1; i <= 4; i++) {
@@ -113,6 +117,7 @@ function generateSeriesDownloadLinks(imdbID) {
   return seasonsHtml;
 }
 
+// Function for generating quality download links for series
 function generateQualityLinks(imdbID, season) {
   let qualityLinks = "";
   for (let quality = 1; quality <= 4; quality++) {
