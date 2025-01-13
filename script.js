@@ -19,6 +19,88 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// کلید API خود را از TMDB دریافت کنید
+const TMDB_API_KEY = "1dc4cbf81f0accf4fa108820d551dafc"; // کلید API TMDb شما
+
+// تابع برای دریافت تعداد فصل‌های هر سریال از TMDB API
+async function getSeriesSeasons(imdbID) {
+  try {
+    // ابتدا IMDB ID را به TMDB ID تبدیل کنید
+    const findUrl = `https://api.themoviedb.org/3/find/tt${imdbID}?api_key=${TMDB_API_KEY}&external_source=imdb_id`;
+    const findResponse = await fetch(findUrl);
+    const findData = await findResponse.json();
+
+    // اگر سریال پیدا شد، TMDB ID را دریافت کنید
+    if (findData.tv_results.length > 0) {
+      const tmdbID = findData.tv_results[0].id;
+
+      // اطلاعات سریال را از TMDB دریافت کنید
+      const seriesUrl = `https://api.themoviedb.org/3/tv/${tmdbID}?api_key=${TMDB_API_KEY}`;
+      const seriesResponse = await fetch(seriesUrl);
+      const seriesData = await seriesResponse.json();
+
+      // تعداد فصل‌ها را برگردانید
+      return seriesData.number_of_seasons;
+    } else {
+      console.error("سریال پیدا نشد.");
+      return 4; // پیش‌فرض 4 فصل اگر سریال پیدا نشد
+    }
+  } catch (error) {
+    console.error("خطا در دریافت اطلاعات از TMDB:", error);
+    return 4; // پیش‌فرض 4 فصل در صورت خطا
+  }
+}
+
+// تابع برای تولید لینک‌های دانلود سریال
+async function generateSeriesDownloadLinks(imdbID) {
+  const totalSeasons = await getSeriesSeasons(imdbID); // تعداد فصل‌ها را دریافت کنید
+  let seasonsHtml = `<div class="accordion" id="seasonsAccordion-${imdbID}">`;
+  for (let i = 1; i <= totalSeasons; i++) {
+    seasonsHtml += `
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading-${imdbID}-${i}">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${imdbID}-${i}" aria-expanded="true" aria-controls="collapse-${imdbID}-${i}">
+            فصل ${i}
+          </button>
+        </h2>
+        <div id="collapse-${imdbID}-${i}" class="accordion-collapse collapse" aria-labelledby="heading-${imdbID}-${i}" data-bs-parent="#seasonsAccordion-${imdbID}">
+          <div class="accordion-body">
+            ${generateQualityLinks(imdbID, i)}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  seasonsHtml += "</div>";
+  return seasonsHtml;
+}
+
+// تابع برای تولید لینک‌های دانلود با کیفیت‌های مختلف
+function generateQualityLinks(imdbID, season) {
+  let qualityLinks = "";
+  for (let quality = 1; quality <= 4; quality++) {
+    const downloadLink = `https://subtitle.saymyname.website/DL/filmgir/?i=tt${imdbID}&f=${season}&q=${quality}`;
+    qualityLinks += `<a href="${downloadLink}" class="btn btn-success mb-2">دانلود فصل ${season} با کیفیت ${quality}</a><br>`;
+  }
+  return qualityLinks;
+}
+
+// تابع برای تولید لینک‌های دانلود
+async function generateDownloadLinks(imdbID, year, type) {
+  if (type === "movie") {
+    const originalDownloadLink = `https://berlin.saymyname.website/Movies/${year}/${imdbID}`;
+    const backupDownloadLink = `https://tokyo.saymyname.website/Movies/${year}/${imdbID}`;
+
+    return `
+      <a href="${originalDownloadLink}" class="btn btn-primary mb-2">دانلود فیلم (لینک اصلی)</a><br>
+      <a href="${backupDownloadLink}" class="btn btn-secondary mb-2">دانلود فیلم (لینک جایگزین)</a><br>
+    `;
+  } else if (type === "series") {
+    return await generateSeriesDownloadLinks(imdbID); // منتظر تولید لینک‌های سریال باشید
+  }
+  return "";
+}
+
 // Fetch movie data from OMDB API
 fetch("tokens.json")
   .then((response) => response.json())
@@ -38,7 +120,7 @@ fetch("tokens.json")
 
         if (data.Response === "True") {
           let moviesHtml = '<div class="row">';
-          data.Search.forEach((movie) => {
+          for (const movie of data.Search) {
             const poster = movie.Poster !== "N/A" ? movie.Poster : "default.jpg";
             const imdbID = movie.imdbID.replace("tt", "");
 
@@ -49,12 +131,12 @@ fetch("tokens.json")
                   <div class="card-body">
                     <h5 class="card-title">${movie.Title}</h5>
                     <p class="card-text">سال: ${movie.Year}</p>
-                    ${generateDownloadLinks(imdbID, movie.Year, movie.Type)}
+                    ${await generateDownloadLinks(imdbID, movie.Year, movie.Type)}
                   </div>
                 </div>
               </div>
             `;
-          });
+          }
           moviesHtml += "</div>";
           resultsContainer.innerHTML = moviesHtml;
           resultsContainer.scrollIntoView({ behavior: "smooth" });
@@ -77,52 +159,3 @@ fetch("tokens.json")
     console.error("خطا در بارگذاری فایل توکن‌ها:", error);
     document.getElementById("results").innerHTML = '<div class="alert alert-danger">خطا در بارگذاری فایل توکن‌ها</div>';
   });
-
-// Function for generating movie download links
-function generateDownloadLinks(imdbID, year, type) {
-  if (type === "movie") {
-    const originalDownloadLink = `https://berlin.saymyname.website/Movies/${year}/${imdbID}`;
-    const backupDownloadLink = `https://tokyo.saymyname.website/Movies/${year}/${imdbID}`;
-
-    return `
-      <a href="${originalDownloadLink}" class="btn btn-primary mb-2">دانلود فیلم (لینک اصلی)</a><br>
-      <a href="${backupDownloadLink}" class="btn btn-secondary mb-2">دانلود فیلم (لینک جایگزین)</a><br>
-    `;
-  } else if (type === "series") {
-    return generateSeriesDownloadLinks(imdbID);
-  }
-  return "";
-}
-
-// Function for generating series download links
-function generateSeriesDownloadLinks(imdbID) {
-  let seasonsHtml = `<div class="accordion" id="seasonsAccordion-${imdbID}">`;
-  for (let i = 1; i <= 4; i++) {
-    seasonsHtml += `
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="heading-${imdbID}-${i}">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${imdbID}-${i}" aria-expanded="true" aria-controls="collapse-${imdbID}-${i}">
-            فصل ${i}
-          </button>
-        </h2>
-        <div id="collapse-${imdbID}-${i}" class="accordion-collapse collapse" aria-labelledby="heading-${imdbID}-${i}" data-bs-parent="#seasonsAccordion-${imdbID}">
-          <div class="accordion-body">
-            ${generateQualityLinks(imdbID, i)}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-  seasonsHtml += "</div>";
-  return seasonsHtml;
-}
-
-// Function for generating quality download links for series
-function generateQualityLinks(imdbID, season) {
-  let qualityLinks = "";
-  for (let quality = 1; quality <= 4; quality++) {
-    const downloadLink = `https://subtitle.saymyname.website/DL/filmgir/?i=tt${imdbID}&f=${season}&q=${quality}`;
-    qualityLinks += `<a href="${downloadLink}" class="btn btn-success mb-2">دانلود فصل ${season} با کیفیت ${quality}</a><br>`;
-  }
-  return qualityLinks;
-}
