@@ -47,6 +47,16 @@ async function getSeriesSeasons(tmdbID, apiKey) {
 
 // تابع برای تولید لینک‌های دانلود سریال
 async function generateSeriesDownloadLinks(tmdbID, apiKey) {
+  const mediaDetails = await getMediaDetails(tmdbID, apiKey, "tv");
+  const imdbID = mediaDetails.imdb_id;
+
+  if (!imdbID) {
+    return '<div class="alert alert-warning">ID IMDb یافت نشد.</div>';
+  }
+
+  // حذف پیشوند `tt` از imdb_id اگر وجود دارد
+  const cleanImdbID = imdbID.replace(/^tt/, "");
+
   const totalSeasons = await getSeriesSeasons(tmdbID, apiKey); // تعداد فصل‌ها را دریافت کنید
   let seasonsHtml = `<div class="accordion" id="seasonsAccordion-${tmdbID}">`;
   for (let i = 1; i <= totalSeasons; i++) {
@@ -59,7 +69,7 @@ async function generateSeriesDownloadLinks(tmdbID, apiKey) {
         </h2>
         <div id="collapse-${tmdbID}-${i}" class="accordion-collapse collapse" aria-labelledby="heading-${tmdbID}-${i}" data-bs-parent="#seasonsAccordion-${tmdbID}">
           <div class="accordion-body">
-            ${generateQualityLinks(tmdbID, i)}
+            ${generateQualityLinks(cleanImdbID, i)}
           </div>
         </div>
       </div>
@@ -70,10 +80,10 @@ async function generateSeriesDownloadLinks(tmdbID, apiKey) {
 }
 
 // تابع برای تولید لینک‌های دانلود با کیفیت‌های مختلف
-function generateQualityLinks(tmdbID, season) {
+function generateQualityLinks(imdbID, season) {
   let qualityLinks = "";
   for (let quality = 1; quality <= 4; quality++) {
-    const downloadLink = `https://subtitle.saymyname.website/DL/filmgir/?i=${tmdbID}&f=${season}&q=${quality}`;
+    const downloadLink = `https://subtitle.saymyname.website/DL/filmgir/?i=${imdbID}&f=${season}&q=${quality}`;
     qualityLinks += `<a href="${downloadLink}" class="btn btn-success mb-2">دانلود فصل ${season} با کیفیت ${quality}</a><br>`;
   }
   return qualityLinks;
@@ -88,9 +98,12 @@ async function generateDownloadLinks(tmdbID, year, type, apiKey) {
     return '<div class="alert alert-warning">ID IMDb یافت نشد.</div>';
   }
 
+  // حذف پیشوند `tt` از imdb_id اگر وجود دارد
+  const cleanImdbID = imdbID.replace(/^tt/, "");
+
   if (type === "movie") {
-    const originalDownloadLink = `https://berlin.saymyname.website/Movies/${year}/${imdbID}`;
-    const backupDownloadLink = `https://tokyo.saymyname.website/Movies/${year}/${imdbID}`;
+    const originalDownloadLink = `https://berlin.saymyname.website/Movies/${year}/${cleanImdbID}`;
+    const backupDownloadLink = `https://tokyo.saymyname.website/Movies/${year}/${cleanImdbID}`;
 
     return `
       <a href="${originalDownloadLink}" class="btn btn-primary mb-2">دانلود فیلم (لینک اصلی)</a><br>
