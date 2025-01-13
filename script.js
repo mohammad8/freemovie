@@ -109,7 +109,7 @@ async function generateDownloadLinks(tmdbID, year, type, apiKey) {
       <a href="${originalDownloadLink}" class="btn btn-primary mb-2">دانلود فیلم (لینک اصلی)</a><br>
       <a href="${backupDownloadLink}" class="btn btn-secondary mb-2">دانلود فیلم (لینک جایگزین)</a><br>
     `;
-  } else if (type === "series") {
+  } else if (type === "tv") {
     return await generateSeriesDownloadLinks(tmdbID, apiKey); // منتظر تولید لینک‌های سریال باشید
   }
   return "";
