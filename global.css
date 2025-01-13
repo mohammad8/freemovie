@@ -8,6 +8,7 @@ html, body {
   text-align: right;
   background-color: #ffffff;
   color: #000000;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 body.dark-mode {
@@ -29,6 +30,46 @@ body.dark-mode input:focus {
   background: #444444;
   border-color: #888888;
   color: #ffffff;
+}
+
+body.dark-mode .card {
+  background-color: #333333;
+  color: #e0e0e0;
+}
+
+body.dark-mode .card .card-title {
+  color: #ffffff;
+}
+
+body.dark-mode .card .card-body {
+  background-color: #444444;
+}
+
+body.dark-mode footer {
+  background-color: #333333;
+  color: #ffffff;
+  border-top: 1px solid #555555;
+}
+
+body.dark-mode .alert {
+  background-color: #444444;
+  color: #ffffff;
+  border-color: #555555;
+}
+
+body.dark-mode .btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+body.dark-mode .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+body.dark-mode .btn-success {
+  background-color: #198754;
+  border-color: #198754;
 }
 
 .card {
@@ -79,19 +120,6 @@ body.dark-mode input:focus {
   font-size: 0.875rem;
 }
 
-body.dark-mode .card {
-  background-color: #333333;
-  color: #e0e0e0;
-}
-
-body.dark-mode .card .card-title {
-  color: #ffffff;
-}
-
-body.dark-mode .card .card-body {
-  background-color: #444444;
-}
-
 footer {
   background-color: #f8f9fa;
   color: #6c757d;
@@ -99,6 +127,7 @@ footer {
   text-align: center;
   border-top: 1px solid #ddd;
   margin-top: auto;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 footer.dark-mode {
