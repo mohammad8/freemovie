@@ -1,10 +1,8 @@
-html,
-body {
+html, body {
   height: 100%;
   margin: 0;
   display: flex;
-  overflow-x: hidden;
-  flex-direction: column; /* همه محتوا در یک ستون */
+  flex-direction: column;
   font-family: "Vazir", sans-serif;
   direction: rtl;
   text-align: right;
@@ -71,13 +69,8 @@ footer.dark-mode {
   font-size: 1rem;
 }
 
-.footer-dark .social-icons a.dark-mode {
-  color: #ffffff;
-}
-
-/* فضای موجود را برای .container به درستی تنظیم کنیم */
 .container {
-  flex: 1; /* فضای باقی‌مانده صفحه */
+  flex: 1;
   padding: 20px;
 }
 
@@ -95,7 +88,6 @@ footer.dark-mode {
   }
 }
 
-/* استایل برای لوگو */
 .logo-container {
   display: flex;
   align-items: center;
@@ -104,7 +96,7 @@ footer.dark-mode {
 }
 
 .logo-container img {
-  height: 50px; /* ارتفاع لوگو */
+  height: 50px;
   margin-left: 10px;
 }
 

@@ -1,162 +1,69 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>فیری مووی - دانلود فیلم و سریال رایگان</title>
     <!-- Google Tag Manager -->
     <script>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
-        j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-5LFXCX69");
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-5LFXCX69');
     </script>
     <!-- End Google Tag Manager -->
-
-    <link
-      href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@latest/dist/font-face.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link rel="stylesheet" href="global.css" />
-  </head>
-  <body>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@latest/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="global.css">
+</head>
+<body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript>
-      <iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-5LFXCX69"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe>
-    </noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5LFXCX69" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
     <div class="container mt-5">
-      <!-- لوگو و عنوان -->
-      <div class="logo-container text-center mb-4">
-        <img src="logo.png" alt="لوگو" class="img-fluid" />
-      </div>
-
-      <!-- اطلاع‌رسانی لینک کوتاه‌شده -->
-      <div class="alert alert-info text-center my-4" role="alert">
-        <strong>لینک راحت سایت:</strong>
-        <a href="https://b2n.ir/FreeMovie" class="alert-link" target="_blank">b2n.ir/FreeMovie</a>
-        <br />
-        با این لینک، راحت می‌تونید بیاید تو سایت ما!
-      </div>
-
-      <p class="text-center mb-4">فیلترشکن روشنه؟ خاموشش کن داداش!</p>
-      <p class="text-center mb-4">
-        واسه دانلود جدیدترین فیلما
-        <a
-          href="https://B2n.ir/freemovie-newmovie"
-          target="_blank"
-          class="alert-link"
-        >
-          اینجا بزن
-        </a>
-        .
-      </p>
-
-      <form id="searchForm" class="row g-3">
-        <div class="col-12">
-          <input
-            type="text"
-            class="form-control"
-            id="title"
-            name="title"
-            placeholder="اسم فیلمو انگلیسی وارد کن"
-            required
-          />
+        <div class="logo-container text-center mb-4">
+            <img src="logo.png" alt="لوگو" class="img-fluid">
         </div>
 
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary w-100">بگرد</button>
+        <div class="alert alert-info text-center my-4" role="alert">
+            <strong>لینک راحت سایت:</strong>
+            <a href="https://b2n.ir/FreeMovie" class="alert-link" target="_blank">b2n.ir/FreeMovie</a>
+            <br>با این لینک، راحت می‌تونید بیاید تو سایت ما!
         </div>
-      </form>
 
-      <div id="results" class="mt-5"></div>
+        <p class="text-center mb-4">فیلترشکن روشنه؟ خاموشش کن داداش!</p>
+        <p class="text-center mb-4">
+            واسه دانلود جدیدترین فیلما
+            <a href="https://B2n.ir/freemovie-newmovie" target="_blank" class="alert-link">اینجا بزن</a>.
+        </p>
+
+        <form id="searchForm" class="row g-3">
+            <div class="col-12">
+                <input type="text" class="form-control" id="title" name="title" placeholder="اسم فیلمو انگلیسی وارد کن" required>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary w-100">بگرد</button>
+            </div>
+        </form>
+
+        <div id="results" class="mt-5"></div>
     </div>
 
     <footer>
-      <div class="container">
-        <p>
-          فیری مووی - ساخته شده با 🤍 توسط ریک سانچز | استفاده از
-          <a href="https://github.com/rastikerdar/vazir-font">فونت وزیر</a>
-          به یاد صابر راستی کردار.
-        </p>
-
-        <p>
-          تو این سایت از
-          <a href="https://www.omdbapi.com/" target="_blank">وب سرویس OMDB</a>
-          واسه جستجو و اطلاعات فیلم‌ها و از
-          <a href="https://almasmovie.website/" target="_blank">الماس مووی</a>
-          واسه دانلود استفاده می‌کنیم.
-        </p>
-
-        <div class="social-icons">
-          <a href="https://github.com/m4tinbeigi-official" role="button">
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="https://twitter.com/m4tinbeigi" role="button">
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a href="https://linkedin.com/in/matinbeigi" role="button">
-            <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="https://instagram.com/m4tinbeigi" role="button">
-            <i class="fab fa-instagram"></i>
-          </a>
+        <div class="container">
+            <p>فیری مووی - ساخته شده با 🤍 توسط ریک سانچز | استفاده از <a href="https://github.com/rastikerdar/vazir-font">فونت وزیر</a> به یاد صابر راستی کردار.</p>
+            <p>تو این سایت از <a href="https://www.omdbapi.com/" target="_blank">وب سرویس OMDB</a> واسه جستجو و اطلاعات فیلم‌ها و از <a href="https://almasmovie.website/" target="_blank">الماس مووی</a> واسه دانلود استفاده می‌کنیم.</p>
+            <div class="social-icons">
+                <a href="https://github.com/m4tinbeigi-official" role="button"><i class="fab fa-github"></i></a>
+                <a href="https://twitter.com/m4tinbeigi" role="button"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com/in/matinbeigi" role="button"><i class="fab fa-linkedin"></i></a>
+                <a href="https://instagram.com/m4tinbeigi" role="button"><i class="fab fa-instagram"></i></a>
+            </div>
         </div>
-      </div>
     </footer>
 
-    <button
-      id="theme-toggle"
-      class="btn btn-secondary position-fixed top-0 end-0 m-3"
-    >
-      حالت تاریک
-    </button>
+    <button id="theme-toggle" class="btn btn-secondary position-fixed top-0 end-0 m-3">حالت تاریک</button>
 
-    <script>
-      // Load the theme from local storage or use default (light mode)
-      (function () {
-        const savedTheme = localStorage.getItem("theme");
-        const body = document.body;
-        const themeToggleBtn = document.getElementById("theme-toggle");
-
-        if (savedTheme === "dark") {
-          body.classList.add("dark-mode");
-          themeToggleBtn.textContent = "حالت روشن";
-        } else {
-          body.classList.remove("dark-mode");
-          themeToggleBtn.textContent = "حالت تاریک";
-        }
-
-        themeToggleBtn.addEventListener("click", () => {
-          body.classList.toggle("dark-mode");
-          const isDarkMode = body.classList.contains("dark-mode");
-          localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-          themeToggleBtn.textContent = isDarkMode ? "حالت روشن" : "حالت تاریک";
-        });
-      })();
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
