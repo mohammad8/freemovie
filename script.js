@@ -19,15 +19,25 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// تابع برای دریافت اطلاعات کامل فیلم یا سریال از TMDB API
+async function getMediaDetails(tmdbID, apiKey, type) {
+  try {
+    const mediaUrl = `https://api.themoviedb.org/3/${type}/${tmdbID}?api_key=${apiKey}`;
+    const response = await fetch(mediaUrl);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("خطا در دریافت اطلاعات از TMDB:", error);
+    return null;
+  }
+}
+
 // تابع برای دریافت تعداد فصل‌های هر سریال از TMDB API
 async function getSeriesSeasons(tmdbID, apiKey) {
   try {
-    // اطلاعات سریال را از TMDB دریافت کنید
     const seriesUrl = `https://api.themoviedb.org/3/tv/${tmdbID}?api_key=${apiKey}`;
     const seriesResponse = await fetch(seriesUrl);
     const seriesData = await seriesResponse.json();
-
-    // تعداد فصل‌ها را برگردانید
     return seriesData.number_of_seasons;
   } catch (error) {
     console.error("خطا در دریافت اطلاعات از TMDB:", error);
@@ -71,9 +81,16 @@ function generateQualityLinks(tmdbID, season) {
 
 // تابع برای تولید لینک‌های دانلود
 async function generateDownloadLinks(tmdbID, year, type, apiKey) {
+  const mediaDetails = await getMediaDetails(tmdbID, apiKey, type);
+  const imdbID = mediaDetails.imdb_id;
+
+  if (!imdbID) {
+    return '<div class="alert alert-warning">ID IMDb یافت نشد.</div>';
+  }
+
   if (type === "movie") {
-    const originalDownloadLink = `https://berlin.saymyname.website/Movies/${year}/${tmdbID}`;
-    const backupDownloadLink = `https://tokyo.saymyname.website/Movies/${year}/${tmdbID}`;
+    const originalDownloadLink = `https://berlin.saymyname.website/Movies/${year}/${imdbID}`;
+    const backupDownloadLink = `https://tokyo.saymyname.website/Movies/${year}/${imdbID}`;
 
     return `
       <a href="${originalDownloadLink}" class="btn btn-primary mb-2">دانلود فیلم (لینک اصلی)</a><br>
