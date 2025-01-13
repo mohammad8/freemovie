@@ -51,7 +51,7 @@ async function generateSeriesDownloadLinks(tmdbID, apiKey) {
   const imdbID = mediaDetails.imdb_id;
 
   if (!imdbID) {
-    return '<div class="alert alert-warning">ID IMDb یافت نشد.</div>';
+    return '<div class="alert alert-warning">ID IMDb یافت نشد..</div>';
   }
 
   // حذف پیشوند `tt` از imdb_id اگر وجود دارد
