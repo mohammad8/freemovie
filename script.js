@@ -165,7 +165,7 @@ fetch("tokens.json")
             const poster = item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "default.jpg";
             const tmdbID = item.id;
             const year = item.release_date ? item.release_date.split("-")[0] : "نامشخص";
-            const type = item.media_type === "movie" ? "movie" : "series";
+            const type = item.media_type === "movie" ? "movie" : "tv";
 
             moviesHtml += `
               <div class="col-6 col-md-4 col-lg-3 mb-4">
