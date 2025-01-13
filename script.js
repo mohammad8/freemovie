@@ -96,16 +96,16 @@ function generateDownloadLinks(imdbID, year, type) {
 
 // Function for generating series download links
 function generateSeriesDownloadLinks(imdbID) {
-  let seasonsHtml = '<div class="accordion" id="seasonsAccordion">';
+  let seasonsHtml = `<div class="accordion" id="seasonsAccordion-${imdbID}">`;
   for (let i = 1; i <= 4; i++) {
     seasonsHtml += `
       <div class="accordion-item">
-        <h2 class="accordion-header" id="heading${i}">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
+        <h2 class="accordion-header" id="heading-${imdbID}-${i}">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${imdbID}-${i}" aria-expanded="true" aria-controls="collapse-${imdbID}-${i}">
             فصل ${i}
           </button>
         </h2>
-        <div id="collapse${i}" class="accordion-collapse collapse" aria-labelledby="heading${i}" data-bs-parent="#seasonsAccordion">
+        <div id="collapse-${imdbID}-${i}" class="accordion-collapse collapse" aria-labelledby="heading-${imdbID}-${i}" data-bs-parent="#seasonsAccordion-${imdbID}">
           <div class="accordion-body">
             ${generateQualityLinks(imdbID, i)}
           </div>
