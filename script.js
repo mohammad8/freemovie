@@ -137,8 +137,8 @@ $(document).ready(function() {
 fetch("tokens.json")
   .then((response) => response.json())
   .then((data) => {
-    const tokens = data.tokens;
-    let currentTokenIndex = data.currentTokenIndex;
+    const tokens = data.omdb.tokens;
+    let currentTokenIndex = data.omdb.currentTokenIndex;
 
     async function fetchWithToken(title) {
       try {
@@ -177,7 +177,12 @@ fetch("tokens.json")
         }
       } catch (error) {
         console.error("خطا در درخواست:", error);
-        document.getElementById("results").innerHTML = '<div class="alert alert-danger">خطا در درخواست: ' + error.message + "</div>";
+        currentTokenIndex = (currentTokenIndex + 1) % tokens.length; // چرخش به توکن بعدی
+        if (currentTokenIndex === 0) {
+          document.getElementById("results").innerHTML = '<div class="alert alert-danger">خطا در درخواست: ' + error.message + "</div>";
+        } else {
+          fetchWithToken(title); // تلاش مجدد با توکن بعدی
+        }
       }
     }
 
