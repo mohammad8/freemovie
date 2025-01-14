@@ -19,15 +19,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// تابع برای دریافت اطلاعات کامل فیلم یا سریال از TMDB API
-async function getMediaDetails(tmdbID, apiKey, type) {
+// تابع برای دریافت اطلاعات کامل فیلم یا سریال از OMDB API
+async function getMediaDetails(imdbID, apiKey) {
   try {
-    const mediaUrl = `https://api.themoviedb.org/3/${type}/${tmdbID}?api_key=${apiKey}`;
+    const mediaUrl = `https://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`;
     const response = await fetch(mediaUrl);
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("خطا در دریافت اطلاعات از TMDB:", error);
+    console.error("خطا در دریافت اطلاعات از OMDB:", error);
     return null;
   }
 }
@@ -138,6 +138,7 @@ fetch("tokens.json")
   .then((response) => response.json())
   .then((data) => {
     const TMDB_API_KEY = data.tmdb.apiKey;
+    const OMDB_API_KEY = data.omdb.apiKey;
 
     // فعال کردن Typeahead برای فیلد جستجو
     $(document).ready(function() {
@@ -162,10 +163,13 @@ fetch("tokens.json")
         if (data.results && data.results.length > 0) {
           let moviesHtml = '<div class="row">';
           for (const item of data.results) {
-            const poster = item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "default.jpg";
             const tmdbID = item.id;
             const year = item.release_date ? item.release_date.split("-")[0] : "نامشخص";
             const type = item.media_type === "movie" ? "movie" : "tv";
+
+            // دریافت اطلاعات از OMDB برای تصاویر
+            const omdbDetails = await getMediaDetails(item.imdb_id, OMDB_API_KEY);
+            const poster = omdbDetails && omdbDetails.Poster !== "N/A" ? omdbDetails.Poster : "default.jpg";
 
             moviesHtml += `
               <div class="col-6 col-md-4 col-lg-3 mb-4">
