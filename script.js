@@ -19,15 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// تابع برای دریافت اطلاعات کامل فیلم یا سریال از TMDB API
-async function getMediaDetails(tmdbID, apiKey, type) {
+async function getMediaDetails(imdbID, apiKey) {
   try {
-    const mediaUrl = `https://api.themoviedb.org/3/${type}/${tmdbID}?api_key=${apiKey}`;
+    const mediaUrl = `https://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`;
     const response = await fetch(mediaUrl);
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("خطا در دریافت اطلاعات از TMDB:", error);
+    console.error("خطا در دریافت اطلاعات از OMDB:", error);
     return null;
   }
 }
@@ -90,40 +89,54 @@ function generateQualityLinks(imdbID, season) {
 }
 
 // تابع برای تولید لینک‌های دانلود
-async function generateDownloadLinks(tmdbID, year, type, apiKey) {
-  const mediaDetails = await getMediaDetails(tmdbID, apiKey, type);
-  const imdbID = mediaDetails.imdb_id;
+async function generateDownloadLinks(imdbID, year, type, apiKey) {
+  const mediaDetails = await getMediaDetails(imdbID, apiKey);
 
-  if (!imdbID) {
-    return '<div class="alert alert-warning">ID IMDb یافت نشد....</div>';
+  if (!mediaDetails) {
+    return '<div class="alert alert-warning">اطلاعات فیلم یا سریال یافت نشد.</div>';
   }
 
-  // حذف پیشوند `tt` از imdb_id اگر وجود دارد
-  const cleanImdbID = imdbID.replace(/^tt/, "");
-
   if (type === "movie") {
-    const originalDownloadLink = `https://berlin.saymyname.website/Movies/${year}/${cleanImdbID}`;
-    const backupDownloadLink = `https://tokyo.saymyname.website/Movies/${year}/${cleanImdbID}`;
+    const originalDownloadLink = `https://berlin.saymyname.website/Movies/${year}/${imdbID}`;
+    const backupDownloadLink = `https://tokyo.saymyname.website/Movies/${year}/${imdbID}`;
 
     return `
       <a href="${originalDownloadLink}" class="btn btn-primary mb-2">دانلود فیلم (لینک اصلی)</a><br>
       <a href="${backupDownloadLink}" class="btn btn-secondary mb-2">دانلود فیلم (لینک جایگزین)</a><br>
     `;
-  } else if (type === "tv") {
-    return await generateSeriesDownloadLinks(tmdbID, apiKey); // منتظر تولید لینک‌های سریال باشید
+  } else if (type === "series") {
+    const totalSeasons = mediaDetails.totalSeasons || 1;
+    let seasonsHtml = `<div class="accordion" id="seasonsAccordion-${imdbID}">`;
+    for (let i = 1; i <= totalSeasons; i++) {
+      seasonsHtml += `
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading-${imdbID}-${i}">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${imdbID}-${i}" aria-expanded="true" aria-controls="collapse-${imdbID}-${i}">
+              فصل ${i}
+            </button>
+          </h2>
+          <div id="collapse-${imdbID}-${i}" class="accordion-collapse collapse" aria-labelledby="heading-${imdbID}-${i}" data-bs-parent="#seasonsAccordion-${imdbID}">
+            <div class="accordion-body">
+              ${generateQualityLinks(imdbID, i)}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    seasonsHtml += "</div>";
+    return seasonsHtml;
   }
   return "";
 }
 
-// تابع برای دریافت پیشنهادات از TMDB API
 async function fetchSuggestions(query, apiKey) {
   try {
-    const url = `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${encodeURIComponent(query)}`;
+    const url = `https://www.omdbapi.com/?s=${encodeURIComponent(query)}&apikey=${apiKey}`;
     const response = await fetch(url);
     const data = await response.json();
 
-    if (data.results && data.results.length > 0) {
-      return data.results.map(item => item.title || item.name);
+    if (data.Search && data.Search.length > 0) {
+      return data.Search.map(item => item.Title);
     } else {
       return [];
     }
@@ -151,46 +164,46 @@ fetch("tokens.json")
       });
     });
 
-    async function fetchWithToken(title) {
-      try {
-        const url = `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        const resultsContainer = document.getElementById("results");
-        resultsContainer.innerHTML = "";
+async function fetchWithToken(title) {
+  try {
+    const url = `https://www.omdbapi.com/?s=${encodeURIComponent(title)}&apikey=${TMDB_API_KEY}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    const resultsContainer = document.getElementById("results");
+    resultsContainer.innerHTML = "";
 
-        if (data.results && data.results.length > 0) {
-          let moviesHtml = '<div class="row">';
-          for (const item of data.results) {
-            const poster = item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "default.jpg";
-            const tmdbID = item.id;
-            const year = item.release_date ? item.release_date.split("-")[0] : "نامشخص";
-            const type = item.media_type === "movie" ? "movie" : "tv";
+    if (data.Search && data.Search.length > 0) {
+      let moviesHtml = '<div class="row">';
+      for (const item of data.Search) {
+        const poster = item.Poster !== "N/A" ? item.Poster : "default.jpg";
+        const imdbID = item.imdbID;
+        const year = item.Year;
+        const type = item.Type === "movie" ? "movie" : "series";
 
-            moviesHtml += `
-              <div class="col-6 col-md-4 col-lg-3 mb-4">
-                <div class="card">
-                  <img src="${poster}" class="card-img-top" alt="${item.title || item.name}">
-                  <div class="card-body">
-                    <h5 class="card-title">${item.title || item.name}</h5>
-                    <p class="card-text">سال: ${year}</p>
-                    ${await generateDownloadLinks(tmdbID, year, type, TMDB_API_KEY)}
-                  </div>
-                </div>
+        moviesHtml += `
+          <div class="col-6 col-md-4 col-lg-3 mb-4">
+            <div class="card">
+              <img src="${poster}" class="card-img-top" alt="${item.Title}">
+              <div class="card-body">
+                <h5 class="card-title">${item.Title}</h5>
+                <p class="card-text">سال: ${year}</p>
+                ${await generateDownloadLinks(imdbID, year, type, TMDB_API_KEY)}
               </div>
-            `;
-          }
-          moviesHtml += "</div>";
-          resultsContainer.innerHTML = moviesHtml;
-          resultsContainer.scrollIntoView({ behavior: "smooth" });
-        } else {
-          resultsContainer.innerHTML = '<div class="alert alert-danger">هیچ نتیجه‌ای پیدا نشد.</div>';
-        }
-      } catch (error) {
-        console.error("خطا در درخواست:", error);
-        document.getElementById("results").innerHTML = '<div class="alert alert-danger">خطا در درخواست: ' + error.message + "</div>";
+            </div>
+          </div>
+        `;
       }
+      moviesHtml += "</div>";
+      resultsContainer.innerHTML = moviesHtml;
+      resultsContainer.scrollIntoView({ behavior: "smooth" });
+    } else {
+      resultsContainer.innerHTML = '<div class="alert alert-danger">هیچ نتیجه‌ای پیدا نشد.</div>';
     }
+  } catch (error) {
+    console.error("خطا در درخواست:", error);
+    document.getElementById("results").innerHTML = '<div class="alert alert-danger">خطا در درخواست: ' + error.message + "</div>";
+  }
+}
 
     document.getElementById("searchForm").addEventListener("submit", function (event) {
       event.preventDefault();
