@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // تابع برای دریافت اطلاعات کامل فیلم یا سریال از OMDB API
 async function getMediaDetails(imdbID, apiKey) {
   try {
-    const mediaUrl = `https://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`;
+    const mediaUrl = `https://www.omdbapi.com/?i=tt${imdbID}&apikey=${apiKey}`;
     const response = await fetch(mediaUrl);
     const data = await response.json();
     return data;
