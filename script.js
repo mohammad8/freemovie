@@ -27,6 +27,7 @@ async function getMediaDetails(imdbID, apiKey) {
   }
 
   try {
+    console.log("Fetching details for IMDb ID:", imdbID); // Debugging log
     console.log("Using OMDB API Key:", apiKey); // Debugging log
     const mediaUrl = `https://www.omdbapi.com/?i=tt${imdbID}&apikey=${apiKey}`;
     const response = await fetch(mediaUrl);
@@ -144,7 +145,8 @@ fetch("tokens.json")
   .then((response) => response.json())
   .then((data) => {
     const TMDB_API_KEY = data.tmdb.apiKey;
-    const OMDB_API_KEY = data.omdb.tokens[data.omdb.currentTokenIndex]; // استفاده از کلید صحیح OMDB
+    const OMDB_API_KEY = data.omdb.tokens[data.omdb.currentTokenIndex]; // Ensure this is correct
+    console.log("OMDB API Key:", OMDB_API_KEY); // Debugging log
 
     // فعال کردن Typeahead برای فیلد جستجو
     $(document).ready(function() {
@@ -172,6 +174,12 @@ fetch("tokens.json")
             const tmdbID = item.id;
             const year = item.release_date ? item.release_date.split("-")[0] : "نامشخص";
             const type = item.media_type === "movie" ? "movie" : "tv";
+
+            // Ensure imdbID is present
+            if (!item.imdb_id) {
+              console.error("IMDb ID is missing for item:", item);
+              continue; // Skip this item if imdbID is missing
+            }
 
             // دریافت اطلاعات از OMDB برای تصاویر
             const omdbDetails = await getMediaDetails(item.imdb_id, OMDB_API_KEY);
