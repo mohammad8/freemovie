@@ -21,7 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // تابع برای دریافت اطلاعات کامل فیلم یا سریال از OMDB API
 async function getMediaDetails(imdbID, apiKey) {
+  if (!imdbID) {
+    console.error("IMDb ID is missing");
+    return null;
+  }
+
   try {
+    console.log("Using OMDB API Key:", apiKey); // Debugging log
     const mediaUrl = `https://www.omdbapi.com/?i=tt${imdbID}&apikey=${apiKey}`;
     const response = await fetch(mediaUrl);
     const data = await response.json();
@@ -138,7 +144,7 @@ fetch("tokens.json")
   .then((response) => response.json())
   .then((data) => {
     const TMDB_API_KEY = data.tmdb.apiKey;
-    const OMDB_API_KEY = data.omdb.apiKey;
+    const OMDB_API_KEY = data.omdb.tokens[data.omdb.currentTokenIndex]; // استفاده از کلید صحیح OMDB
 
     // فعال کردن Typeahead برای فیلد جستجو
     $(document).ready(function() {
