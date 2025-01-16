@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (savedTheme === "dark") {
     document.body.classList.add("dark-mode");
     themeToggle.textContent = "حالت روشن";
+  } else {
+    themeToggle.textContent = "حالت تاریک";
   }
 });
 
@@ -41,7 +43,7 @@ fetch("tokens.json")
             const imdbID = movie.imdbID.replace("tt", "");
 
             moviesHtml += `
-              <div class="col-6 col-md-4 col-lg-2 mb-4">
+              <div class="col-6 col-md-4 col-lg-3 mb-4">
                 <div class="card">
                   <img src="${poster}" class="card-img-top" alt="${movie.Title}">
                   <div class="card-body">
@@ -76,6 +78,7 @@ fetch("tokens.json")
     document.getElementById("results").innerHTML = '<div class="alert alert-danger">خطا در بارگذاری فایل توکن‌ها</div>';
   });
 
+// Function for generating movie download links
 function generateDownloadLinks(imdbID, year, type) {
   if (type === "movie") {
     const originalDownloadLink = `https://berlin.saymyname.website/Movies/${year}/${imdbID}`;
@@ -91,17 +94,18 @@ function generateDownloadLinks(imdbID, year, type) {
   return "";
 }
 
+// Function for generating series download links
 function generateSeriesDownloadLinks(imdbID) {
-  let seasonsHtml = '<div class="accordion" id="seasonsAccordion">';
+  let seasonsHtml = `<div class="accordion" id="seasonsAccordion-${imdbID}">`;
   for (let i = 1; i <= 4; i++) {
     seasonsHtml += `
       <div class="accordion-item">
-        <h2 class="accordion-header" id="heading${i}">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">
+        <h2 class="accordion-header" id="heading-${imdbID}-${i}">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${imdbID}-${i}" aria-expanded="true" aria-controls="collapse-${imdbID}-${i}">
             فصل ${i}
           </button>
         </h2>
-        <div id="collapse${i}" class="accordion-collapse collapse" aria-labelledby="heading${i}" data-bs-parent="#seasonsAccordion">
+        <div id="collapse-${imdbID}-${i}" class="accordion-collapse collapse" aria-labelledby="heading-${imdbID}-${i}" data-bs-parent="#seasonsAccordion-${imdbID}">
           <div class="accordion-body">
             ${generateQualityLinks(imdbID, i)}
           </div>
@@ -113,6 +117,7 @@ function generateSeriesDownloadLinks(imdbID) {
   return seasonsHtml;
 }
 
+// Function for generating quality download links for series
 function generateQualityLinks(imdbID, season) {
   let qualityLinks = "";
   for (let quality = 1; quality <= 4; quality++) {
