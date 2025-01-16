@@ -1,181 +1,325 @@
 <!DOCTYPE html>
-<html lang="fa">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>فیری مووی - دانلود فیلم و سریال رایگان</title>
-    <!-- Google Tag Manager -->
-    <script>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
-        j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-5LFXCX69");
-    </script>
-    <!-- End Google Tag Manager -->
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دانلود سریال بازی مرکب (Squid Game)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazir', sans-serif;
+            background-color: #111;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
 
-    <link
-      href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@latest/dist/font-face.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link rel="stylesheet" href="./global.css" />
-  </head>
-  <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-5LFXCX69"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+        .header {
+            background-color: #d32739;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid #fff;
+        }
 
-    <div class="container mt-5">
-      <!-- لوگو و عنوان -->
-      <div class="logo-container">
-        <img src="logo.png" alt="Logo" />
-      </div>
-      <!-- <div class="logo-container">
-            <h1>فیری مووی - دانلود فیلم و سریال رایگان</h1>
-        </div> -->
+        .header h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+        }
 
-      <!-- اطلاع‌رسانی لینک کوتاه‌شده -->
-      <div class="alert alert-info text-center my-4" role="alert">
-        <strong>کوتاه‌شده شما:</strong>
-        <a href="https://b2n.ir/FreeMovie" class="alert-link" target="_blank"
-          >b2n.ir/FreeMovie</a
-        >
-        <br />
-        با استفاده از این لینک، به راحتی می‌توانید به سایت ما دسترسی پیدا کنید!
-      </div>
+        .container {
+            margin-top: 30px;
+        }
 
-      <p class="text-center mb-4">اگه فیلتر شکن روشنه خاموشش کن</p>
-      <p class="text-center mb-4">
-        برای دانلود جدیدترین فیلم‌ها
-        <a
-          href="https://m4tinbeigi-official.github.io/freemovie/new-movie/"
-          target="_blank"
-          class="alert-link"
-          >اینجا کلیک کنید</a
-        >.
-      </p>
+        /* بخش ریتوییت */
+        .retweet-section {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
 
-      <form id="searchForm" class="row g-3">
-        <div class="col-12">
-          <input
-            type="text"
-            class="form-control"
-            id="title"
-            name="title"
-            placeholder="نام فیلم را به انگلیسی جستجو کنید"
-            required
-          />
-        </div>
+        .retweet-section h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
 
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary w-100">جستجو کن</button>
-        </div>
-      </form>
+        .retweet-button {
+            background-color: #1DA1F2;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-      <div id="results" class="mt-5"></div>
+        .retweet-button:hover {
+            background-color: #0d8dff;
+        }
+
+        .retweet-button i {
+            margin-left: 10px;
+        }
+
+        /* سایر بخش‌ها */
+        .useful-links {
+            background-color: #222;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .useful-links h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .useful-links ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        .useful-links ul li {
+            margin: 12px 0;
+        }
+
+        .useful-links ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 20px;
+            border-radius: 8px;
+            background-color: #d32739;
+            display: inline-block;
+            width: 80%;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .useful-links ul li a i {
+            margin-left: 8px;
+        }
+
+        .useful-links ul li a:hover {
+            background-color: #fff;
+            color: #d32739;
+            transform: scale(1.05);
+        }
+
+        .useful-links ul li a i {
+            font-size: 1.2rem;
+        }
+
+        /* دانلود سریال */
+        .accordion-item {
+            background-color: #222;
+            border: 1px solid #d32739;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+
+        .accordion-button {
+            background-color: #d32739;
+            color: white;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .accordion-button:hover {
+            background-color: #fff;
+            color: #d32739;
+        }
+
+        .accordion-body {
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+        }
+
+        .accordion-body a {
+            color: #d32739;
+            text-decoration: none;
+            display: block;
+            margin: 8px 0;
+        }
+
+        .accordion-body a:hover {
+            text-decoration: underline;
+        }
+
+        /* پخش تریلر */
+        .trailer {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .trailer video {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* فوتر */
+        footer {
+            background-color: #222;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            margin-top: 30px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://m4tinbeigi-official.github.io/freemovie/squid-game/46433-3840x2160-desktop-4k-squid-game-background-image.jpg') center/cover no-repeat;
+            opacity: 0.1;
+            z-index: -1;
+            animation: moveBackground 15s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        /* ریسپانسیو */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                margin-top: 15px;
+            }
+
+            .series-info p {
+                font-size: 1rem;
+            }
+
+            .accordion-button {
+                font-size: 1.1rem;
+            }
+
+            .useful-links ul li a {
+                width: 100%;
+                font-size: 1rem;
+            }
+
+            .useful-links h3 {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                margin-top: 10px;
+            }
+
+            .useful-links ul li a {
+                font-size: 1rem;
+            }
+
+            .useful-links h3 {
+                font-size: 1rem;
+            }
+
+            .accordion-body {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+
+    <div class="header">
+        <h1>بازی مرکب (Squid Game)</h1>
+        <p>دانلود قسمت‌های مختلف با کیفیت‌های متفاوت</p>
     </div>
 
-    <footer class="footer-dark">
-      <div class="container text-center">
-        <p class="mt-3">
-          فیری مووی - ساخته شده توسط ریک سانچز با 🤍 | استفاده از
-          <a href="https://github.com/rastikerdar/vazir-font" class="text-white"
-            >فونت وزیر</a
-          >
-          به یاد صابر راستی کردار
-        </p>
-
-        <p>
-          در این وبسایت از
-          <a href="https://www.omdbapi.com/" target="_blank" class="text-white"
-            >وب سرویس OMDB</a
-          >
-          برای جستجو و اطلاعات فیلم‌ها و از
-          <a
-            href="https://almasmovie.website/"
-            target="_blank"
-            class="text-white"
-            >الماس مووی</a
-          >
-          برای دانلود فیلم‌ها استفاده می‌شود.
-        </p>
-
-        <div class="social-icons mb-2">
-          <!-- GitHub Star Button -->
-          <a
-            class="github-button"
-            href="https://github.com/m4tinbeigi-official/freemovie"
-            data-icon="octicon-star"
-            data-show-count="true"
-            aria-label="Star m4tinbeigi-official/freemovie on GitHub"
-            >Star</a
-          >
-          <script
-            async
-            defer
-            src="https://buttons.github.io/buttons.js"
-          ></script>
-          <a href="https://github.com/m4tinbeigi-official" role="button"
-            ><i class="fab fa-github"></i
-          ></a>
-          <a href="https://twitter.com/m4tinbeigi" role="button"
-            ><i class="fab fa-twitter"></i
-          ></a>
-          <a href="https://linkedin.com/in/matinbeigi" role="button"
-            ><i class="fab fa-linkedin"></i
-          ></a>
-          <a href="https://instagram.com/m4tinbeigi" role="button"
-            ><i class="fab fa-instagram"></i
-          ></a>
+    <div class="container">
+        <div class="series-info">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="https://m4tinbeigi-official.github.io/freemovie/squid-game/poster.webp" alt="پوستر سریال بازی مرکب">
+                </div>
+                <div class="col-md-8">
+                    <h2>درباره سریال</h2>
+                    <p>
+                        سریال "بازی مرکب" داستانی جذاب و هیجان‌انگیز درباره افرادی است که هر کدام به نوعی در زندگی خود با مشکلات مالی یا اجتماعی دست و پنجه نرم می‌کنند. این افراد وارد یک بازی مرموز می‌شوند که تنها یک نفر از آن‌ها با جایزه ۴۰ میلیون دلاری به زندگی باز می‌گردد.
+                    </p>
+                    <p><strong>ژانرها:</strong> اکشن، درام، هیجان‌انگیز</p>
+                    <p><strong>ستارگان:</strong> Hoyeon, Lee Jung-jae, Park Hae-soo, Wi Ha-joon, O Yeong-su</p>
+                    <p><strong>تعداد فصل‌ها:</strong> 2 فصل (فصل 2 در حال پخش)</p>
+                    <p><strong>تاریخ انتشار:</strong> 2021</p>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="useful-links">
+            <h3>لینک‌های مفید</h3>
+            <ul>
+                <li><a href="https://www.netflix.com/de-en/title/81040344" target="_blank"><i class="fab fa-netflix"></i> مشاهده در نتفلیکس</a></li>
+                <li><a href="https://www.imdb.com/title/tt10919420/" target="_blank"><i class="fab fa-imdb"></i> صفحه IMDb</a></li>
+                <li><a href="https://zarfilm.com/series/squid-game/" target="_blank"><i class="fas fa-download"></i> دانلود از زرفیلم</a></li>
+                <li><a href="https://digimoviez.com/serie/squid-game-2021/" target="_blank"><i class="fas fa-download"></i> دانلود از دیجی موویز</a></li>
+            </ul>
+        </div>
+
+        <!-- بخش ریتوییت -->
+        <div class="retweet-section">
+            <h3>از پروژه حمایت کنید!</h3>
+            <p>جهت حمایت از این کار و پخش بیشتر آن، لطفاً توییت من را ریتوییت کنید:</p>
+            <!-- دکمه ریتوییت -->
+            <a href="https://x.com/m4tinbeigi/status/1873285735136342070?t=5ztExNKMOsjiLBXbhcJx8A&s=19" class="retweet-button" target="_blank">
+                ریتوییت کنید <i class="fab fa-twitter"></i>
+            </a>
+        </div>
+
+        <div class="accordion" id="downloadAccordion">
+            <!-- لینک‌های دانلود به همین شکل که قبلاً بود ادامه پیدا می‌کند -->
+        </div>
+
+        <div class="trailer">
+            <h2>پخش تریلر سریال</h2>
+            <video controls>
+                <source src="https://digimoviez.com/wp-content/uploads/2023/06/Squid_Game_Season_2_Cast_Announcement_Netflix.mp4" type="video/mp4">
+                مرورگر شما از این فرمت پشتیبانی نمی‌کند.
+            </video>
+        </div>
+    </div>
+
+    <footer>
+        <p>تمامی حقوق این صفحه متعلق به <strong>Squid Game</strong> است. 2024</p>
     </footer>
 
-    <button
-      id="theme-toggle"
-      class="btn btn-secondary position-fixed top-0 end-0 m-3"
-    >
-      تغییر تم
-    </button>
-
-    <script>
-      // Load the theme from local storage or use device scheme
-      (function () {
-        const savedTheme = localStorage.getItem("theme");
-        if (
-          !savedTheme &&
-          window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches
-        ) {
-          return document.body.classList.add("dark-mode");
-        }
-        if (savedTheme === "dark") {
-          document.body.classList.add("dark-mode");
-        }
-      })();
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
-  </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
