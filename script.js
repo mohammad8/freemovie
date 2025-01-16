@@ -111,4 +111,3 @@ function generateQualityLinks(imdbID, season) {
     }
     return qualityLinks;
 }
-
