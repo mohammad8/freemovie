@@ -1,0 +1,131 @@
+body {
+    font-family: 'Vazir', sans-serif;
+    direction: rtl;
+    text-align: right;
+    background-color: #f5f5f5;
+    margin: 0;
+}
+
+header {
+    background-color: #2c3e50;
+    color: #fff;
+}
+
+.carousel-item img {
+    height: 500px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.movies-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.movie-card, .card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.movie-card:hover, .card:hover {
+    transform: scale(1.05);
+}
+
+.movie-card img, .card img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+}
+
+.movie-card .title, .card-title {
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.movie-card .original-title, .card-text {
+    padding: 10px;
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+.movie-card .overview {
+    padding: 10px;
+    font-size: 14px;
+    color: #666;
+    height: 100px;
+    overflow: hidden;
+}
+
+#loading {
+    display: none;
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: #27ae60;
+    border-color: #27ae60;
+}
+
+.btn-primary:hover {
+    background-color: #2ecc71;
+    border-color: #2ecc71;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #5a6268;
+}
+
+.btn-success {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-success:hover {
+    background-color: #138496;
+    border-color: #138496;
+}
+
+.footer-dark {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+}
+
+.footer-dark .social-icons a {
+    margin: 0 10px;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .carousel-item img {
+        height: 300px;
+    }
+    .movie-card img, .card img {
+        height: 200px;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+}
