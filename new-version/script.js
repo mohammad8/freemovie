@@ -1,6 +1,6 @@
 const tmdbApiUrl = "https://api.themoviedb.org/3/discover/movie";
 const tmdbApiKey = "1dc4cbf81f0accf4fa108820d551dafc";
-const tokens = ["abb7cdf7"];
+const tokens = ["c409b61f"];
 let currentTokenIndex = 0;
 
 // دریافت فیلم‌های جدید برای اسلایدر
