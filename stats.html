@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آمار بازدید سایت</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            direction: rtl;
+        }
+        .stats-container {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: right;
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: right;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .loading {
+            color: #666;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>آمار بازدید سایت من</h1>
+    <div class="stats-container" id="stats">
+        <h2>آمار روزانه</h2>
+        <div id="daily-stats" class="loading">در حال بارگذاری...</div>
+    </div>
+
+    <script>
+        // آدرس API
+        const apiUrl = "https://counter.dev/dump?user=m4tinbeigi&token=I2gBrz6Imwo%3D&utcoffset=4";
+
+        // دریافت داده‌ها با fetch
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("خطا در دریافت داده‌ها: " + response.status);
+                }
+                return response.text(); // داده‌ها به صورت متن دریافت می‌شوند
+            })
+            .then(data => {
+                // تبدیل داده‌های خام به JSON
+                const jsonLines = data.split('\n').filter(line => line.trim() !== '');
+                let jsonData;
+                jsonLines.forEach(line => {
+                    if (line.includes('"type":"dump"')) {
+                        jsonData = JSON.parse(line.replace('data: ', ''));
+                    }
+                });
+
+                if (!jsonData || !jsonData.payload.sites["m4tinbeigi-official.github.io"]) {
+                    throw new Error("داده‌های مورد انتظار یافت نشد.");
+                }
+
+                // استخراج داده‌های روزانه
+                const dailyStats = jsonData.payload.sites["m4tinbeigi-official.github.io"].visits.day;
+
+                // تولید HTML برای نمایش آمار
+                let htmlContent = `
+                    <p>تعداد کل بازدیدها: ${jsonData.payload.sites["m4tinbeigi-official.github.io"].count}</p>
+                    <table>
+                        <tr><th>دسته‌بندی</th><th>جزئیات</th></tr>
+                        <tr><td>مرورگرها</td><td>${Object.entries(dailyStats.browser).map(([key, value]) => `${key}: ${value}`).join(', ')}</td></tr>
+                        <tr><td>کشورها</td><td>${Object.entries(dailyStats.country).map(([key, value]) => `${key.toUpperCase()}: ${value}`).join(', ')}</td></tr>
+                        <tr><td>دستگاه‌ها</td><td>${Object.entries(dailyStats.device).map(([key, value]) => `${key}: ${value}`).join(', ')}</td></tr>
+                        <tr><td>صفحات بازدیدشده</td><td>${Object.entries(dailyStats.page).map(([key, value]) => `${key}: ${value}`).join(', ')}</td></tr>
+                        <tr><td>رزولوشن صفحه</td><td>${Object.entries(dailyStats.screen).map(([key, value]) => `${key}: ${value}`).join(', ')}</td></tr>
+                    </table>
+                `;
+
+                // افزودن محتوا به صفحه
+                document.getElementById("daily-stats").innerHTML = htmlContent;
+            })
+            .catch(error => {
+                document.getElementById("daily-stats").className = "error";
+                document.getElementById("daily-stats").innerHTML = "خطا: " + error.message;
+            });
+    </script>
+</body>
+</html>
