@@ -72,7 +72,7 @@ async function getSeriesDetails() {
 
     // فعال‌سازی دکمه افزودن به واچ‌لیست پس از بارگذاری اطلاعات
 		document.getElementById("add-to-watchlist").addEventListener("click", () => {
-	  let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
+	  let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { series: [] };
 	  const normalizedSeriesId = String(seriesId); // اطمینان از رشته بودن seriesId
 	  if (!watchlist.series.includes(normalizedSeriesId)) {
 		watchlist.series.push(normalizedSeriesId);
