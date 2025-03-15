@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>آمار بازدید سایت</title>
+    <title>آمار کاربران امروز</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,25 +15,15 @@
             background-color: #f9f9f9;
             padding: 20px;
             border-radius: 10px;
-            max-width: 800px;
+            max-width: 400px;
             margin: 0 auto;
             text-align: right;
         }
         h2 {
             color: #333;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            padding: 8px;
-            border: 1px solid #ddd;
-            text-align: right;
-        }
-        th {
-            background-color: #f2f2f2;
+        p {
+            margin: 10px 0;
         }
         .loading {
             color: #666;
@@ -44,26 +34,25 @@
     </style>
 </head>
 <body>
-    <h1>آمار بازدید سایت من</h1>
+    <h1>آمار کاربران</h1>
     <div class="stats-container" id="stats">
-        <h2>آمار روزانه</h2>
+        <h2>کاربران امروز</h2>
         <div id="daily-stats" class="loading">در حال بارگذاری...</div>
     </div>
 
     <script>
-        // آدرس API
-        const apiUrl = "https://counter.dev/dump?user=m4tinbeigi&token=I2gBrz6Imwo%3D&utcoffset=4";
+        // آدرس سرور واسطه
+        const proxyUrl = "https://your-server.com/proxy.php"; // آدرس فایل PHP خود را وارد کنید
 
         // دریافت داده‌ها با fetch
-        fetch(apiUrl)
+        fetch(proxyUrl)
             .then(response => {
                 if (!response.ok) {
                     throw new Error("خطا در دریافت داده‌ها: " + response.status);
                 }
-                return response.text(); // داده‌ها به صورت متن دریافت می‌شوند
+                return response.text();
             })
             .then(data => {
-                // تبدیل داده‌های خام به JSON
                 const jsonLines = data.split('\n').filter(line => line.trim() !== '');
                 let jsonData;
                 jsonLines.forEach(line => {
@@ -76,23 +65,16 @@
                     throw new Error("داده‌های مورد انتظار یافت نشد.");
                 }
 
-                // استخراج داده‌های روزانه
-                const dailyStats = jsonData.payload.sites["m4tinbeigi-official.github.io"].visits.day;
+                const siteData = jsonData.payload.sites["m4tinbeigi-official.github.io"];
+                const totalVisits = siteData.count;
+                const today = new Date().toISOString().split('T')[0]; // تاریخ امروز
+                const todayVisits = siteData.visits.day.date[today] || 0;
 
-                // تولید HTML برای نمایش آمار
                 let htmlContent = `
-                    <p>تعداد کل بازدیدها: ${jsonData.payload.sites["m4tinbeigi-official.github.io"].count}</p>
-                    <table>
-                        <tr><th>دسته‌بندی</th><th>جزئیات</th></tr>
-                        <tr><td>مرورگرها</td><td>${Object.entries(dailyStats.browser).map(([key, value]) => `${key}: ${value}`).join(', ')}</td></tr>
-                        <tr><td>کشورها</td><td>${Object.entries(dailyStats.country).map(([key, value]) => `${key.toUpperCase()}: ${value}`).join(', ')}</td></tr>
-                        <tr><td>دستگاه‌ها</td><td>${Object.entries(dailyStats.device).map(([key, value]) => `${key}: ${value}`).join(', ')}</td></tr>
-                        <tr><td>صفحات بازدیدشده</td><td>${Object.entries(dailyStats.page).map(([key, value]) => `${key}: ${value}`).join(', ')}</td></tr>
-                        <tr><td>رزولوشن صفحه</td><td>${Object.entries(dailyStats.screen).map(([key, value]) => `${key}: ${value}`).join(', ')}</td></tr>
-                    </table>
+                    <p>تعداد کاربران امروز: ${todayVisits}</p>
+                    <p>تعداد کل بازدیدها (فعالیت کلی): ${totalVisits}</p>
                 `;
 
-                // افزودن محتوا به صفحه
                 document.getElementById("daily-stats").innerHTML = htmlContent;
             })
             .catch(error => {
