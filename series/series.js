@@ -14,7 +14,7 @@ async function getSeriesDetails() {
 
     let imdbId = seriesId;
     if (!imdbId.startsWith("tt")) {
-      imdbId = "tt" + imdbId;
+     // imdbId = "tt" + imdbId;
     }
 
     const apiKey = tokens[currentTokenIndex];
