@@ -3,6 +3,10 @@ const movieId = new URLSearchParams(window.location.search).get("id");
 
 async function getMovieDetails() {
   try {
+    if (!movieId) {
+      throw new Error("شناسه فیلم در URL وجود ندارد!");
+    }
+
     const res = await fetch(
       `https://api.themoviedb.org/3/movie/${movieId}?api_key=${tmdbApiKey}&language=fa-IR`
     );
@@ -12,36 +16,37 @@ async function getMovieDetails() {
       `https://api.themoviedb.org/3/movie/${movieId}/external_ids?api_key=${tmdbApiKey}`
     );
     const externalIds = await externalIdsRes.json();
-    const imdbID = externalIds.imdb_id.replace("tt", "");
-    const year = movie.release_date.split("-")[0];
+    const imdbID = externalIds.imdb_id ? externalIds.imdb_id.replace("tt", "") : "";
+    const year = movie.release_date ? movie.release_date.split("-")[0] : "نامشخص";
 
-    document.getElementById("title").textContent = movie.title;
+    document.getElementById("title").textContent = movie.title || "نامشخص";
     document.getElementById("overview").textContent =
       movie.overview || "خلاصه‌ای در دسترس نیست.";
     document.getElementById("genre").innerHTML = `<strong>ژانر:</strong> ${
-      movie.genres.map((g) => g.name).join(", ") || "نامشخص"
+      movie.genres ? movie.genres.map((g) => g.name).join(", ") : "نامشخص"
     }`;
     document.getElementById(
       "year"
     ).innerHTML = `<strong>سال تولید:</strong> ${year}`;
     document.getElementById(
       "rating"
-    ).innerHTML = `<strong>امتیاز:</strong> ${movie.vote_average}/10`;
-    document.getElementById(
-      "poster"
-    ).src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-    document.getElementById(
-      "movie-bg"
-    ).style.backgroundImage = `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`;
+    ).innerHTML = `<strong>امتیاز:</strong> ${movie.vote_average || "بدون امتیاز"}/10`;
+    document.getElementById("poster").src = movie.poster_path
+      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+      : "https://via.placeholder.com/500";
+    document.getElementById("movie-bg").style.backgroundImage = movie.backdrop_path
+      ? `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`
+      : "url('https://via.placeholder.com/1920x1080')";
 
     const trailerRes = await fetch(
       `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${tmdbApiKey}`
     );
     const trailerData = await trailerRes.json();
-    if (trailerData.results.length > 0) {
-      document.getElementById(
-        "trailer"
-      ).src = `https://www.youtube.com/embed/${trailerData.results[0].key}`;
+    const trailerContainer = document.getElementById("trailer");
+    if (trailerData.results && trailerData.results.length > 0) {
+      trailerContainer.src = `https://www.youtube.com/embed/${trailerData.results[0].key}`;
+    } else {
+      trailerContainer.innerHTML = '<p class="text-yellow-500">تریلر در دسترس نیست</p>';
     }
 
     const downloadLinks = `
@@ -65,6 +70,7 @@ async function getMovieDetails() {
       });
   } catch (error) {
     console.error("خطا در دریافت اطلاعات:", error);
+    document.getElementById("download-links").innerHTML = `<p class="text-red-500">خطا در دریافت اطلاعات: ${error.message}</p>`;
   }
 }
 
