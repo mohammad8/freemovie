@@ -3,13 +3,11 @@ const movieId = new URLSearchParams(window.location.search).get("id");
 
 async function getMovieDetails() {
   try {
-    // movie informations
     const res = await fetch(
       `https://api.themoviedb.org/3/movie/${movieId}?api_key=${tmdbApiKey}&language=fa-IR`
     );
     const movie = await res.json();
 
-    // imdbID
     const externalIdsRes = await fetch(
       `https://api.themoviedb.org/3/movie/${movieId}/external_ids?api_key=${tmdbApiKey}`
     );
@@ -17,7 +15,6 @@ async function getMovieDetails() {
     const imdbID = externalIds.imdb_id.replace("tt", "");
     const year = movie.release_date.split("-")[0];
 
-    // showing movie details
     document.getElementById("title").textContent = movie.title;
     document.getElementById("overview").textContent =
       movie.overview || "خلاصه‌ای در دسترس نیست.";
@@ -37,7 +34,6 @@ async function getMovieDetails() {
       "movie-bg"
     ).style.backgroundImage = `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`;
 
-    // showing trailer
     const trailerRes = await fetch(
       `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${tmdbApiKey}`
     );
@@ -48,16 +44,13 @@ async function getMovieDetails() {
       ).src = `https://www.youtube.com/embed/${trailerData.results[0].key}`;
     }
 
-    // download links
     const downloadLinks = `
-            <a href="https://berlin.saymyname.website/Movies/${year}/${imdbID}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">دانلود فیلم (لینک اصلی)</a>
-            <a href="https://tokyo.saymyname.website/Movies/${year}/${imdbID}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">دانلود فیلم (لینک کمکی)</a>
-            <button id="add-to-watchlist" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">افزودن به واچ لیست</button>
-        `;
-
+      <a href="https://berlin.saymyname.website/Movies/${year}/${imdbID}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">دانلود فیلم (لینک اصلی)</a>
+      <a href="https://tokyo.saymyname.website/Movies/${year}/${imdbID}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">دانلود فیلم (لینک کمکی)</a>
+      <button id="add-to-watchlist" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">افزودن به واچ لیست</button>
+    `;
     document.getElementById("download-links").innerHTML = downloadLinks;
 
-    // watchlist
     document
       .getElementById("add-to-watchlist")
       .addEventListener("click", () => {
@@ -75,10 +68,8 @@ async function getMovieDetails() {
   }
 }
 
-
 getMovieDetails();
 
-// theme toggle
 document.getElementById("theme-toggle").addEventListener("click", () => {
   document.documentElement.classList.toggle("dark");
   const icon = document.querySelector("#theme-toggle i");
