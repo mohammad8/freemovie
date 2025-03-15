@@ -59,9 +59,9 @@ async function getMovieDetails() {
     document
       .getElementById("add-to-watchlist")
       .addEventListener("click", () => {
-        let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
-        if (!watchlist.includes(movieId)) {
-          watchlist.push(movieId);
+        let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
+        if (!watchlist.movies.includes(movieId)) {
+          watchlist.movies.push(movieId);
           localStorage.setItem("watchlist", JSON.stringify(watchlist));
           alert("فیلم به واچ لیست اضافه شد!");
         } else {

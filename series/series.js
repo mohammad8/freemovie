@@ -111,11 +111,13 @@ function generateQualityLinks(imdbID, season) {
 }
 
 document.getElementById("add-to-watchlist").addEventListener("click", () => {
-  let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
-  if (!watchlist.includes(seriesId)) {
-    watchlist.push(seriesId);
+  let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
+  if (!watchlist.series.includes(seriesId)) {
+    watchlist.series.push(seriesId);
     localStorage.setItem("watchlist", JSON.stringify(watchlist));
     alert("سریال به واچ لیست اضافه شد!");
+  } else {
+    alert("سریال قبلاً در واچ لیست است!");
   }
 });
 
