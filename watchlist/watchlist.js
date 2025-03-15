@@ -9,6 +9,9 @@ async function loadWatchlist() {
     seriesContainer.innerHTML = '<div class="skeleton w-full h-64"></div>';
 
     let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
+    if (!watchlist.movies || !watchlist.series) {
+        watchlist = { movies: [], series: [] }; // Reset to default structure
+    }
 
     if (watchlist.movies.length === 0 && watchlist.series.length === 0) {
         moviesContainer.innerHTML = "";
@@ -36,6 +39,7 @@ async function loadWatchlist() {
         seriesContainer.innerHTML = '<div class="text-red-400">خطا در بارگذاری سریال‌ها</div>';
     }
 }
+
 async function fetchAndDisplayItem(itemId, type, container) {
     try {
         const res = await fetch(`https://api.themoviedb.org/3/${type}/${itemId}?api_key=${tmdbApiKey}&language=fa-IR`);
@@ -85,4 +89,6 @@ document.getElementById("menu-toggle").addEventListener("click", () => {
     document.getElementById("mobile-menu").classList.toggle("hidden");
 });
 
-window.onload = loadWatchlist;
+document.addEventListener("DOMContentLoaded", () => {
+    loadWatchlist();
+});
