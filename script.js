@@ -12,7 +12,7 @@ async function getFeaturedMovies() {
 
   movies.forEach((movie) => {
     slider.innerHTML += `
-      <div class="w-full h-96 bg-cover bg-center snap-start" style="background-image: url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')">
+      <div class="w-full flex-auto h-96 bg-cover bg-center snap-start" style="background-image: url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')">
         <div class="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center">
           <h2 class="text-3xl font-bold">${movie.title}</h2>
           <p class="mt-2">${movie.overview.slice(0, 100)}...</p>
@@ -111,20 +111,18 @@ async function fetchWithToken(title) {
         moviesHtml += `
                     <div class="col-6 col-md-4 col-lg-2 mb-4">
                         <div class="card">
-                            <img src="${poster}" class="card-img-top" alt="${
-          movie.Title
-        }">
+                            <img src="${poster}" class="card-img-top" alt="${movie.Title
+          }">
                             <div class="card-body">
                                 <h5 class="card-title">${movie.Title}</h5>
                                 <p class="card-text">سال: ${movie.Year}</p>
                                 ${generateDownloadLinks(
-                                  imdbID,
-                                  movie.Year,
-                                  movie.Type
-                                )}
-                                <button class="btn btn-info" onclick="showDetails('${
-                                  movie.imdbID
-                                }')">جزئیات</button>
+            imdbID,
+            movie.Year,
+            movie.Type
+          )}
+                                <button class="btn btn-info" onclick="showDetails('${movie.imdbID
+          }')">جزئیات</button>
                             </div>
                         </div>
                     </div>
