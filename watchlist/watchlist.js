@@ -36,7 +36,6 @@ async function loadWatchlist() {
         seriesContainer.innerHTML = '<div class="text-red-400">خطا در بارگذاری سریال‌ها</div>';
     }
 }
-
 async function fetchAndDisplayItem(itemId, type, container) {
     try {
         const res = await fetch(`https://api.themoviedb.org/3/${type}/${itemId}?api_key=${tmdbApiKey}&language=fa-IR`);
@@ -44,10 +43,10 @@ async function fetchAndDisplayItem(itemId, type, container) {
         
         const itemCard = `
             <div class="group relative">
-                ${item.poster_path ? `<img src="https://image.tmdb.org/t/p/w500${item.poster_path}" alt="${item.title || item.name}" class="w-full h-auto rounded-lg shadow-lg">` : ''}
+                ${item.poster_path ? `<img src="https://image.tmdb.org/t/p/w500${item.poster_path}" alt="${item.title || item.name}" class="w-full h-auto rounded-lg shadow-lg">` : '<div class="w-full h-64 bg-gray-300 rounded-lg"></div>'}
                 <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
-                    <h3 class="text-lg font-bold">${item.title || item.name}</h3>
-                    <p class="text-sm">${item.overview ? item.overview.slice(0, 100) + '...' : ''}</p>
+                    <h3 class="text-lg font-bold">${item.title || item.name || "بدون عنوان"}</h3>
+                    <p class="text-sm">${item.overview ? item.overview.slice(0, 100) + '...' : 'بدون توضیحات'}</p>
                     <a href="/freemovie/${type}/index.html?id=${item.id}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">مشاهده</a>
                     <button class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" onclick="removeFromWatchlist('${item.id}', '${type}')">حذف از واچ لیست</button>
                 </div>
@@ -56,6 +55,7 @@ async function fetchAndDisplayItem(itemId, type, container) {
         container.innerHTML += itemCard;
     } catch (error) {
         console.error("خطا در دریافت اطلاعات آیتم:", error);
+        container.innerHTML += '<div class="text-red-400">خطا در بارگذاری آیتم</div>';
     }
 }
 
@@ -63,9 +63,9 @@ function removeFromWatchlist(itemId, type) {
     let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
     
     if (type === "movie") {
-        watchlist.movies = watchlist.movies.filter(id => id !== itemId);
+        watchlist.movies = watchlist.movies.filter(id => String(id) !== String(itemId));
     } else if (type === "tv") {
-        watchlist.series = watchlist.series.filter(id => id !== itemId);
+        watchlist.series = watchlist.series.filter(id => String(id) !== String(itemId));
     }
 
     localStorage.setItem("watchlist", JSON.stringify(watchlist));
