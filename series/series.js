@@ -14,7 +14,7 @@ async function getSeriesDetails() {
 
     let imdbId = seriesId;
     if (!imdbId.startsWith("tt")) {
-     // imdbId = "tt" + imdbId;
+      // imdbId = "tt" + imdbId; // این خط غیرفعال است، اما ممکن است نیاز به فعال‌سازی داشته باشد
     }
 
     const apiKey = tokens[currentTokenIndex];
@@ -41,13 +41,9 @@ async function getSeriesDetails() {
         : "https://via.placeholder.com/500";
 
     if (series.Poster && series.Poster !== "N/A") {
-      document.getElementById(
-        "series-bg"
-      ).style.backgroundImage = `url('${series.Poster}')`;
+      document.getElementById("series-bg").style.backgroundImage = `url('${series.Poster}')`;
     } else {
-      document.getElementById(
-        "series-bg"
-      ).style.backgroundImage = `url('https://via.placeholder.com/1920x1080')`;
+      document.getElementById("series-bg").style.backgroundImage = `url('https://via.placeholder.com/1920x1080')`;
     }
 
     const trailerContainer = document.getElementById("trailer");
@@ -73,6 +69,19 @@ async function getSeriesDetails() {
     } else {
       downloadLinksContainer.innerHTML = '<p class="text-yellow-500">لینک‌های دانلود در دسترس نیست</p>';
     }
+
+    // فعال‌سازی دکمه افزودن به واچ‌لیست پس از بارگذاری اطلاعات
+    document.getElementById("add-to-watchlist").addEventListener("click", () => {
+      let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
+      const normalizedSeriesId = String(seriesId); // اطمینان از رشته بودن seriesId
+      if (!watchlist.series.includes(normalizedSeriesId)) {
+        watchlist.series.push(normalizedSeriesId);
+        localStorage.setItem("watchlist", JSON.stringify(watchlist));
+        alert("سریال با موفقیت به واچ‌لیست اضافه شد!");
+      } else {
+        alert("این سریال قبلاً در واچ‌لیست شما وجود دارد!");
+      }
+    });
   } catch (error) {
     console.error("خطا در دریافت اطلاعات:", error);
     document.getElementById("download-links").innerHTML = `<p class="text-red-500">خطا در دریافت اطلاعات: ${error.message}</p>`;
@@ -109,17 +118,6 @@ function generateQualityLinks(imdbID, season) {
   });
   return qualityLinks;
 }
-
-document.getElementById("add-to-watchlist").addEventListener("click", () => {
-  let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
-  if (!watchlist.series.includes(seriesId)) {
-    watchlist.series.push(seriesId);
-    localStorage.setItem("watchlist", JSON.stringify(watchlist));
-    alert("سریال به واچ لیست اضافه شد!");
-  } else {
-    alert("سریال قبلاً در واچ لیست است!");
-  }
-});
 
 document.getElementById("theme-toggle").addEventListener("click", () => {
   document.documentElement.classList.toggle("dark");

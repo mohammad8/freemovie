@@ -1,4 +1,5 @@
 const tmdbApiKey = "1dc4cbf81f0accf4fa108820d551dafc";
+const omdbApiKey = "c409b61f";
 
 async function loadWatchlist() {
     const moviesContainer = document.getElementById("movies-watchlist");
@@ -31,10 +32,10 @@ async function loadWatchlist() {
 
     try {
         for (const movieId of watchlist.movies) {
-            await fetchAndDisplayItem(movieId, "movie", moviesContainer);
+            await fetchAndDisplayItem(movieId, "movie", moviesContainer, "tmdb");
         }
         for (const seriesId of watchlist.series) {
-            await fetchAndDisplayItem(seriesId, "tv", seriesContainer);
+            await fetchAndDisplayItem(seriesId, "tv", seriesContainer, "omdb");
         }
     } catch (error) {
         console.error("خطا در دریافت اطلاعات واچ‌لیست:", error);
@@ -43,15 +44,30 @@ async function loadWatchlist() {
     }
 }
 
-async function fetchAndDisplayItem(itemId, type, container) {
+async function fetchAndDisplayItem(itemId, type, container, apiSource) {
     try {
-        const res = await fetch(`https://api.themoviedb.org/3/${type}/${itemId}?api_key=${tmdbApiKey}&language=fa-IR`);
-        if (!res.ok) throw new Error("پاسخ API ناموفق بود.");
-        const item = await res.json();
-        
+        let item;
+        if (apiSource === "tmdb") {
+            const res = await fetch(`https://api.themoviedb.org/3/${type}/${itemId}?api_key=${tmdbApiKey}&language=fa-IR`);
+            if (!res.ok) throw new Error("پاسخ API TMDB ناموفق بود.");
+            item = await res.json();
+        } else if (apiSource === "omdb") {
+            const res = await fetch(`https://www.omdbapi.com/?apikey=${omdbApiKey}&i=${itemId}&plot=full`);
+            if (!res.ok) throw new Error("پاسخ API OMDb ناموفق بود.");
+            const data = await res.json();
+            if (data.Response === "False") throw new Error(data.Error);
+            item = {
+                id: itemId,
+                title: data.Title,
+                name: data.Title,
+                overview: data.Plot,
+                poster_path: data.Poster !== "N/A" ? data.Poster : null
+            };
+        }
+
         const itemCard = `
             <div class="group relative">
-                ${item.poster_path ? `<img src="https://image.tmdb.org/t/p/w500${item.poster_path}" alt="${item.title || item.name}" class="w-full h-auto rounded-lg shadow-lg">` : '<div class="w-full h-64 bg-gray-300 rounded-lg"></div>'}
+                ${item.poster_path ? `<img src="${item.poster_path.startsWith('http') ? item.poster_path : `https://image.tmdb.org/t/p/w500${item.poster_path}`}" alt="${item.title || item.name}" class="w-full h-auto rounded-lg shadow-lg">` : '<div class="w-full h-64 bg-gray-300 rounded-lg"></div>'}
                 <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
                     <h3 class="text-lg font-bold">${item.title || item.name || "بدون عنوان"}</h3>
                     <p class="text-sm">${item.overview ? item.overview.slice(0, 100) + '...' : 'بدون توضیحات'}</p>
