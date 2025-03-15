@@ -24,12 +24,12 @@ async function getFeaturedMovies() {
                 const omdbData = await omdbRes.json();
                 if (omdbData.Response === "True" && omdbData.Poster && omdbData.Poster !== "N/A") {
                     posterUrl = omdbData.Poster;
-                    console.log(`تصویر فیلم "${movie.title}" از OMDb: ${posterUrl}`);
+                    console.log(`تصویر پس‌زمینه اسلایدر برای "${movie.title}" از OMDb: ${posterUrl}`);
                 } else {
-                    console.warn(`تصویر معتبری از OMDb برای "${movie.title}" (IMDb ID: ${movie.imdb_id}) یافت نشد`);
+                    console.warn(`عدم دریافت تصویر از OMDb برای اسلایدر "${movie.title}" (IMDb ID: ${movie.imdb_id})`);
                 }
             } else {
-                console.warn(`شناسه IMDb برای "${movie.title}" وجود ندارد، از تصویر پیش‌فرض استفاده می‌شود`);
+                console.warn(`شناسه IMDb برای "${movie.title}" در اسلایدر یافت نشد`);
             }
 
             slider.innerHTML += `
@@ -43,7 +43,7 @@ async function getFeaturedMovies() {
             `;
         }
     } catch (error) {
-        console.error("خطا در دریافت فیلم‌های محبوب:", error);
+        console.error("خطا در دریافت فیلم‌های محبوب برای اسلایدر:", error);
     }
 }
 
@@ -68,12 +68,12 @@ async function getNewMovies() {
                 const omdbData = await omdbRes.json();
                 if (omdbData.Response === "True" && omdbData.Poster && omdbData.Poster !== "N/A") {
                     posterUrl = omdbData.Poster;
-                    console.log(`تصویر فیلم جدید "${movie.title}" از OMDb: ${posterUrl}`);
+                    console.log(`تصویر فیلم جدید برای "${movie.title}" از OMDb: ${posterUrl}`);
                 } else {
-                    console.warn(`تصویر معتبری از OMDb برای "${movie.title}" (IMDb ID: ${movie.imdb_id}) یافت نشد`);
+                    console.warn(`عدم دریافت تصویر از OMDb برای فیلم جدید "${movie.title}" (IMDb ID: ${movie.imdb_id})`);
                 }
             } else {
-                console.warn(`شناسه IMDb برای "${movie.title}" وجود ندارد، از تصویر پیش‌فرض استفاده می‌شود`);
+                console.warn(`شناسه IMDb برای "${movie.title}" در فیلم‌های جدید یافت نشد`);
             }
 
             container.innerHTML += `
@@ -111,7 +111,7 @@ function manageNotification() {
     const lastShown = localStorage.getItem("notificationLastShown");
     const isDismissed = localStorage.getItem("notificationDismissed");
     const now = Date.now();
-    const oneWeekInMs = 7 * 24 * 60 * 60 * 1000; // یک هفته به میلی‌ثانیه
+    const oneWeekInMs = 7 * 24 * 60 * 60 * 1000;
 
     if (isDismissed === "true") {
         return;
@@ -139,9 +139,7 @@ document.getElementById("support-button").addEventListener("click", () => {
     window.open(twitterUrl, "_blank");
 });
 
-// فراخوانی تابع مدیریت اطلاعیه هنگام بارگذاری صفحه
+// فراخوانی توابع
 document.addEventListener("DOMContentLoaded", manageNotification);
-
-// فراخوانی توابع برای بارگذاری داده‌ها
 getFeaturedMovies();
 getNewMovies();
