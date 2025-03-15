@@ -1,3 +1,4 @@
+const tmdbApiKey = "1dc4cbf81f0accf4fa108820d551dafc";
 const omdbApiKey = "c409b61f";
 const tokens = ["c409b61f"];
 let currentTokenIndex = 0;
@@ -5,40 +6,41 @@ let currentTokenIndex = 0;
 // تابع برای دریافت فیلم‌های محبوب (اسلایدر)
 async function getFeaturedMovies() {
     try {
-        const apiKey = tokens[currentTokenIndex];
-        // جستجوی عمومی برای شبیه‌سازی فیلم‌های محبوب (مثلاً فیلم‌های با امتیاز بالا یا جدید)
         const res = await fetch(
-            `https://www.omdbapi.com/?s=movie&type=movie&y=2023&apikey=${apiKey}`
+            `https://api.themoviedb.org/3/movie/popular?api_key=${tmdbApiKey}&language=fa-IR`
         );
         const data = await res.json();
+        const movies = data.results.slice(0, 5);
         const slider = document.getElementById("slider");
         slider.innerHTML = "";
 
-        if (data.Response === "True") {
-            const movies = data.Search.slice(0, 5); // ۵ فیلم اول
-            for (const movie of movies) {
-                // دریافت جزئیات بیشتر با imdb_id
-                const detailRes = await fetch(
-                    `https://www.omdbapi.com/?i=${movie.imdbID}&apikey=${apiKey}`
+        for (const movie of movies) {
+            let posterUrl = "https://via.placeholder.com/500x750?text=تصویر+موجود+نیست";
+            if (movie.imdb_id) {
+                const apiKey = tokens[currentTokenIndex];
+                const omdbRes = await fetch(
+                    `https://www.omdbapi.com/?i=${movie.imdb_id}&apikey=${apiKey}`
                 );
-                const detailData = await detailRes.json();
-                const posterUrl = detailData.Poster && detailData.Poster !== "N/A"
-                    ? detailData.Poster
-                    : "https://via.placeholder.com/500x750?text=تصویر+موجود+نیست";
-                console.log(`تصویر پس‌زمینه اسلایدر برای "${detailData.Title}" از OMDb: ${posterUrl}`);
-
-                slider.innerHTML += `
-                    <div class="w-full flex-auto h-96 bg-cover bg-center snap-start" style="background-image: url('${posterUrl}')">
-                        <div class="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center">
-                            <h2 class="text-3xl font-bold">${detailData.Title}</h2>
-                            <p class="mt-2">${detailData.Plot ? detailData.Plot.slice(0, 100) + "..." : "توضیحات موجود نیست"}</p>
-                            <a href="/freemovie/movie/index.html?id=${movie.imdbID}" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
-                        </div>
-                    </div>
-                `;
+                const omdbData = await omdbRes.json();
+                if (omdbData.Response === "True" && omdbData.Poster && omdbData.Poster !== "N/A") {
+                    posterUrl = omdbData.Poster;
+                    console.log(`تصویر پس‌زمینه اسلایدر برای "${movie.title}" از OMDb: ${posterUrl}`);
+                } else {
+                    console.warn(`عدم دریافت تصویر از OMDb برای اسلایدر "${movie.title}" (IMDb ID: ${movie.imdb_id})`);
+                }
+            } else {
+                console.warn(`شناسه IMDb برای "${movie.title}" در اسلایدر یافت نشد`);
             }
-        } else {
-            console.warn("جستجو برای فیلم‌های محبوب در OMDb ناموفق بود:", data.Error);
+
+            slider.innerHTML += `
+                <div class="w-full flex-auto h-96 bg-cover bg-center snap-start" style="background-image: url('${posterUrl}')">
+                    <div class="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center">
+                        <h2 class="text-3xl font-bold">${movie.title}</h2>
+                        <p class="mt-2">${movie.overview.slice(0, 100)}...</p>
+                        <a href="/freemovie/movie/index.html?id=${movie.id}" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
+                    </div>
+                </div>
+            `;
         }
     } catch (error) {
         console.error("خطا در دریافت فیلم‌های محبوب برای اسلایدر:", error);
@@ -48,41 +50,42 @@ async function getFeaturedMovies() {
 // تابع برای دریافت فیلم‌های جدید
 async function getNewMovies() {
     try {
-        const apiKey = tokens[currentTokenIndex];
-        // جستجوی عمومی برای شبیه‌سازی فیلم‌های جدید (مثلاً فیلم‌های 2024)
         const res = await fetch(
-            `https://www.omdbapi.com/?s=movie&type=movie&y=2024&apikey=${apiKey}`
+            `https://api.themoviedb.org/3/movie/now_playing?api_key=${tmdbApiKey}&language=fa-IR`
         );
         const data = await res.json();
+        const movies = data.results;
         const container = document.getElementById("new-movies");
         container.innerHTML = "";
 
-        if (data.Response === "True") {
-            const movies = data.Search;
-            for (const movie of movies) {
-                // دریافت جزئیات بیشتر با imdb_id
-                const detailRes = await fetch(
-                    `https://www.omdbapi.com/?i=${movie.imdbID}&apikey=${apiKey}`
+        for (const movie of movies) {
+            let posterUrl = "https://via.placeholder.com/500x750?text=تصویر+موجود+نیست";
+            if (movie.imdb_id) {
+                const apiKey = tokens[currentTokenIndex];
+                const omdbRes = await fetch(
+                    `https://www.omdbapi.com/?i=${movie.imdb_id}&apikey=${apiKey}`
                 );
-                const detailData = await detailRes.json();
-                const posterUrl = detailData.Poster && detailData.Poster !== "N/A"
-                    ? detailData.Poster
-                    : "https://via.placeholder.com/500x750?text=تصویر+موجود+نیست";
-                console.log(`تصویر فیلم جدید برای "${detailData.Title}" از OMDb: ${posterUrl}`);
-
-                container.innerHTML += `
-                    <div class="group relative">
-                        <img src="${posterUrl}" alt="${detailData.Title}" class="w-full h-auto rounded-lg shadow-lg">
-                        <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
-                            <h3 class="text-lg font-bold">${detailData.Title}</h3>
-                            <p class="text-sm">${detailData.Plot ? detailData.Plot.slice(0, 100) + "..." : "توضیحات موجود نیست"}</p>
-                            <a href="/freemovie/movie/index.html?id=${movie.imdbID}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
-                        </div>
-                    </div>
-                `;
+                const omdbData = await omdbRes.json();
+                if (omdbData.Response === "True" && omdbData.Poster && omdbData.Poster !== "N/A") {
+                    posterUrl = omdbData.Poster;
+                    console.log(`تصویر فیلم جدید برای "${movie.title}" از OMDb: ${posterUrl}`);
+                } else {
+                    console.warn(`عدم دریافت تصویر از OMDb برای فیلم جدید "${movie.title}" (IMDb ID: ${movie.imdb_id})`);
+                }
+            } else {
+                console.warn(`شناسه IMDb برای "${movie.title}" در فیلم‌های جدید یافت نشد`);
             }
-        } else {
-            console.warn("جستجو برای فیلم‌های جدید در OMDb ناموفق بود:", data.Error);
+
+            container.innerHTML += `
+                <div class="group relative">
+                    <img src="${posterUrl}" alt="${movie.title}" class="w-full h-auto rounded-lg shadow-lg">
+                    <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
+                        <h3 class="text-lg font-bold">${movie.title}</h3>
+                        <p class="text-sm">${movie.overview.slice(0, 100)}...</p>
+                        <a href="/freemovie/movie/index.html?id=${movie.id}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
+                    </div>
+                </div>
+            `;
         }
     } catch (error) {
         console.error("خطا در دریافت فیلم‌های جدید:", error);
