@@ -19,13 +19,18 @@
     <!-- header -->
     <header class="bg-gray-800 p-4 shadow-md">
 	
-	<!-- Notification Section -->
-<section class="container mx-auto py-4 text-center bg-blue-900 text-white rounded-lg m-4">
-    <p class="text-lg">
-        اطلاعیه: از این پس می‌توانید از طریق آدرس 
-        <a href="https://FreeMovieZ.IR" class="underline hover:text-gray-300">FreeMovieZ.IR</a> 
-        وارد سایت شوید. برای حمایت از فیری مووی، لطفاً دکمه زیر را فشار دهید و توییتی منتشر کنید!
-    </p>
+<!-- Notification Section -->
+<section id="notification" class="container mx-auto py-4 text-center bg-blue-900 text-white rounded-lg m-4 hidden">
+    <div class="flex justify-between items-center">
+        <p class="text-lg flex-1">
+            اطلاعیه: از این پس می‌توانید از طریق آدرس 
+            <a href="https://FreeMovieZ.IR" class="underline hover:text-gray-300">FreeMovieZ.IR</a> 
+            وارد سایت شوید. برای حمایت از فیری مووی، لطفاً دکمه زیر را فشار دهید و توییتی منتشر کنید!
+        </p>
+        <button id="close-notification" class="ml-4 text-white hover:text-gray-300">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
     <button id="support-button" class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
         حمایت از فیری مووی
     </button>

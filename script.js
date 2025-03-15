@@ -69,6 +69,32 @@ document.getElementById("menu-toggle").addEventListener("click", () => {
     document.getElementById("mobile-menu").classList.toggle("hidden");
 });
 
+// تابع برای بررسی و نمایش اطلاعیه
+function manageNotification() {
+    const notification = document.getElementById("notification");
+    const lastShown = localStorage.getItem("notificationLastShown");
+    const isDismissed = localStorage.getItem("notificationDismissed");
+    const now = Date.now();
+    const oneWeekInMs = 7 * 24 * 60 * 60 * 1000; // یک هفته به میلی‌ثانیه
+
+    // اگر اطلاعیه قبلاً بسته شده باشد، نمایش داده نشود
+    if (isDismissed === "true") {
+        return;
+    }
+
+    // اگر زمان آخرین نمایش وجود ندارد یا یک هفته گذشته باشد، اطلاعیه نمایش داده شود
+    if (!lastShown || now - parseInt(lastShown) >= oneWeekInMs) {
+        notification.classList.remove("hidden");
+        localStorage.setItem("notificationLastShown", now.toString());
+    }
+}
+
+// تابع برای بستن اطلاعیه
+document.getElementById("close-notification").addEventListener("click", () => {
+    const notification = document.getElementById("notification");
+    notification.classList.add("hidden");
+    localStorage.setItem("notificationDismissed", "true");
+});
 
 // تابع برای انتشار توییت حمایتی
 document.getElementById("support-button").addEventListener("click", () => {
@@ -78,6 +104,9 @@ document.getElementById("support-button").addEventListener("click", () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
     window.open(twitterUrl, "_blank");
 });
+
+// فراخوانی تابع مدیریت اطلاعیه هنگام بارگذاری صفحه
+document.addEventListener("DOMContentLoaded", manageNotification);
 
 // فراخوانی توابع برای بارگذاری داده‌ها
 getFeaturedMovies();
