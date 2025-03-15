@@ -1,7 +1,4 @@
 const tmdbApiKey = "1dc4cbf81f0accf4fa108820d551dafc";
-const omdbApiKey = "c409b61f";
-const tokens = ["c409b61f"];
-let currentTokenIndex = 0;
 
 // تابع برای دریافت فیلم‌های محبوب (اسلایدر)
 async function getFeaturedMovies() {
@@ -14,36 +11,19 @@ async function getFeaturedMovies() {
         const slider = document.getElementById("slider");
         slider.innerHTML = "";
 
-        for (const movie of movies) {
-            let posterUrl = "https://via.placeholder.com/500x750?text=تصویر+موجود+نیست";
-            if (movie.imdb_id) {
-                const apiKey = tokens[currentTokenIndex];
-                const omdbRes = await fetch(
-                    `https://www.omdbapi.com/?i=${movie.imdb_id}&apikey=${apiKey}`
-                );
-                const omdbData = await omdbRes.json();
-                if (omdbData.Response === "True" && omdbData.Poster && omdbData.Poster !== "N/A") {
-                    posterUrl = omdbData.Poster;
-                    console.log(`تصویر پس‌زمینه اسلایدر برای "${movie.title}" از OMDb: ${posterUrl}`);
-                } else {
-                    console.warn(`عدم دریافت تصویر از OMDb برای اسلایدر "${movie.title}" (IMDb ID: ${movie.imdb_id})`);
-                }
-            } else {
-                console.warn(`شناسه IMDb برای "${movie.title}" در اسلایدر یافت نشد`);
-            }
-
+        movies.forEach((movie) => {
             slider.innerHTML += `
-                <div class="w-full flex-auto h-96 bg-cover bg-center snap-start" style="background-image: url('${posterUrl}')">
+                <div class="w-full flex-auto h-96 bg-cover bg-center snap-start" style="background-image: url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')">
                     <div class="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center">
                         <h2 class="text-3xl font-bold">${movie.title}</h2>
                         <p class="mt-2">${movie.overview.slice(0, 100)}...</p>
-                        <a href="/freemovie/movie/index.html?id=${movie.id}" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
+                        <a href="/movie/index.html?id=${movie.id}" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
                     </div>
                 </div>
             `;
-        }
+        });
     } catch (error) {
-        console.error("خطا در دریافت فیلم‌های محبوب برای اسلایدر:", error);
+        console.error("خطا در دریافت فیلم‌های محبوب:", error);
     }
 }
 
@@ -58,39 +38,23 @@ async function getNewMovies() {
         const container = document.getElementById("new-movies");
         container.innerHTML = "";
 
-        for (const movie of movies) {
-            let posterUrl = "https://via.placeholder.com/500x750?text=تصویر+موجود+نیست";
-            if (movie.imdb_id) {
-                const apiKey = tokens[currentTokenIndex];
-                const omdbRes = await fetch(
-                    `https://www.omdbapi.com/?i=${movie.imdb_id}&apikey=${apiKey}`
-                );
-                const omdbData = await omdbRes.json();
-                if (omdbData.Response === "True" && omdbData.Poster && omdbData.Poster !== "N/A") {
-                    posterUrl = omdbData.Poster;
-                    console.log(`تصویر فیلم جدید برای "${movie.title}" از OMDb: ${posterUrl}`);
-                } else {
-                    console.warn(`عدم دریافت تصویر از OMDb برای فیلم جدید "${movie.title}" (IMDb ID: ${movie.imdb_id})`);
-                }
-            } else {
-                console.warn(`شناسه IMDb برای "${movie.title}" در فیلم‌های جدید یافت نشد`);
-            }
-
+        movies.forEach((movie) => {
             container.innerHTML += `
                 <div class="group relative">
-                    <img src="${posterUrl}" alt="${movie.title}" class="w-full h-auto rounded-lg shadow-lg">
+                    <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" class="w-full h-auto rounded-lg shadow-lg">
                     <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
                         <h3 class="text-lg font-bold">${movie.title}</h3>
                         <p class="text-sm">${movie.overview.slice(0, 100)}...</p>
-                        <a href="/freemovie/movie/index.html?id=${movie.id}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
+                        <a href="/movie/index.html?id=${movie.id}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
                     </div>
                 </div>
             `;
-        }
+        });
     } catch (error) {
         console.error("خطا در دریافت فیلم‌های جدید:", error);
     }
 }
+
 
 // تابع برای تغییر تم
 document.getElementById("theme-toggle").addEventListener("click", () => {
@@ -104,6 +68,7 @@ document.getElementById("theme-toggle").addEventListener("click", () => {
 document.getElementById("menu-toggle").addEventListener("click", () => {
     document.getElementById("mobile-menu").classList.toggle("hidden");
 });
+
 
 // تابع برای بررسی و نمایش اطلاعیه
 function manageNotification() {
@@ -141,5 +106,10 @@ document.getElementById("support-button").addEventListener("click", () => {
 
 // فراخوانی توابع
 document.addEventListener("DOMContentLoaded", manageNotification);
+
+
+
+// فراخوانی توابع برای بارگذاری داده‌ها
 getFeaturedMovies();
 getNewMovies();
+getNewSeries();
