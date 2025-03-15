@@ -45,9 +45,34 @@ async function getNewMovies() {
     `;
   });
 }
+async function getNewSeries() {
+    const res = await fetch(
+        `https://api.themoviedb.org/3/tv/on_the_air?api_key=${tmdbApiKey}&language=fa-IR`
+    );
+    const data = await res.json();
+    const series = data.results;
+    const container = document.getElementById("new-series");
+    container.innerHTML = "";
+
+    series.forEach((show) => {
+        container.innerHTML += `
+            <div class="group relative">
+                <img src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.name}" class="w-full h-auto rounded-lg shadow-lg">
+                <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
+                    <h3 class="text-lg font-bold">${show.name}</h3>
+                    <p class="text-sm">${show.overview.slice(0, 100)}...</p>
+                    <a href="/freemovie/series/index.html?id=${movie.id}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
+                </div>
+            </div>
+        `;
+    });
+}
+
+// Call the function to load the series when the page loads
 
 getFeaturedMovies();
 getNewMovies();
+getNewSeries();
 
 document.getElementById("theme-toggle").addEventListener("click", () => {
   document.documentElement.classList.toggle("dark");
