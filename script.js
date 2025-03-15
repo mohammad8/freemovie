@@ -47,7 +47,7 @@ async function getNewMovies() {
 }
 async function getNewSeries() {
     const res = await fetch(
-        `https://api.themoviedb.org/3/tv/on_the_air?api_key=${tmdbApiKey}&language=fa-IR`
+        `https://api.themoviedb.org/3/tv/latest?api_key=${tmdbApiKey}&language=fa-IR`
     );
     const data = await res.json();
     const series = data.results;
