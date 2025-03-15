@@ -69,6 +69,16 @@ document.getElementById("menu-toggle").addEventListener("click", () => {
     document.getElementById("mobile-menu").classList.toggle("hidden");
 });
 
+
+// تابع برای انتشار توییت حمایتی
+document.getElementById("support-button").addEventListener("click", () => {
+    const tweetText = encodeURIComponent(
+        "من برای دانلود فیلم و سریال از #فیری_مووی استفاده میکنم و به شما هم پیشنهاد میکنم که از طریق آدرس FreeMovieZ.IR فیلم هاتون رو دانلود کنید. راستی، اینم بگم که فیری مووی رایگانه و نیاز به خرید اشتراک نداره، تبلیغات هم نداره و فیلتر هم نیست و حتی فیلما سانسور هم نشدن!"
+    );
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+    window.open(twitterUrl, "_blank");
+});
+
 // فراخوانی توابع برای بارگذاری داده‌ها
 getFeaturedMovies();
 getNewMovies();
