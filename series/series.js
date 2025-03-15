@@ -71,17 +71,17 @@ async function getSeriesDetails() {
     }
 
     // فعال‌سازی دکمه افزودن به واچ‌لیست پس از بارگذاری اطلاعات
-    document.getElementById("add-to-watchlist").addEventListener("click", () => {
-      let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
-      const normalizedSeriesId = String(seriesId); // اطمینان از رشته بودن seriesId
-      if (!watchlist.series.includes(normalizedSeriesId)) {
-        watchlist.series.push(normalizedSeriesId);
-        localStorage.setItem("watchlist", JSON.stringify(watchlist));
-        alert("سریال با موفقیت به واچ‌لیست اضافه شد!");
-      } else {
-        alert("این سریال قبلاً در واچ‌لیست شما وجود دارد!");
-      }
-    });
+		document.getElementById("add-to-watchlist").addEventListener("click", () => {
+	  let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
+	  const normalizedSeriesId = String(seriesId); // اطمینان از رشته بودن seriesId
+	  if (!watchlist.series.includes(normalizedSeriesId)) {
+		watchlist.series.push(normalizedSeriesId);
+		localStorage.setItem("watchlist", JSON.stringify(watchlist));
+		alert("سریال با موفقیت به واچ‌لیست اضافه شد!");
+	  } else {
+		alert("این سریال قبلاً در واچ‌لیست شما وجود دارد!");
+	  }
+	});
   } catch (error) {
     console.error("خطا در دریافت اطلاعات:", error);
     document.getElementById("download-links").innerHTML = `<p class="text-red-500">خطا در دریافت اطلاعات: ${error.message}</p>`;
