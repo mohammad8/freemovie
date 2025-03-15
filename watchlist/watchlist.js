@@ -38,21 +38,25 @@ async function loadWatchlist() {
 }
 
 async function fetchAndDisplayItem(itemId, type, container) {
-    const res = await fetch(`https://api.themoviedb.org/3/${type}/${itemId}?api_key=${tmdbApiKey}&language=fa-IR`);
-    const item = await res.json();
-    
-    const itemCard = `
-        <div class="group relative">
-            <img src="https://image.tmdb.org/t/p/w500${item.poster_path}" alt="${item.title || item.name}" class="w-full h-auto rounded-lg shadow-lg">
-            <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
-                <h3 class="text-lg font-bold">${item.title || item.name}</h3>
-                <p class="text-sm">${item.overview.slice(0, 100)}...</p>
-                <a href="/freemovie/${type}/index.html?id=${item.id}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">مشاهده</a>
-                <button class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" onclick="removeFromWatchlist('${item.id}', '${type}')">حذف از واچ لیست</button>
+    try {
+        const res = await fetch(`https://api.themoviedb.org/3/${type}/${itemId}?api_key=${tmdbApiKey}&language=fa-IR`);
+        const item = await res.json();
+        
+        const itemCard = `
+            <div class="group relative">
+                ${item.poster_path ? `<img src="https://image.tmdb.org/t/p/w500${item.poster_path}" alt="${item.title || item.name}" class="w-full h-auto rounded-lg shadow-lg">` : ''}
+                <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
+                    <h3 class="text-lg font-bold">${item.title || item.name}</h3>
+                    <p class="text-sm">${item.overview ? item.overview.slice(0, 100) + '...' : ''}</p>
+                    <a href="/freemovie/${type}/index.html?id=${item.id}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">مشاهده</a>
+                    <button class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" onclick="removeFromWatchlist('${item.id}', '${type}')">حذف از واچ لیست</button>
+                </div>
             </div>
-        </div>
-    `;
-    container.innerHTML += itemCard;
+        `;
+        container.innerHTML += itemCard;
+    } catch (error) {
+        console.error("خطا در دریافت اطلاعات آیتم:", error);
+    }
 }
 
 function removeFromWatchlist(itemId, type) {
