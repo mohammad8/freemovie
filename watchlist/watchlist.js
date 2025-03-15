@@ -5,12 +5,17 @@ async function loadWatchlist() {
     const seriesContainer = document.getElementById("series-watchlist");
     const emptyMessage = document.getElementById("empty-watchlist");
     
+    if (!moviesContainer || !seriesContainer) {
+        console.error("عناصر واچ‌لیست در HTML یافت نشدند.");
+        return;
+    }
+
     moviesContainer.innerHTML = '<div class="skeleton w-full h-64"></div>';
     seriesContainer.innerHTML = '<div class="skeleton w-full h-64"></div>';
 
     let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
     if (!watchlist.movies || !watchlist.series) {
-        watchlist = { movies: [], series: [] }; // Reset to default structure
+        watchlist = { movies: [], series: [] };
     }
 
     if (watchlist.movies.length === 0 && watchlist.series.length === 0) {
@@ -20,21 +25,19 @@ async function loadWatchlist() {
         return;
     }
 
+    emptyMessage.classList.add("hidden");
     moviesContainer.innerHTML = "";
     seriesContainer.innerHTML = "";
 
     try {
-        // Load movies
         for (const movieId of watchlist.movies) {
             await fetchAndDisplayItem(movieId, "movie", moviesContainer);
         }
-
-        // Load series
         for (const seriesId of watchlist.series) {
             await fetchAndDisplayItem(seriesId, "tv", seriesContainer);
         }
     } catch (error) {
-        console.error("خطا در دریافت اطلاعات واچ لیست:", error);
+        console.error("خطا در دریافت اطلاعات واچ‌لیست:", error);
         moviesContainer.innerHTML = '<div class="text-red-400">خطا در بارگذاری فیلم‌ها</div>';
         seriesContainer.innerHTML = '<div class="text-red-400">خطا در بارگذاری سریال‌ها</div>';
     }
@@ -43,6 +46,7 @@ async function loadWatchlist() {
 async function fetchAndDisplayItem(itemId, type, container) {
     try {
         const res = await fetch(`https://api.themoviedb.org/3/${type}/${itemId}?api_key=${tmdbApiKey}&language=fa-IR`);
+        if (!res.ok) throw new Error("پاسخ API ناموفق بود.");
         const item = await res.json();
         
         const itemCard = `
@@ -52,13 +56,13 @@ async function fetchAndDisplayItem(itemId, type, container) {
                     <h3 class="text-lg font-bold">${item.title || item.name || "بدون عنوان"}</h3>
                     <p class="text-sm">${item.overview ? item.overview.slice(0, 100) + '...' : 'بدون توضیحات'}</p>
                     <a href="/freemovie/${type}/index.html?id=${item.id}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">مشاهده</a>
-                    <button class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" onclick="removeFromWatchlist('${item.id}', '${type}')">حذف از واچ لیست</button>
+                    <button class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" onclick="removeFromWatchlist('${item.id}', '${type}')">حذف از واچ‌لیست</button>
                 </div>
             </div>
         `;
         container.innerHTML += itemCard;
     } catch (error) {
-        console.error("خطا در دریافت اطلاعات آیتم:", error);
+        console.error(`خطا در دریافت اطلاعات ${type === "movie" ? "فیلم" : "سریال"} با شناسه ${itemId}:`, error);
         container.innerHTML += '<div class="text-red-400">خطا در بارگذاری آیتم</div>';
     }
 }
@@ -73,11 +77,10 @@ function removeFromWatchlist(itemId, type) {
     }
 
     localStorage.setItem("watchlist", JSON.stringify(watchlist));
-    alert("آیتم از واچ لیست حذف شد!");
+    alert("آیتم از واچ‌لیست حذف شد!");
     loadWatchlist();
 }
 
-// Theme & Menu events
 document.getElementById("theme-toggle").addEventListener("click", () => {
     document.documentElement.classList.toggle("dark");
     const icon = document.querySelector("#theme-toggle i");
