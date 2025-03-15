@@ -15,7 +15,7 @@ async function getFeaturedMovies() {
         slider.innerHTML = "";
 
         for (const movie of movies) {
-            let posterUrl = "https://via.placeholder.com/500x750?text=No+Image";
+            let posterUrl = "https://via.placeholder.com/500x750?text=تصویر+موجود+نیست";
             if (movie.imdb_id) {
                 const apiKey = tokens[currentTokenIndex];
                 const omdbRes = await fetch(
@@ -24,12 +24,12 @@ async function getFeaturedMovies() {
                 const omdbData = await omdbRes.json();
                 if (omdbData.Response === "True" && omdbData.Poster && omdbData.Poster !== "N/A") {
                     posterUrl = omdbData.Poster;
-                    console.log(`Featured movie "${movie.title}" image from OMDb: ${posterUrl}`);
+                    console.log(`تصویر فیلم "${movie.title}" از OMDb: ${posterUrl}`);
                 } else {
-                    console.warn(`No valid poster from OMDb for "${movie.title}" (IMDb ID: ${movie.imdb_id})`);
+                    console.warn(`تصویر معتبری از OMDb برای "${movie.title}" (IMDb ID: ${movie.imdb_id}) یافت نشد`);
                 }
             } else {
-                console.warn(`No IMDb ID for "${movie.title}", using fallback image`);
+                console.warn(`شناسه IMDb برای "${movie.title}" وجود ندارد، از تصویر پیش‌فرض استفاده می‌شود`);
             }
 
             slider.innerHTML += `
@@ -59,7 +59,7 @@ async function getNewMovies() {
         container.innerHTML = "";
 
         for (const movie of movies) {
-            let posterUrl = "https://via.placeholder.com/500x750?text=No+Image";
+            let posterUrl = "https://via.placeholder.com/500x750?text=تصویر+موجود+نیست";
             if (movie.imdb_id) {
                 const apiKey = tokens[currentTokenIndex];
                 const omdbRes = await fetch(
@@ -68,12 +68,12 @@ async function getNewMovies() {
                 const omdbData = await omdbRes.json();
                 if (omdbData.Response === "True" && omdbData.Poster && omdbData.Poster !== "N/A") {
                     posterUrl = omdbData.Poster;
-                    console.log(`New movie "${movie.title}" image from OMDb: ${posterUrl}`);
+                    console.log(`تصویر فیلم جدید "${movie.title}" از OMDb: ${posterUrl}`);
                 } else {
-                    console.warn(`No valid poster from OMDb for "${movie.title}" (IMDb ID: ${movie.imdb_id})`);
+                    console.warn(`تصویر معتبری از OMDb برای "${movie.title}" (IMDb ID: ${movie.imdb_id}) یافت نشد`);
                 }
             } else {
-                console.warn(`No IMDb ID for "${movie.title}", using fallback image`);
+                console.warn(`شناسه IMDb برای "${movie.title}" وجود ندارد، از تصویر پیش‌فرض استفاده می‌شود`);
             }
 
             container.innerHTML += `
