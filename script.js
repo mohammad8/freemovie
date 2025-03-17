@@ -1,19 +1,20 @@
-const tmdbApiKey = "1dc4cbf81f0accf4fa108820d551dafc";
+const apiUrl = "https://freemoviez.ir/api/tmdb.php"; // آدرس واسط شما
 
 // تابع برای دریافت فیلم‌های محبوب (اسلایدر)
 async function getFeaturedMovies() {
     try {
-        const res = await fetch(
-            `https://api.themoviedb.org/3/movie/popular?api_key=${tmdbApiKey}&language=fa-IR`
-        );
+        const res = await fetch(`${apiUrl}?type=popular`);
         const data = await res.json();
-        const movies = data.results.slice(0, 5);
+        const movies = data.popular.slice(0, 5);
         const slider = document.getElementById("slider");
         slider.innerHTML = "";
 
         movies.forEach((movie) => {
+            // استفاده از URL تصاویر از سرور واسط
+            const backdropPath = `https://freemoviez.ir/api/images/backdrop_${movie.backdrop_path.replace('/', '')}`;
+            
             slider.innerHTML += `
-                <div class="w-full flex-auto h-96 bg-cover bg-center snap-start" style="background-image: url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')">
+                <div class="w-full flex-auto h-96 bg-cover bg-center snap-start" style="background-image: url('${backdropPath}')">
                     <div class="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center">
                         <h2 class="text-3xl font-bold">${movie.title}</h2>
                         <p class="mt-2">${movie.overview.slice(0, 100)}...</p>
@@ -30,18 +31,19 @@ async function getFeaturedMovies() {
 // تابع برای دریافت فیلم‌های جدید
 async function getNewMovies() {
     try {
-        const res = await fetch(
-            `https://api.themoviedb.org/3/movie/now_playing?api_key=${tmdbApiKey}&language=fa-IR`
-        );
+        const res = await fetch(`${apiUrl}?type=now_playing`);
         const data = await res.json();
-        const movies = data.results;
+        const movies = data.now_playing;
         const container = document.getElementById("new-movies");
         container.innerHTML = "";
 
         movies.forEach((movie) => {
+            // استفاده از URL تصاویر از سرور واسط
+            const posterPath = `https://freemoviez.ir/api/images/poster_${movie.poster_path.replace('/', '')}`;
+            
             container.innerHTML += `
                 <div class="group relative">
-                    <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" class="w-full h-auto rounded-lg shadow-lg">
+                    <img src="${posterPath}" alt="${movie.title}" class="w-full h-auto rounded-lg shadow-lg">
                     <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
                         <h3 class="text-lg font-bold">${movie.title}</h3>
                         <p class="text-sm">${movie.overview.slice(0, 100)}...</p>
@@ -55,7 +57,6 @@ async function getNewMovies() {
     }
 }
 
-
 // تابع برای تغییر تم
 document.getElementById("theme-toggle").addEventListener("click", () => {
     document.documentElement.classList.toggle("dark");
@@ -68,7 +69,6 @@ document.getElementById("theme-toggle").addEventListener("click", () => {
 document.getElementById("menu-toggle").addEventListener("click", () => {
     document.getElementById("mobile-menu").classList.toggle("hidden");
 });
-
 
 // تابع برای بررسی و نمایش اطلاعیه
 function manageNotification() {
@@ -104,12 +104,6 @@ document.getElementById("support-button").addEventListener("click", () => {
     window.open(twitterUrl, "_blank");
 });
 
-// فراخوانی توابع
-//document.addEventListener("DOMContentLoaded", manageNotification);
-
-
-
 // فراخوانی توابع برای بارگذاری داده‌ها
 getFeaturedMovies();
 getNewMovies();
-
