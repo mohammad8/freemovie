@@ -1,4 +1,4 @@
-const tmdbApiKey = "1dc4cbf81f0accf4fa108820d551dafc";
+const serverUrl = "https://freemoviez.ir/api/tmdb-movie.php"; // آدرس سرور شما
 const movieId = new URLSearchParams(window.location.search).get("id");
 
 async function getMovieDetails() {
@@ -7,55 +7,43 @@ async function getMovieDetails() {
       throw new Error("شناسه فیلم در URL وجود ندارد!");
     }
 
-    const res = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${tmdbApiKey}&language=fa-IR`
-    );
-    const movie = await res.json();
+    // ارسال درخواست به سرور برای دریافت اطلاعات فیلم
+    const res = await fetch(`${serverUrl}?id=${movieId}`);
+    const data = await res.json();
 
-    const externalIdsRes = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}/external_ids?api_key=${tmdbApiKey}`
-    );
-    const externalIds = await externalIdsRes.json();
-    const imdbID = externalIds.imdb_id ? externalIds.imdb_id.replace("tt", "") : "";
-    const year = movie.release_date ? movie.release_date.split("-")[0] : "نامشخص";
-
-    document.getElementById("title").textContent = movie.title || "نامشخص";
+    // نمایش اطلاعات فیلم
+    document.getElementById("title").textContent = data.title || "نامشخص";
     document.getElementById("overview").textContent =
-      movie.overview || "خلاصه‌ای در دسترس نیست.";
+      data.overview || "خلاصه‌ای در دسترس نیست.";
     document.getElementById("genre").innerHTML = `<strong>ژانر:</strong> ${
-      movie.genres ? movie.genres.map((g) => g.name).join(", ") : "نامشخص"
+      data.genre || "نامشخص"
     }`;
     document.getElementById(
       "year"
-    ).innerHTML = `<strong>سال تولید:</strong> ${year}`;
+    ).innerHTML = `<strong>سال تولید:</strong> ${data.year}`;
     document.getElementById(
       "rating"
-    ).innerHTML = `<strong>امتیاز:</strong> ${movie.vote_average || "بدون امتیاز"}/10`;
-    document.getElementById("poster").src = movie.poster_path
-      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-      : "https://via.placeholder.com/500";
-    document.getElementById("movie-bg").style.backgroundImage = movie.backdrop_path
-      ? `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`
-      : "url('https://via.placeholder.com/1920x1080')";
+    ).innerHTML = `<strong>امتیاز:</strong> ${data.rating}/10`;
+    document.getElementById("poster").src = data.poster;
+    document.getElementById("movie-bg").style.backgroundImage = `url('${data.backdrop}')`;
 
-    const trailerRes = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${tmdbApiKey}`
-    );
-    const trailerData = await trailerRes.json();
+    // نمایش تریلر
     const trailerContainer = document.getElementById("trailer");
-    if (trailerData.results && trailerData.results.length > 0) {
-      trailerContainer.src = `https://www.youtube.com/embed/${trailerData.results[0].key}`;
+    if (data.trailer) {
+      trailerContainer.src = data.trailer;
     } else {
       trailerContainer.innerHTML = '<p class="text-yellow-500">تریلر در دسترس نیست</p>';
     }
 
+    // نمایش لینک‌های دانلود
     const downloadLinks = `
-      <a href="https://berlin.saymyname.website/Movies/${year}/${imdbID}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">دانلود فیلم (لینک اصلی)</a>
-      <a href="https://tokyo.saymyname.website/Movies/${year}/${imdbID}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">دانلود فیلم (لینک کمکی)</a>
+      <a href="${data.download_links.primary}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">دانلود فیلم (لینک اصلی)</a>
+      <a href="${data.download_links.secondary}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">دانلود فیلم (لینک کمکی)</a>
       <button id="add-to-watchlist" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">افزودن به واچ لیست</button>
     `;
     document.getElementById("download-links").innerHTML = downloadLinks;
 
+    // افزودن فیلم به واچ لیست
     document
       .getElementById("add-to-watchlist")
       .addEventListener("click", () => {
@@ -76,6 +64,7 @@ async function getMovieDetails() {
 
 getMovieDetails();
 
+// تغییر تم
 document.getElementById("theme-toggle").addEventListener("click", () => {
   document.documentElement.classList.toggle("dark");
   const icon = document.querySelector("#theme-toggle i");
@@ -83,6 +72,7 @@ document.getElementById("theme-toggle").addEventListener("click", () => {
   icon.classList.toggle("fa-moon");
 });
 
+// نمایش/مخفی کردن منوی موبایل
 document.getElementById("menu-toggle").addEventListener("click", () => {
   document.getElementById("mobile-menu").classList.toggle("hidden");
 });
