@@ -11,7 +11,7 @@ async function getFeaturedMovies() {
 
         movies.forEach((movie) => {
             // استفاده از URL تصاویر از سرور واسط
-            const backdropPath = `https://freemoviez.ir/api/images/backdrop_${movie.backdrop_path.replace('/', '')}`;
+            const backdropPath = `https://freemoviez.ir/api/backdrop_${movie.backdrop_path.replace('/', '')}`;
             
             slider.innerHTML += `
                 <div class="w-full flex-auto h-96 bg-cover bg-center snap-start" style="background-image: url('${backdropPath}')">
@@ -39,7 +39,7 @@ async function getNewMovies() {
 
         movies.forEach((movie) => {
             // استفاده از URL تصاویر از سرور واسط
-            const posterPath = `https://freemoviez.ir/api/images/poster_${movie.poster_path.replace('/', '')}`;
+            const posterPath = `https://freemoviez.ir/api/poster_${movie.poster_path.replace('/', '')}`;
             
             container.innerHTML += `
                 <div class="group relative">
