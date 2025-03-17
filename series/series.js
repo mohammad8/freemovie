@@ -109,7 +109,7 @@ function generateQualityLinks(imdbID, season) {
   let qualityLinks = "";
   const qualities = [1, 2, 3, 4];
   qualities.forEach((quality) => {
-    const downloadLink = `https://subtitle.saymyname.website/DL/filmgir/?i=${imdbID}&f=${season}&q=${quality}`;
+    const downloadLink = `https://subtitle.saymyname.website/DL/filmgir/?i=tt${imdbID}&f=${season}&q=${quality}`;
     qualityLinks += `
       <a href="${downloadLink}" class="block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mt-2">
         دانلود فصل ${season} با کیفیت ${quality}
