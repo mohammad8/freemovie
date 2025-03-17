@@ -8,7 +8,7 @@ async function getMovieDetails() {
     }
 
     const res = await fetch(
-      `https://api.themoviedb.org/3/movie/tt${movieId}?api_key=${tmdbApiKey}&language=fa-IR`
+      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${tmdbApiKey}&language=fa-IR`
     );
     const movie = await res.json();
 
