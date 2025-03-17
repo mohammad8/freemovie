@@ -46,7 +46,7 @@ async function loadWatchlist() {
 
 async function fetchAndDisplayItem(itemId, type, container) {
     try {
-        const res = await fetch(`https://www.omdbapi.com/?apikey=${omdbApiKey}&i=${itemId}&plot=full`);
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${omdbApiKey}&i=tt${itemId}&plot=full`);
         if (!res.ok) throw new Error("پاسخ API OMDb ناموفق بود.");
         
         const data = await res.json();
