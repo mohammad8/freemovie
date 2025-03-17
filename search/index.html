@@ -12,6 +12,9 @@
         body { font-family: 'Vazir', sans-serif; direction: rtl; }
         .skeleton { background: #333; animation: pulse 1.5s infinite; height: 16rem; border-radius: 0.5rem; }
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        .search-container { display: flex; justify-content: space-between; gap: 2rem; }
+        .search-column { flex: 1; }
+        @media (max-width: 768px) { .search-container { flex-direction: column; } }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
@@ -41,22 +44,22 @@
         <div class="flex justify-center mb-8">
             <input type="text" id="search" class="w-full max-w-lg p-3 rounded-lg bg-gray-800 text-white" placeholder="فیلم یا سریالی که دنبالشی رو اینجا به انگلیسی بنویس ...">
         </div>
-        <section>
-            <h2 class="text-2xl font-bold mb-4">فیلم‌ها</h2>
-            <div id="movie-results" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Skeleton placeholders -->
-                <div class="skeleton"></div>
-                <div class="skeleton"></div>
-                <div class="skeleton"></div>
-                <div class="skeleton"></div>
-            </div>
-        </section>
-        <section class="mt-8">
-            <h2 class="text-2xl font-bold mb-4">سریال‌ها</h2>
-            <div id="tv-results" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Initially empty -->
-            </div>
-        </section>
+        <div class="search-container">
+            <section class="search-column">
+                <h2 id="movie-title" class="text-2xl font-bold mb-4">نتایج جستجو فیلم</h2>
+                <div id="movie-results" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Skeleton placeholders -->
+                    <div class="skeleton"></div>
+                    <div class="skeleton"></div>
+                </div>
+            </section>
+            <section class="search-column">
+                <h2 id="tv-title" class="text-2xl font-bold mb-4">نتایج جستجو سریال</h2>
+                <div id="tv-results" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Initially empty -->
+                </div>
+            </section>
+        </div>
     </main>
     <footer class="bg-gray-800 p-4 mt-auto">
         <div class="container mx-auto text-center">

@@ -8,8 +8,14 @@ async function searchMovies(query) {
         const data = await res.json();
         const movieResults = document.getElementById("movie-results");
         const tvResults = document.getElementById("tv-results");
+        const movieTitle = document.getElementById("movie-title");
+        const tvTitle = document.getElementById("tv-title");
         movieResults.innerHTML = "";
         tvResults.innerHTML = "";
+
+        // Update titles with query
+        movieTitle.textContent = `نتایج جستجو فیلم ${query}`;
+        tvTitle.textContent = `نتایج جستجو سریال ${query}`;
 
         console.log("Server response:", data); // Debugging
 
@@ -81,9 +87,9 @@ document.getElementById("search").addEventListener(
         if (query.length > 2) {
             searchMovies(query);
         } else {
+            document.getElementById("movie-title").textContent = "نتایج جستجو فیلم";
+            document.getElementById("tv-title").textContent = "نتایج جستجو سریال";
             document.getElementById("movie-results").innerHTML = `
-                <div class="skeleton"></div>
-                <div class="skeleton"></div>
                 <div class="skeleton"></div>
                 <div class="skeleton"></div>
             `;
