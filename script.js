@@ -1,33 +1,5 @@
 const apiUrl = "https://freemoviez.ir/api/tmdb.php"; // آدرس واسط شما
 
-// تابع برای دریافت فیلم‌های محبوب (اسلایدر)
-async function getFeaturedMovies() {
-    try {
-        const res = await fetch(`${apiUrl}?type=popular`);
-        const data = await res.json();
-        const movies = data.results.slice(0, 5); // تغییر به results به جای popular
-        const slider = document.getElementById("slider");
-        slider.innerHTML = "";
-
-        movies.forEach((movie) => {
-            // استفاده از URL تصاویر از سرور واسط
-            const backdropPath = `https://freemoviez.ir/api/images/backdrop_${movie.backdrop_path.replace('/', '')}`;
-            
-            slider.innerHTML += `
-                <div class="w-full flex-auto h-96 bg-cover bg-center snap-start" style="background-image: url('${backdropPath}')">
-                    <div class="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center">
-                        <h2 class="text-3xl font-bold">${movie.title}</h2>
-                        <p class="mt-2">${movie.overview.slice(0, 100)}...</p>
-                        <a href="/freemovie/movie/index.html?id=${movie.id}" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
-                    </div>
-                </div>
-            `;
-        });
-    } catch (error) {
-        console.error("خطا در دریافت فیلم‌های محبوب:", error);
-    }
-}
-
 // تابع برای دریافت فیلم‌های جدید
 async function getNewMovies() {
     try {
@@ -105,5 +77,4 @@ document.getElementById("support-button").addEventListener("click", () => {
 });
 
 // فراخوانی توابع برای بارگذاری داده‌ها
-getFeaturedMovies();
 getNewMovies();
