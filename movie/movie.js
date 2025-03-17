@@ -24,8 +24,12 @@ async function getMovieDetails() {
     document.getElementById(
       "rating"
     ).innerHTML = `<strong>امتیاز:</strong> ${data.rating}/10`;
-    document.getElementById("poster").src = ${data.backdrop('/', '')};
-    document.getElementById("movie-bg").style.backgroundImage = `url(${data.backdrop('/', '')})`;
+
+    // نمایش تصاویر
+    document.getElementById("poster").src = data.poster || "https://via.placeholder.com/500";
+    document.getElementById("movie-bg").style.backgroundImage = data.backdrop
+      ? `url('${data.backdrop}')`
+      : "url('https://via.placeholder.com/1920x1080')";
 
     // نمایش تریلر
     const trailerContainer = document.getElementById("trailer");
