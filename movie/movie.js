@@ -43,6 +43,7 @@ async function getMovieDetails() {
     const downloadLinks = `
       <a href="${data.download_links.primary}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">دانلود فیلم (لینک اصلی)</a>
       <a href="${data.download_links.secondary}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">دانلود فیلم (لینک کمکی)</a>
+      <a href="${data.download_links.tertiary}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">دانلود فیلم (لینک کمکی)</a>
       <button id="add-to-watchlist" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">افزودن به واچ لیست</button>
     `;
     document.getElementById("download-links").innerHTML = downloadLinks;
