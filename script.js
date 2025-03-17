@@ -105,11 +105,11 @@ document.getElementById("support-button").addEventListener("click", () => {
 });
 
 // فراخوانی توابع
-document.addEventListener("DOMContentLoaded", manageNotification);
+//document.addEventListener("DOMContentLoaded", manageNotification);
 
 
 
 // فراخوانی توابع برای بارگذاری داده‌ها
 getFeaturedMovies();
 getNewMovies();
-getNewSeries();
+
