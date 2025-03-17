@@ -14,7 +14,9 @@
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
         .search-container { display: flex; justify-content: space-between; gap: 2rem; }
         .search-column { flex: 1; }
-        @media (max-width: 768px) { .search-container { flex-direction: column; } }
+        .grid-container { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        @media (min-width: 768px) { .grid-container { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+        @media (max-width: 640px) { .search-container { flex-direction: column; } }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
@@ -47,7 +49,7 @@
         <div class="search-container">
             <section class="search-column">
                 <h2 id="movie-title" class="text-2xl font-bold mb-4">نتایج جستجو فیلم</h2>
-                <div id="movie-results" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div id="movie-results" class="grid-container">
                     <!-- Skeleton placeholders -->
                     <div class="skeleton"></div>
                     <div class="skeleton"></div>
@@ -55,7 +57,7 @@
             </section>
             <section class="search-column">
                 <h2 id="tv-title" class="text-2xl font-bold mb-4">نتایج جستجو سریال</h2>
-                <div id="tv-results" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div id="tv-results" class="grid-container">
                     <!-- Initially empty -->
                 </div>
             </section>
