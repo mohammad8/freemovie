@@ -24,7 +24,7 @@ async function getMovieDetails() {
     document.getElementById(
       "rating"
     ).innerHTML = `<strong>امتیاز:</strong> ${data.rating}/10`;
-    document.getElementById("poster").src = data.poster;
+    document.getElementById("poster").src = 'https://freemoviez.ir/api/images/poster'.${data.backdrop('/', '')};
     document.getElementById("movie-bg").style.backgroundImage = `url('https://freemoviez.ir/api/images/poster${data.backdrop('/', '')}')`;
 
     // نمایش تریلر
