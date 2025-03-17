@@ -17,7 +17,7 @@ async function searchMovies(query) {
           movie.Poster !== "N/A"
             ? movie.Poster
             : "https://via.placeholder.com/500x750?text=No+Image";
-        const imdbID = movie.imdbID;
+         const imdbID = movie.imdbID.replace(/^tt/, ""); // حذف tt از ابتدا
 
         results.innerHTML += `
           <div class="group relative">
