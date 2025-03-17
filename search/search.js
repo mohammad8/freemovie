@@ -8,10 +8,13 @@ async function searchMovies(query) {
     const results = document.getElementById("results");
     results.innerHTML = "";
 
+    // Debugging: Log the received data to the console
+    console.log("Server response:", data);
+
     if (data.success && data.results.length > 0) {
       data.results.forEach((movie) => {
         const poster = movie.poster || "https://via.placeholder.com/500x750?text=No+Image";
-        const imdbID = movie.imdbID.replace(/^tt/, ""); // Remove "tt" prefix
+        const movieId = movie.imdbID; // TMDb ID, no "tt" prefix to remove
 
         results.innerHTML += `
           <div class="group relative">
@@ -21,7 +24,7 @@ async function searchMovies(query) {
               <p class="text-sm">${movie.year}</p>
               <a href="${
                 movie.type === "series" ? "../series/index.html" : "../movie/index.html"
-              }?id=${imdbID}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
+              }?id=${movieId}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
             </div>
           </div>
         `;
