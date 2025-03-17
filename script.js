@@ -5,13 +5,13 @@ async function getFeaturedMovies() {
     try {
         const res = await fetch(`${apiUrl}?type=popular`);
         const data = await res.json();
-        const movies = data.popular.slice(0, 5);
+        const movies = data.results.slice(0, 5); // تغییر به results به جای popular
         const slider = document.getElementById("slider");
         slider.innerHTML = "";
 
         movies.forEach((movie) => {
             // استفاده از URL تصاویر از سرور واسط
-            const backdropPath = `https://freemoviez.ir/api/backdrop_${movie.backdrop_path.replace('/', '')}`;
+            const backdropPath = `https://freemoviez.ir/images/backdrop_${movie.backdrop_path.replace('/', '')}`;
             
             slider.innerHTML += `
                 <div class="w-full flex-auto h-96 bg-cover bg-center snap-start" style="background-image: url('${backdropPath}')">
@@ -33,13 +33,13 @@ async function getNewMovies() {
     try {
         const res = await fetch(`${apiUrl}?type=now_playing`);
         const data = await res.json();
-        const movies = data.now_playing;
+        const movies = data.results; // تغییر به results به جای now_playing
         const container = document.getElementById("new-movies");
         container.innerHTML = "";
 
         movies.forEach((movie) => {
             // استفاده از URL تصاویر از سرور واسط
-            const posterPath = `https://freemoviez.ir/api/poster_${movie.poster_path.replace('/', '')}`;
+            const posterPath = `https://freemoviez.ir/images/poster_${movie.poster_path.replace('/', '')}`;
             
             container.innerHTML += `
                 <div class="group relative">
