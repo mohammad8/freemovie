@@ -88,7 +88,7 @@ function removeFromWatchlist(itemId, type) {
     
     if (type === "movie") {
         watchlist.movies = watchlist.movies.filter(id => String(id) !== String(itemId));
-    } else if (type === "tv") {
+    } else if (type === "series") {
         watchlist.series = watchlist.series.filter(id => String(id) !== String(itemId));
     }
 
