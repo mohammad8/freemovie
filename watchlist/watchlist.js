@@ -57,7 +57,7 @@ async function fetchAndDisplayItem(itemId, type, container, apiSource) {
             const data = await res.json();
             if (data.Response === "False") throw new Error(data.Error);
             item = {
-                id: itemId,
+                id: itemId.replace(/^tt/, ""),
                 title: data.Title,
                 name: data.Title,
                 overview: data.Plot,

@@ -18,7 +18,7 @@ async function getSeriesDetails() {
     }
 
     const apiKey = tokens[currentTokenIndex];
-    const url = `https://www.omdbapi.com/?apikey=${apiKey}&i=${imdbId}&plot=full`;
+    const url = `https://www.omdbapi.com/?apikey=${apiKey}&i=tt${imdbId}&plot=full`;
     console.log("OMDb API URL:", url);
     const res = await fetch(url);
     if (!res.ok) {
