@@ -24,33 +24,10 @@ async function searchMovies(query) {
             const movies = data.results.filter(item => item.type === "movie");
             const tvShows = data.results.filter(item => item.type === "tv");
 
-            // Render movies
-            if (movies.length > 0) {
-                movies.forEach((movie) => {
-                    const poster = movie.poster || "https://via.placeholder.com/500x750?text=No+Image";
-                    const movieId = movie.imdbID;
-                    const title = movie.title || "نامشخص";
-                    const year = movie.year || "نامشخص";
-
-                    movieResults.innerHTML += `
-                        <div class="group relative">
-                            <img src="${poster}" alt="${title}" class="w-full h-auto rounded-lg shadow-lg">
-                            <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
-                                <h3 class="text-lg font-bold">${title}</h3>
-                                <p class="text-sm">${year}</p>
-                                <a href="../movie/index.html?id=${movieId}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
-                movieResults.innerHTML = '<p class="text-center text-red-500">فیلمی یافت نشد!</p>';
-            }
-
-            // Render TV shows
+            // Render TV shows (already prioritized in backend)
             if (tvShows.length > 0) {
                 tvShows.forEach((tv) => {
-                    const poster = tv.poster || "https://via.placeholder.com/500x750?text=No+Image";
+                    const poster = tv.poster; // Default handled in backend
                     const tvId = tv.imdbID;
                     const title = tv.title || "نامشخص";
                     const year = tv.year || "نامشخص";
@@ -68,6 +45,29 @@ async function searchMovies(query) {
                 });
             } else {
                 tvResults.innerHTML = '<p class="text-center text-red-500">سریالی یافت نشد!</p>';
+            }
+
+            // Render movies
+            if (movies.length > 0) {
+                movies.forEach((movie) => {
+                    const poster = movie.poster; // Default handled in backend
+                    const movieId = movie.imdbID;
+                    const title = movie.title || "نامشخص";
+                    const year = movie.year || "نامشخص";
+
+                    movieResults.innerHTML += `
+                        <div class="group relative">
+                            <img src="${poster}" alt="${title}" class="w-full h-auto rounded-lg shadow-lg">
+                            <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
+                                <h3 class="text-lg font-bold">${title}</h3>
+                                <p class="text-sm">${year}</p>
+                                <a href="../movie/index.html?id=${movieId}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">مشاهده</a>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                movieResults.innerHTML = '<p class="text-center text-red-500">فیلمی یافت نشد!</p>';
             }
         } else {
             movieResults.innerHTML = '<p class="text-center text-red-500">نتیجه‌ای یافت نشد!</p>';
