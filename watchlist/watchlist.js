@@ -35,7 +35,7 @@ async function loadWatchlist() {
             await fetchAndDisplayItem(movieId, "movie", moviesContainer, "tmdb");
         }
         for (const seriesId of watchlist.series) {
-            await fetchAndDisplayItem(seriesId, "tv", seriesContainer, "omdb");
+            await fetchAndDisplayItem(seriesId, "series", seriesContainer, "omdb");
         }
     } catch (error) {
         console.error("خطا در دریافت اطلاعات واچ‌لیست:", error);
