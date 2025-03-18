@@ -2,37 +2,27 @@
   "developers": [
     {
       "name": "ریک سانچز",
-      "subtitle": "توسعه‌دهنده اصلی",
-      "photo": "https://example.com/rick-sanchez.jpg",
-      "twitter": "https://twitter.com/ricksanchez",
-      "instagram": "https://instagram.com/ricksanchez",
-      "linkedin": "https://linkedin.com/in/ricksanchez"
+      "subtitle": "Wubba lubba dub dub",
+      "photo": "https://avatars.githubusercontent.com/u/101627789?v=4",
+      "twitter": "https://twitter.com/m4tinbeigi",
+      "instagram": "https://instagram.com/m4tinbeigi",
+      "linkedin": "https://linkedin.com/in/matinbeigi"
     },
     {
       "name": "ارمین جوان",
       "subtitle": "طراح رابط کاربری",
-      "photo": "https://example.com/armin-javaan.jpg",
-      "twitter": "https://twitter.com/arminjavaan",
-      "instagram": "https://instagram.com/arminjavaan",
-      "linkedin": "https://linkedin.com/in/arminjavaan"
-    }
+      "photo": "https://avatars.githubusercontent.com/u/186399251?v=4",
+      "twitter": "https://twitter.com/armin_np_",
+      "instagram": "https://instagram.com/armin_javaan"    }
   ],
   "sponsors": [
     {
       "name": "حامی اول",
-      "subtitle": "شریک فناوری",
+      "subtitle": "",
       "photo": "https://example.com/sponsor1.jpg",
       "twitter": "https://twitter.com/sponsor1",
       "instagram": "https://instagram.com/sponsor1",
       "linkedin": "https://linkedin.com/in/sponsor1"
-    },
-    {
-      "name": "حامی دوم",
-      "subtitle": "حامی مالی",
-      "photo": "https://example.com/sponsor2.jpg",
-      "twitter": "https://twitter.com/sponsor2",
-      "instagram": "https://instagram.com/sponsor2",
-      "linkedin": "https://linkedin.com/in/sponsor2"
     }
   ]
 }

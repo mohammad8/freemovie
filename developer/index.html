@@ -13,7 +13,7 @@
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
     </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center">
     <!-- Header -->
     <header class="bg-gray-800 p-4 shadow-md">
         <div class="container mx-auto flex flex-row justify-between items-center">
@@ -35,32 +35,33 @@
     </header>
 
     <!-- Developers Section -->
-    <section class="container mx-auto py-8">
-        <h2 class="text-2xl font-bold mb-8 text-center">معرفی توسعه‌دهندگان</h2>
-        <div id="developers" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 m-4">
-            <div class="skeleton w-full h-64"></div>
-            <div class="skeleton w-full h-64"></div>
-            <div class="skeleton w-full h-64"></div>
+    <section class="container mx-auto py-8 text-center">
+        <h2 class="text-2xl font-bold mb-8">معرفی توسعه‌دهندگان</h2>
+        <div id="developers" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 m-4 justify-items-center">
+            <div class="skeleton w-64 h-64"></div>
+            <div class="skeleton w-64 h-64"></div>
+            <div class="skeleton w-64 h-64"></div>
         </div>
     </section>
 
     <!-- Sponsors Section -->
-    <section class="container mx-auto py-8">
-        <h2 class="text-2xl font-bold mb-8 text-center">معرفی حامیان</h2>
-        <div id="sponsors" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 m-4">
-            <div class="skeleton w-full h-64"></div>
-            <div class="skeleton w-full h-64"></div>
-            <div class="skeleton w-full h-64"></div>
+<!--     <section class="container mx-auto py-8 text-center">
+        <h2 class="text-2xl font-bold mb-8">معرفی حامیان</h2>
+        <div id="sponsors" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 m-4 justify-items-center">
+            <div class="skeleton w-64 h-64"></div>
+            <div class="skeleton w-64 h-64"></div>
+            <div class="skeleton w-64 h-64"></div>
         </div>
-    </section>
+    </section> 
+-->
 
     <!-- Footer -->
-    <footer class="bg-gray-800 p-4 mt-auto">
-        <div class="container mx-auto text-center">
+    <footer class="bg-gray-800 p-4 mt-auto w-full text-center">
+        <div class="container mx-auto">
             <p>
                 فیری مووی - ساخته شده توسط 
-                <a href="https://example.com/m4tinbeigi" class="hover:text-gray-300">ریک سانچز</a> و 
-                <a href="https://example.com/armin_np_" class="hover:text-gray-300">ارمین جوان</a> با 🤍 | 
+                <a href="https://github.com/m4tinbeigi" class="hover:text-gray-300">ریک سانچز</a> و 
+                <a href="https://github.com/armin_np_" class="hover:text-gray-300">ارمین جوان</a> با 🤍 | 
                 استفاده از فونت 
                 <a href="https://rastikerdar.github.io/vazir-font/" class="hover:text-gray-300">وزیر</a> به یاد 
                 <a href="https://example.com/saber-rastikerdar" class="hover:text-gray-300">صابر راستی کردار</a><br>
@@ -89,7 +90,7 @@
                 developersContainer.innerHTML = ''; // Remove skeletons
                 data.developers.forEach(dev => {
                     const developerCard = `
-                        <div class="bg-gray-800 p-4 rounded-lg shadow-md">
+                        <div class="bg-gray-800 p-4 rounded-lg shadow-md w-64">
                             <img src="${dev.photo}" alt="${dev.name}" class="w-24 h-24 rounded-full mx-auto">
                             <h3 class="text-lg font-bold mt-4">${dev.name}</h3>
                             <p class="text-sm text-gray-400">${dev.subtitle}</p>
@@ -108,7 +109,7 @@
                 sponsorsContainer.innerHTML = ''; // Remove skeletons
                 data.sponsors.forEach(sponsor => {
                     const sponsorCard = `
-                        <div class="bg-gray-800 p-4 rounded-lg shadow-md">
+                        <div class="bg-gray-800 p-4 rounded-lg shadow-md w-64">
                             <img src="${sponsor.photo}" alt="${sponsor.name}" class="w-24 h-24 rounded-full mx-auto">
                             <h3 class="text-lg font-bold mt-4">${sponsor.name}</h3>
                             <p class="text-sm text-gray-400">${sponsor.subtitle}</p>
