@@ -4,9 +4,11 @@ const tmdbSeriesUrl = "https://freemoviez.ir/api/tmdb-series.php";
 async function loadWatchlist() {
     const moviesContainer = document.getElementById("movies-watchlist");
     const seriesContainer = document.getElementById("series-watchlist");
+    const moviesHeading = document.getElementById("movies-heading");
+    const seriesHeading = document.getElementById("series-heading");
     const emptyMessage = document.getElementById("empty-watchlist");
 
-    if (!moviesContainer || !seriesContainer || !emptyMessage) {
+    if (!moviesContainer || !seriesContainer || !moviesHeading || !seriesHeading || !emptyMessage) {
         console.error("عناصر واچ‌لیست در HTML یافت نشدند.");
         return;
     }
@@ -23,6 +25,8 @@ async function loadWatchlist() {
     if (normalizedWatchlist.movies.length === 0 && normalizedWatchlist.series.length === 0) {
         moviesContainer.innerHTML = "";
         seriesContainer.innerHTML = "";
+        moviesHeading.classList.add("hidden");
+        seriesHeading.classList.add("hidden");
         emptyMessage.classList.remove("hidden");
         return;
     }
@@ -31,16 +35,32 @@ async function loadWatchlist() {
     moviesContainer.innerHTML = "";
     seriesContainer.innerHTML = "";
 
+    let moviesCount = 0;
+    let seriesCount = 0;
+
     const moviePromises = normalizedWatchlist.movies.map(movieId =>
         fetchAndDisplayItem(movieId, "movie", moviesContainer, tmdbMovieUrl)
+            .then(() => moviesCount++)
+            .catch(() => {}) // Silent catch to continue despite errors
     );
     const seriesPromises = normalizedWatchlist.series.map(seriesId =>
         fetchAndDisplayItem(seriesId, "series", seriesContainer, tmdbSeriesUrl)
+            .then(() => seriesCount++)
+            .catch(() => {}) // Silent catch to continue despite errors
     );
 
     await Promise.all([...moviePromises, ...seriesPromises]).catch(error => {
         console.error("خطا در بارگذاری واچ‌لیست:", error);
     });
+
+    // Show headings only if there are successfully fetched items
+    moviesHeading.classList.toggle("hidden", moviesCount === 0);
+    seriesHeading.classList.toggle("hidden", seriesCount === 0);
+
+    // Show empty message if no items were successfully fetched
+    if (moviesCount === 0 && seriesCount === 0) {
+        emptyMessage.classList.remove("hidden");
+    }
 }
 
 async function fetchAndDisplayItem(itemId, type, container, apiUrl) {
@@ -72,7 +92,7 @@ async function fetchAndDisplayItem(itemId, type, container, apiUrl) {
         container.innerHTML += itemCard;
     } catch (error) {
         console.error(`خطا در دریافت اطلاعات ${type === "movie" ? "فیلم" : "سریال"} با شناسه ${itemId}:`, error.message);
-        container.innerHTML += '<div class="text-red-500 text-center">خطا در بارگذاری آیتم</div>';
+        throw error; // Re-throw to allow counting failed fetches
     }
 }
 

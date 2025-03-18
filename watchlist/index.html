@@ -45,9 +45,9 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
-            justify-content: center; /* Center the entire grid */
-            max-width: 1200px; /* Optional: Limit max width */
-            margin: 0 auto; /* Center the grid container */
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 1rem;
         }
         @media (max-width: 640px) {
@@ -87,11 +87,11 @@
     <main class="container mx-auto py-8 flex-1">
         <h2 class="text-2xl font-bold mb-8 text-center">واچ لیست شما</h2>
         <section aria-labelledby="movies-heading">
-            <h3 id="movies-heading" class="text-xl font-bold mb-4 text-center">فیلم‌ها</h3>
+            <h3 id="movies-heading" class="text-xl font-bold mb-4 text-center hidden">فیلم‌ها</h3>
             <div id="movies-watchlist" class="watchlist-grid"></div>
         </section>
         <section aria-labelledby="series-heading">
-            <h3 id="series-heading" class="text-xl font-bold mb-4 text-center">سریال‌ها</h3>
+            <h3 id="series-heading" class="text-xl font-bold mb-4 text-center hidden">سریال‌ها</h3>
             <div id="series-watchlist" class="watchlist-grid"></div>
         </section>
         <div id="empty-watchlist" class="text-center hidden" role="alert">
