@@ -102,13 +102,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const fab = document.getElementById('fab');
     const fabOptions = document.getElementById('fabOptions');
 
-    // باز و بسته کردن منو با کلیک روی دکمه
+
     fab.addEventListener('click', function(event) {
-        event.stopPropagation(); // جلوگیری از بسته شدن منو به دلیل کلیک خارجی
+        event.stopPropagation(); 
         fabOptions.classList.toggle('hidden');
     });
 
-    // بستن منو با کلیک خارج از دکمه
+
     document.addEventListener('click', function(event) {
         if (!fab.contains(event.target) && !fabOptions.contains(event.target)) {
             fabOptions.classList.add('hidden');
