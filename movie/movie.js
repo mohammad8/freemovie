@@ -1,6 +1,17 @@
 const serverUrl = "https://freemoviez.ir/api/tmdb-movie.php";
 const movieId = new URLSearchParams(window.location.search).get("id");
 
+// تابع کمکی برای بررسی وضعیت لینک
+async function checkLinkStatus(url) {
+  try {
+    const res = await fetch(url, { method: "HEAD" }); // استفاده از HEAD برای کاهش مصرف داده
+    return res.ok; // true اگر وضعیت 200-299 باشد
+  } catch (error) {
+    console.error(`خطا در بررسی لینک ${url}:`, error);
+    return false; // در صورت خطا، لینک نامعتبر فرض می‌شود
+  }
+}
+
 async function getMovieDetails() {
   try {
     if (!movieId) {
@@ -67,26 +78,42 @@ async function getMovieDetails() {
     };
     document.getElementById("movie-schema").textContent = JSON.stringify(schema);
 
-    // لینک‌های دانلود
-    const downloadLinks = `
-      <a href="${data.download_links.primary}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک اصلی)</a>
-      <a href="${data.download_links.secondary}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک کمکی)</a>
-      <a href="${data.download_links.tertiary}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک کمکی)</a>
-      <button id="add-to-watchlist" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">افزودن به واچ لیست</button>
-    `;
-    document.getElementById("download-links").innerHTML = downloadLinks;
+    // بررسی و فیلتر کردن لینک‌های دانلود
+    const downloadLinksData = [
+      { url: data.download_links.primary, text: "دانلود فیلم (لینک اصلی)" },
+      { url: data.download_links.secondary, text: "دانلود فیلم (لینک کمکی)" },
+      { url: data.download_links.tertiary, text: "دانلود فیلم (لینک کمکی)" }
+    ];
+
+    const validLinks = [];
+    for (const link of downloadLinksData) {
+      const isValid = await checkLinkStatus(link.url);
+      if (isValid) {
+        validLinks.push(`<a href="${link.url}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">${link.text}</a>`);
+      }
+    }
+
+    // افزودن دکمه واچ لیست به لینک‌های معتبر
+    const watchlistButton = `<button id="add-to-watchlist" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">افزودن به واچ لیست</button>`;
+    const downloadLinksHtml = validLinks.length > 0 
+      ? validLinks.join(" ") + " " + watchlistButton 
+      : '<p class="text-yellow-500">هیچ لینک دانلودی در دسترس نیست</p>';
+    document.getElementById("download-links").innerHTML = downloadLinksHtml;
 
     // افزودن به واچ لیست
-    document.getElementById("add-to-watchlist").addEventListener("click", () => {
-      let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
-      if (!watchlist.movies.includes(movieId)) {
-        watchlist.movies.push(movieId);
-        localStorage.setItem("watchlist", JSON.stringify(watchlist));
-        alert("فیلم به واچ لیست اضافه شد!");
-      } else {
-        alert("فیلم قبلاً در واچ لیست است!");
-      }
-    });
+    if (validLinks.length > 0) {
+      document.getElementById("add-to-watchlist").addEventListener("click", () => {
+        let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
+        if (!watchlist.movies.includes(movieId)) {
+          watchlist.movies.push(movieId);
+          localStorage.setItem("watchlist", JSON.stringify(watchlist));
+          alert("فیلم به واچ لیست اضافه شد!");
+        } else {
+          alert("فیلم قبلاً در واچ لیست است!");
+        }
+      });
+    }
+
   } catch (error) {
     console.error("خطا در دریافت اطلاعات:", error);
     document.getElementById("download-links").innerHTML = `<p class="text-red-500">خطا در دریافت اطلاعات: ${error.message}</p>`;
