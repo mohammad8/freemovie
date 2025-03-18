@@ -4,41 +4,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>فیری مووی - صفحه اصلی</title>
+    <meta name="description" content="جدیدترین فیلم‌ها و سریال‌های پرطرفدار در فیری مووی.">
+    <meta property="og:title" content="فیری مووی - صفحه اصلی">
+    <meta property="og:description" content="جدیدترین فیلم‌ها و سریال‌های پرطرفدار در فیری مووی.">
+    <meta property="og:image" content="https://m4tinbeigi-official.github.io/freemovie/logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="فیری مووی - صفحه اصلی">
+    <meta name="twitter:description" content="جدیدترین فیلم‌ها و سریال‌های پرطرفدار در فیری مووی.">
+    <meta name="twitter:image" content="https://m4tinbeigi-official.github.io/freemovie/logo.png">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@latest/dist/font-face.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="icon" href="/freemovie/fav/favicon.ico" type="favicon/ico">
-    <script src="https://cdn.counter.dev/script.js" data-id="42aac39f-23a3-416e-a788-12c3bafefb62" data-utcoffset="4"></script>
+    <link rel="icon" href="/freemovie/fav/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.counter.dev/script.js" data-id="42aac39f-23a3-416e-a788-12c3bafefb62" data-utcoffset="4" async></script>
     <style>
-        body { font-family: 'Vazir', sans-serif; direction: rtl; }
-        .skeleton { background: #333; animation: pulse 1.5s infinite; height: 16rem; border-radius: 0.5rem; }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
-        .nav-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+        body {
+            font-family: 'Vazir', sans-serif;
+            direction: rtl;
+        }
+        .skeleton {
+            background: #333;
+            animation: pulse 1.5s infinite;
+            height: 240px; /* Match card height */
+            border-radius: 0.5rem;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .nav-container a, .nav-container button {
+            padding: 0.5rem;
+            transition: color 0.3s;
+        }
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 180px));
+            gap: 1rem;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        .content-grid .group {
+            width: 100%;
+            max-width: 180px;
+        }
+        .content-grid img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            aspect-ratio: 2 / 3;
+            max-height: 270px;
+            border-radius: 0.5rem;
+        }
+        @media (max-width: 640px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+                width: 100%;
+                padding: 1rem 0;
+            }
+            .nav-container a, .nav-container button {
+                width: 100%;
+                text-align: center;
+            }
+            .content-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 120px));
+                gap: 0.75rem;
+                padding: 0.5rem;
+            }
+            .content-grid .group {
+                max-width: 120px;
+            }
+            .content-grid img {
+                max-height: 180px;
+            }
+            .content-grid .absolute {
+                padding: 0.5rem;
+            }
+            .content-grid h3 {
+                font-size: 0.9rem;
+            }
+            .content-grid p {
+                font-size: 0.7rem;
+            }
+            .content-grid a {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.8rem;
+            }
+        }
+        @media (min-width: 641px) {
+            .content-grid {
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+            .content-grid .absolute {
+                padding: 1rem;
+            }
+            .content-grid h3 {
+                font-size: 1.125rem;
+            }
+            .content-grid p {
+                font-size: 0.875rem;
+            }
+            .content-grid a {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
-    <!-- header -->
     <header class="bg-gray-800 p-4 shadow-md">
         <div class="container mx-auto flex flex-col items-center">
-            <!-- Logo Row -->
             <div class="flex items-center mb-4">
-                <a href="https://m4tinbeigi-official.github.io/freemovie/">
-                    <img src="https://m4tinbeigi-official.github.io/freemovie/logo.png" alt="لوگو" class="h-10 mr-2">
+                <a href="https://m4tinbeigi-official.github.io/freemovie/" aria-label="صفحه اصلی فیری مووی">
+                    <img src="https://m4tinbeigi-official.github.io/freemovie/logo.png" alt="لوگوی فیری مووی" class="h-10 mr-2">
                 </a>
                 <h1 class="text-xl font-bold">فیری مووی</h1>
             </div>
-            <!-- Navigation Row -->
             <nav class="nav-container">
-                <a href="/freemovie" class="hover:text-gray-300">خانه</a>
-                <a href="/freemovie/search/index.html" class="hover:text-gray-300">جستجو</a>
-                <a href="/freemovie/watchlist/index.html" class="hover:text-gray-300">واچ لیست</a>
-                <button id="theme-toggle" class="hover:text-gray-300"><i class="fas fa-sun"></i></button>
+                <a href="/freemovie" class="hover:text-gray-300" aria-label="خانه">خانه</a>
+                <a href="/freemovie/search/index.html" class="hover:text-gray-300" aria-label="جستجو">جستجو</a>
+                <a href="/freemovie/watchlist/index.html" class="hover:text-gray-300" aria-label="واچ لیست">واچ لیست</a>
+                <button id="theme-toggle" class="hover:text-gray-300" aria-label="تغییر تم">
+                    <i class="fas fa-sun"></i>
+                </button>
             </nav>
         </div>
 
-        <!-- Notification Section -->
         <section id="notification" class="container mx-auto py-4 text-center bg-blue-900 text-white rounded-lg m-4 hidden">
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center px-4">
                 <p class="text-lg flex-1">
                     اطلاعیه: از این پس می‌توانید از طریق آدرس 
                     <a href="https://FreeMovieZ.IR" class="underline hover:text-gray-300">FreeMovieZ.IR</a> 
@@ -54,54 +157,51 @@
         </section>
     </header>
 
-<!-- New Movies Section -->
-<section class="container mx-auto py-8">
-    <h2 class="text-2xl font-bold mb-8 text-center">جدیدترین فیلم‌ها</h2>
-    <div id="new-movies" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4">
-        <!-- Skeleton placeholders -->
-        <div class="skeleton w-full"></div>
-        <div class="skeleton w-full"></div>
-        <div class="skeleton w-full"></div>
-        <div class="skeleton w-full"></div>
-    </div>
-</section>
+    <section class="container mx-auto py-8">
+        <h2 class="text-2xl font-bold mb-8 text-center">جدیدترین فیلم‌ها</h2>
+        <div id="new-movies" class="content-grid"></div>
+    </section>
 
-<!-- Trending TV Series Section -->
-<section class="container mx-auto py-8">
-    <h2 class="text-2xl font-bold mb-8 text-center">سریال‌های پرطرفدار</h2>
-    <div id="trending-tv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4">
-        <!-- Skeleton placeholders -->
-        <div class="skeleton w-full"></div>
-        <div class="skeleton w-full"></div>
-        <div class="skeleton w-full"></div>
-        <div class="skeleton w-full"></div>
-    </div>
-</section>
+    <section class="container mx-auto py-8">
+        <h2 class="text-2xl font-bold mb-8 text-center">سریال‌های پرطرفدار</h2>
+        <div id="trending-tv" class="content-grid"></div>
+    </section>
 
     <footer class="bg-gray-800 p-4 mt-auto">
-        <div class="container mx-auto text-center">
+        <div class="container mx-auto text-center text-sm">
             <p>
                 فیری مووی - ساخته شده توسط 
                 <a href="https://x.com/m4tinbeigi" class="hover:text-gray-300">ریک سانچز</a> و 
                 <a href="https://x.com/armin_np_" class="hover:text-gray-300">ارمین جوان</a> با 🤍 | 
-                استفاده از فونت 
-                <a href="https://rastikerdar.github.io/vazir-font/" class="hover:text-gray-300">وزیر</a> به یاد 
+                فونت: <a href="https://rastikerdar.github.io/vazir-font/" class="hover:text-gray-300">وزیر</a> به یاد 
                 <a href="https://example.com/saber-rastikerdar" class="hover:text-gray-300">صابر راستی کردار</a><br>
-                در این وبسایت از وب سرویس 
-                <a href="https://www.omdbapi.com/" class="hover:text-gray-300">OMDB</a> و 
-                <a href="https://www.themoviedb.org/" class="hover:text-gray-300">TMDB</a> برای جستجو و اطلاعات فیلم‌ها و از 
-                <a href="https://almasmovie.website/" class="hover:text-gray-300">الماس مووی</a> برای دانلود فیلم‌ها استفاده می‌شود.
+                وب سرویس‌ها: 
+                <a href="https://www.omdbapi.com/" class="hover:text-gray-300">OMDB</a>، 
+                <a href="https://www.themoviedb.org/" class="hover:text-gray-300">TMDB</a> | 
+                دانلود: <a href="https://almasmovie.website/" class="hover:text-gray-300">الماس مووی</a>
             </p>
-            <div class="social-icons mb-2">
-                <a class="github-button" href="https://github.com/m4tinbeigi-official/freemovie" data-icon="octicon-star" data-show-count="true" aria-label="Star m4tinbeigi-official/freemovie on GitHub">Star</a>
+            <div class="social-icons mt-2">
+                <a class="github-button" href="https://github.com/m4tinbeigi-official/freemovie" data-icon="octicon-star" data-show-count="true" aria-label="ستاره دادن به پروژه فیری مووی در گیت‌هاب">Star</a>
                 <script async defer src="https://buttons.github.io/buttons.js"></script>
             </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9208c4d9e930afbf',t:'MTc0MjAwNzcxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script src="script.js" defer></script>
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark');
+            const isDark = body.classList.contains('dark');
+            themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.remove('dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    </script>
 </body>
 </html>
