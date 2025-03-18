@@ -35,11 +35,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 1.5rem; /* Consistent spacing */
+            gap: 1.5rem;
         }
         .nav-container a, .nav-container button {
             padding: 0.5rem;
             transition: color 0.3s;
+        }
+        .watchlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            justify-content: center; /* Center the entire grid */
+            max-width: 1200px; /* Optional: Limit max width */
+            margin: 0 auto; /* Center the grid container */
+            padding: 1rem;
         }
         @media (max-width: 640px) {
             .nav-container {
@@ -79,14 +88,14 @@
         <h2 class="text-2xl font-bold mb-8 text-center">واچ لیست شما</h2>
         <section aria-labelledby="movies-heading">
             <h3 id="movies-heading" class="text-xl font-bold mb-4 text-center">فیلم‌ها</h3>
-            <div id="movies-watchlist" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4"></div>
+            <div id="movies-watchlist" class="watchlist-grid"></div>
         </section>
         <section aria-labelledby="series-heading">
             <h3 id="series-heading" class="text-xl font-bold mb-4 text-center">سریال‌ها</h3>
-            <div id="series-watchlist" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4"></div>
+            <div id="series-watchlist" class="watchlist-grid"></div>
         </section>
         <div id="empty-watchlist" class="text-center hidden" role="alert">
-            <p class="text-lg">واچ لیست شما خالی است. لطفاً از صفحه جستجو یا جزئیات فیلم و سریال، مواردی را به واچ لیست اضافه کنید.</p>
+            <p class="text-lg">واچ لیست شما خالی است. لطفاً از صفحه جستجو یا جزئیات فیلم و سریال، مواردی را به واچ لیست اضافه کنید。</p>
             <a href="/freemovie/search/index.html" class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">جستجوی فیلم و سریال</a>
         </div>
     </main>
