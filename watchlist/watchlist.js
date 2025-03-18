@@ -1,12 +1,12 @@
-const tmdbApiKey = "1dc4cbf81f0accf4fa108820d551dafc";
-const omdbApiKey = "c409b61f";
+const tmdbMovieUrl = "https://freemoviez.ir/api/tmdb-movie.php";
+const tmdbSeriesUrl = "https://freemoviez.ir/api/tmdb-series.php";
 
 async function loadWatchlist() {
     const moviesContainer = document.getElementById("movies-watchlist");
     const seriesContainer = document.getElementById("series-watchlist");
     const emptyMessage = document.getElementById("empty-watchlist");
-    
-    if (!moviesContainer || !seriesContainer) {
+
+    if (!moviesContainer || !seriesContainer || !emptyMessage) {
         console.error("عناصر واچ‌لیست در HTML یافت نشدند.");
         return;
     }
@@ -32,64 +32,65 @@ async function loadWatchlist() {
 
     try {
         for (const movieId of watchlist.movies) {
-            await fetchAndDisplayItem(movieId, "movie", moviesContainer);
+            await fetchAndDisplayItem(movieId, "movie", moviesContainer, tmdbMovieUrl);
         }
         for (const seriesId of watchlist.series) {
-            await fetchAndDisplayItem(seriesId, "series", seriesContainer, "omdb");
+            await fetchAndDisplayItem(seriesId, "series", seriesContainer, tmdbSeriesUrl);
         }
     } catch (error) {
         console.error("خطا در دریافت اطلاعات واچ‌لیست:", error);
-        moviesContainer.innerHTML = '<div class="text-red-400">خطا در بارگذاری فیلم‌ها</div>';
-        seriesContainer.innerHTML = '<div class="text-red-400">خطا در بارگذاری سریال‌ها</div>';
+        moviesContainer.innerHTML = '<div class="text-red-500">خطا در بارگذاری فیلم‌ها</div>';
+        seriesContainer.innerHTML = '<div class="text-red-500">خطا در بارگذاری سریال‌ها</div>';
     }
 }
 
-async function fetchAndDisplayItem(itemId, type, container) {
+async function fetchAndDisplayItem(itemId, type, container, apiUrl) {
     try {
-        const res = await fetch(`https://www.omdbapi.com/?apikey=${omdbApiKey}&i=tt${itemId}&plot=full`);
-        if (!res.ok) throw new Error("پاسخ API OMDb ناموفق بود.");
-        
+        const res = await fetch(`${apiUrl}?id=${itemId}`);
+        if (!res.ok) throw new Error(`خطای سرور: ${res.status}`);
+
         const data = await res.json();
-        if (data.Response === "False") throw new Error(data.Error);
+        if (!data.success) throw new Error(data.error || "خطا در دریافت اطلاعات");
 
         const item = {
-            id: itemId.replace(/^tt/, ""),
-            title: data.Title,
-            name: data.Title,
-            overview: data.Plot,
-            poster_path: data.Poster !== "N/A" ? data.Poster : "https://via.placeholder.com/300x450?text=No+Image"
+            id: itemId,
+            title: data.title || "نامشخص",
+            overview: data.overview || "خلاصه‌ای در دسترس نیست.",
+            poster: data.poster || "https://via.placeholder.com/300x450?text=No+Image"
         };
 
         const itemCard = `
             <div class="group relative">
-                <img src="${item.poster_path}" alt="${item.title || item.name}" class="w-full h-auto rounded-lg shadow-lg">
+                <img src="${item.poster}" alt="پوستر ${type === 'movie' ? 'فیلم' : 'سریال'} ${item.title}" class="w-full h-auto rounded-lg shadow-lg">
                 <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
-                    <h3 class="text-lg font-bold">${item.title || item.name || "بدون عنوان"}</h3>
-                    <p class="text-sm">${item.overview ? item.overview.slice(0, 100) + '...' : 'بدون توضیحات'}</p>
+                    <h3 class="text-lg font-bold text-white">${item.title}</h3>
+                    <p class="text-sm text-gray-200">${item.overview.slice(0, 100) + '...'}</p>
                     <a href="/freemovie/${type}/index.html?id=${item.id}" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">مشاهده</a>
                     <button class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" onclick="removeFromWatchlist('${item.id}', '${type}')">حذف از واچ‌لیست</button>
                 </div>
             </div>
         `;
         container.innerHTML += itemCard;
-
     } catch (error) {
         console.error(`خطا در دریافت اطلاعات ${type === "movie" ? "فیلم" : "سریال"} با شناسه ${itemId}:`, error);
-        container.innerHTML += '<div class="text-red-400">خطا در بارگذاری آیتم</div>';
+        container.innerHTML += '<div class="text-red-500">خطا در بارگذاری آیتم</div>';
     }
 }
-
 
 function removeFromWatchlist(itemId, type) {
     let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
     
+    const normalizedItemId = String(itemId); // Normalize ID to string for consistent comparison
     if (type === "movie") {
-        watchlist.movies = watchlist.movies.filter(id => String(id) !== String(itemId));
+        watchlist.movies = watchlist.movies.filter(id => String(id) !== normalizedItemId);
     } else if (type === "series") {
-        watchlist.series = watchlist.series.filter(id => String(id) !== String(itemId));
+        watchlist.series = watchlist.series.filter(id => String(id) !== normalizedItemId);
     }
 
     localStorage.setItem("watchlist", JSON.stringify(watchlist));
     alert("آیتم از واچ‌لیست حذف شد!");
-    loadWatchlist();
+    loadWatchlist(); // Refresh the watchlist display
 }
+
+// Load the watchlist when the page loads
+document.addEventListener("DOMContentLoaded", loadWatchlist);
