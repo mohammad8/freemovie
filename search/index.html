@@ -21,25 +21,21 @@
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
     <header class="bg-gray-800 p-4 shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center">
-                <a href="../">
-                    <img src="../logo.png" alt="لوگو" class="h-10 mr-2">
+        <div class="container mx-auto flex flex-col items-center">
+            <!-- Logo Row -->
+            <div class="flex items-center mb-4">
+                <a href="https://m4tinbeigi-official.github.io/freemovie/">
+                    <img src="https://m4tinbeigi-official.github.io/freemovie/logo.png" alt="لوگو" class="h-10 mr-2">
                 </a>
                 <h1 class="text-xl font-bold">فیری مووی</h1>
             </div>
-            <nav class="hidden md:flex space-x-4 space-x-reverse">
-                <a href="../" class="hover:text-gray-300">خانه</a>
-                <a href="./index.html" class="hover:text-gray-300">جستجو</a>
-                <a href="../watchlist/index.html" class="hover:text-gray-300">واچ لیست</a>
+            <!-- Navigation Row -->
+            <nav class="nav-container">
+                <a href="/freemovie" class="hover:text-gray-300">خانه</a>
+                <a href="/freemovie/search/index.html" class="hover:text-gray-300">جستجو</a>
+                <a href="/freemovie/watchlist/index.html" class="hover:text-gray-300">واچ لیست</a>
                 <button id="theme-toggle" class="hover:text-gray-300"><i class="fas fa-sun"></i></button>
             </nav>
-            <button class="md:hidden" id="menu-toggle"><i class="fas fa-bars"></i></button>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-700 p-4">
-            <a href="../" class="block py-2 hover:text-gray-300">خانه</a>
-            <a href="./index.html" class="block py-2 hover:text-gray-300">جستجو</a>
-            <a href="../watchlist/index.html" class="block py-2 hover:text-gray-300">واچ لیست</a>
         </div>
     </header>
     <main class="container mx-auto flex-1 py-8">
