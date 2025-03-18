@@ -26,7 +26,6 @@
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
-    <!-- Header -->
     <header class="bg-gray-800 p-4 shadow-md">
         <div class="container mx-auto flex flex-col items-center">
             <div class="flex items-center mb-4">
@@ -46,7 +45,6 @@
         </div>
     </header>
 
-    <!-- Watchlist Section -->
     <main class="container mx-auto py-8 flex-1">
         <h2 class="text-2xl font-bold mb-8 text-center">واچ لیست شما</h2>
         <section aria-labelledby="movies-heading">
@@ -63,7 +61,6 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="bg-gray-800 p-4 mt-auto">
         <div class="container mx-auto text-center text-sm">
             <p>
@@ -84,10 +81,8 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="watchlist.js" defer></script>
     <script>
-        // Theme Toggle Functionality
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
         themeToggle.addEventListener('click', () => {
@@ -96,7 +91,6 @@
             themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
-        // Load saved theme
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             body.classList.remove('dark');
