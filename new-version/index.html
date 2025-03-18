@@ -3,68 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فیری مووی - صفحه اصلی</title>
+    <title>فیری مووی - اطلاعیه مهم</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@latest/dist/font-face.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="/freemovie/fav/favicon.ico" type="favicon/ico">
-
     <style>
-        body { font-family: 'Vazir', sans-serif; direction: rtl; }
-        .skeleton { background: #333; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        body {
+            font-family: 'Vazir', sans-serif;
+            direction: rtl;
+            background: linear-gradient(135deg, #1f2937, #111827);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .message-container {
+            background: rgba(31, 41, 55, 0.9);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            color: white;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+        .message-text {
+            font-size: 1.25rem;
+            line-height: 1.75;
+            margin-bottom: 1.5rem;
+        }
+        .timer {
+            font-size: 1.5rem;
+            color: #facc15;
+            margin-bottom: 1rem;
+        }
+        .enter-button {
+            background-color: #10b981;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .enter-button:hover {
+            background-color: #059669;
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col">
-    <!-- header -->
-    <header class="bg-gray-800 p-4 shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center">
-                <img src="logo.png" alt="لوگو" class="h-10 mr-2">
-                <h1 class="text-xl font-bold ">فیری مووی</h1>
-            </div>
-            <nav class="hidden md:flex space-x-4 space-x-reverse">
-                <a href="index.html" class="hover:text-gray-300">خانه</a>
-                <a href="search/index.html" class="hover:text-gray-300">جستجو</a>
-                <a href="watchlist/index.html" class="hover:text-gray-300">واچ لیست</a>
-                <button id="theme-toggle" class="hover:text-gray-300"><i class="fas fa-sun"></i></button>
-            </nav>
-            <button class="md:hidden" id="menu-toggle"><i class="fas fa-bars"></i></button>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-700 p-4">
-            <a href="index.html" class="block py-2 hover:text-gray-300">خانه</a>
-            <a href="/search/index.html" class="block py-2 hover:text-gray-300">جستجو</a>
-            <a href="/watchlist/index.html" class="block py-2 hover:text-gray-300">واچ لیست</a>
-        </div>
-    </header>
+<body>
+    <div class="message-container">
+        <h1 class="message-title">به فیری مووی خوش آمدید</h1>
+        <p class="message-text">
+            فیری مووی را از آدرس کوتاه و مطمئن <a href="https://b2n.ir/freemovie" class="underline text-green-400 hover:text-green-300">b2n.ir/freemovie</a> دنبال کنید.  
+            حتی در صورت فیلتر شدن، این لینک شما را همیشه به ما متصل نگه می‌دارد.  
+            فیری مووی، سرگرمی رایگان و بدون تبلیغات، همیشه در دسترس شماست.
+        </p>
+        <p class="timer">انتقال خودکار به سایت در <span id="countdown">30</span> ثانیه</p>
+        <a href="https://b2n.ir/freemovie" class="enter-button">ورود به فیری مووی</a>
+    </div>
 
-    <!-- slider -->
-    <section class="relative">
-        <div id="slider" class="flex overflow-x-auto snap-x snap-mandatory gap-2 p-2 text-center pt-4">
-            <div class="skeleton w-full h-96"></div>
-        </div>
-    </section>
-
-    <!-- new movies -->
-    <section class="container mx-auto py-8">
-        <h2 class="text-2xl font-bold mb-8 text-center">جدیدترین فیلم‌ها</h2>
-        <div id="new-movies" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4">
-            <div class="skeleton w-full h-64"></div>
-            <div class="skeleton w-full h-64"></div>
-            <div class="skeleton w-full h-64"></div>
-            <div class="skeleton w-full h-64"></div>
-        </div>
-    </section>
-
-    <!-- footer -->
-    <footer class="bg-gray-800 p-4 mt-auto">
-        <div class="container mx-auto text-center">
-            <p>فیری مووی - همه فیلم‌ها و سریال‌ها در یکجا</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-    
-    
+    <script>
+        let timeLeft = 30;
+        const countdownElement = document.getElementById('countdown');
+        
+        const timer = setInterval(() => {
+            timeLeft--;
+            countdownElement.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                window.location.href = 'https://b2n.ir/freemovie';
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
