@@ -46,12 +46,10 @@ async function loadWatchlist() {
 async function fetchAndDisplayItem(itemId, type, container, apiUrl) {
     try {
         const response = await fetch(`${apiUrl}?id=${itemId}`);
-        if (!response.ok) {
-            throw new Error(`خطای سرور: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`خطای سرور: ${response.status}`);
 
         const data = await response.json();
-        console.log(`Response for ${type} ID ${itemId}:`, data); // For debugging
+        console.log(`Response for ${type} ID ${itemId}:`, data); // Debugging
 
         const item = {
             id: itemId,
@@ -79,7 +77,7 @@ async function fetchAndDisplayItem(itemId, type, container, apiUrl) {
 }
 
 function removeFromWatchlist(itemId, type) {
-    let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
+    const watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
     const normalizedItemId = String(itemId);
 
     if (type === "movie") {
