@@ -1,5 +1,5 @@
 // URL of the JSON file (assumed to be hosted at this location; adjust as needed)
-const jsonUrl = "https://freemoviez.ir/api/about.json";
+const jsonUrl = "about.json";
 
 // Function to fetch and display about page content
 async function fetchAndDisplayAboutContent() {
