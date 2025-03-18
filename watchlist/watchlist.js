@@ -93,7 +93,3 @@ function removeFromWatchlist(itemId, type) {
     alert("آیتم از واچ‌لیست حذف شد!");
     loadWatchlist();
 }
-
-document.getElementById("menu-toggle").addEventListener("click", () => {
-    document.getElementById("mobile-menu").classList.toggle("hidden");
-});
