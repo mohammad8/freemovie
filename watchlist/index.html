@@ -57,7 +57,7 @@
             max-width: 100%;
             height: auto;
             object-fit: cover;
-            aspect-ratio: 2 / 3; /* Maintain poster aspect ratio */
+            aspect-ratio: 2 / 3;
         }
         @media (max-width: 640px) {
             .nav-container {
@@ -76,23 +76,49 @@
                 padding: 0.5rem;
             }
             .watchlist-grid .group {
-                max-width: 150px; /* Cap item width on mobile */
+                max-width: 150px;
             }
             .watchlist-grid img {
-                max-height: 200px; /* Limit height on mobile */
+                max-height: 200px;
             }
             .watchlist-grid .absolute {
-                padding: 0.5rem; /* Reduce padding for overlay on mobile */
+                padding: 0.5rem;
             }
             .watchlist-grid h3 {
-                font-size: 0.9rem; /* Smaller title */
+                font-size: 0.9rem;
             }
             .watchlist-grid p {
-                font-size: 0.7rem; /* Smaller overview */
+                font-size: 0.7rem;
             }
             .watchlist-grid a, .watchlist-grid button {
-                padding: 0.25rem 0.5rem; /* Smaller buttons */
+                padding: 0.25rem 0.5rem;
                 font-size: 0.8rem;
+            }
+        }
+        @media (min-width: 641px) {
+            .watchlist-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+            .watchlist-grid .group {
+                max-width: 200px;
+            }
+            .watchlist-grid img {
+                max-height: 300px;
+            }
+            .watchlist-grid .absolute {
+                padding: 1rem;
+            }
+            .watchlist-grid h3 {
+                font-size: 1.125rem;
+            }
+            .watchlist-grid p {
+                font-size: 0.875rem;
+            }
+            .watchlist-grid a, .watchlist-grid button {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
             }
         }
     </style>
