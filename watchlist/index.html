@@ -43,12 +43,21 @@
         }
         .watchlist-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 1rem;
             justify-content: center;
             max-width: 1200px;
             margin: 0 auto;
             padding: 1rem;
+        }
+        .watchlist-grid .group {
+            width: 100%;
+        }
+        .watchlist-grid img {
+            max-width: 100%;
+            height: auto;
+            object-fit: cover;
+            aspect-ratio: 2 / 3; /* Maintain poster aspect ratio */
         }
         @media (max-width: 640px) {
             .nav-container {
@@ -60,6 +69,30 @@
             .nav-container a, .nav-container button {
                 width: 100%;
                 text-align: center;
+            }
+            .watchlist-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 0.75rem;
+                padding: 0.5rem;
+            }
+            .watchlist-grid .group {
+                max-width: 150px; /* Cap item width on mobile */
+            }
+            .watchlist-grid img {
+                max-height: 200px; /* Limit height on mobile */
+            }
+            .watchlist-grid .absolute {
+                padding: 0.5rem; /* Reduce padding for overlay on mobile */
+            }
+            .watchlist-grid h3 {
+                font-size: 0.9rem; /* Smaller title */
+            }
+            .watchlist-grid p {
+                font-size: 0.7rem; /* Smaller overview */
+            }
+            .watchlist-grid a, .watchlist-grid button {
+                padding: 0.25rem 0.5rem; /* Smaller buttons */
+                font-size: 0.8rem;
             }
         }
     </style>

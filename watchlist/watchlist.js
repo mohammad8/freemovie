@@ -41,23 +41,21 @@ async function loadWatchlist() {
     const moviePromises = normalizedWatchlist.movies.map(movieId =>
         fetchAndDisplayItem(movieId, "movie", moviesContainer, tmdbMovieUrl)
             .then(() => moviesCount++)
-            .catch(() => {}) // Silent catch to continue despite errors
+            .catch(() => {})
     );
     const seriesPromises = normalizedWatchlist.series.map(seriesId =>
         fetchAndDisplayItem(seriesId, "series", seriesContainer, tmdbSeriesUrl)
             .then(() => seriesCount++)
-            .catch(() => {}) // Silent catch to continue despite errors
+            .catch(() => {})
     );
 
     await Promise.all([...moviePromises, ...seriesPromises]).catch(error => {
         console.error("خطا در بارگذاری واچ‌لیست:", error);
     });
 
-    // Show headings only if there are successfully fetched items
     moviesHeading.classList.toggle("hidden", moviesCount === 0);
     seriesHeading.classList.toggle("hidden", seriesCount === 0);
 
-    // Show empty message if no items were successfully fetched
     if (moviesCount === 0 && seriesCount === 0) {
         emptyMessage.classList.remove("hidden");
     }
@@ -92,7 +90,7 @@ async function fetchAndDisplayItem(itemId, type, container, apiUrl) {
         container.innerHTML += itemCard;
     } catch (error) {
         console.error(`خطا در دریافت اطلاعات ${type === "movie" ? "فیلم" : "سریال"} با شناسه ${itemId}:`, error.message);
-        throw error; // Re-throw to allow counting failed fetches
+        throw error;
     }
 }
 
