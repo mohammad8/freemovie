@@ -92,7 +92,7 @@ function manageNotification() {
     });
 
     supportButton.addEventListener("click", () => {
-        window.open("https://twitter.com/intent/tweet?text=من از فیری مووی حمایت می‌کنم! یک سایت عالی برای تماشای فیلم و سریال: https://FreeMovieZ.IR @m4tinbeigi @armin_np_", "_blank");
+        window.open("https://twitter.com/intent/tweet?text=من از فیری مووی حمایت می‌کنم! یک سایت عالی برای تماشای فیلم و سریال: https://b2n.ir/freemovie", "_blank");
     });
 }
 
