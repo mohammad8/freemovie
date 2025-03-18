@@ -1,20 +1,30 @@
-const serverUrl = "https://freemoviez.ir/api/tmdb-series.php"; // Hypothetical API endpoint
+// تعریف URL سرور و استخراج شناسه سریال از URL
+const serverUrl = "https://freemoviez.ir/api/tmdb-series.php"; // آدرس فرضی API
 const seriesId = new URLSearchParams(window.location.search).get("id");
 
+// تابع اصلی برای دریافت و نمایش جزئیات سریال
 async function getSeriesDetails() {
     try {
+        // بررسی وجود شناسه سریال در URL
         if (!seriesId) {
             throw new Error("شناسه سریال در URL وجود ندارد!");
         }
 
+        // ارسال درخواست به سرور
         const res = await fetch(`${serverUrl}?id=${seriesId}`);
+        if (!res.ok) {
+            throw new Error(`خطای سرور: ${res.status}`);
+        }
+
+        // تبدیل پاسخ به JSON
         const data = await res.json();
 
+        // بررسی موفقیت‌آمیز بودن پاسخ
         if (!data.success) {
             throw new Error(data.error || "خطا در دریافت اطلاعات سریال");
         }
 
-        // Update page content
+        // به‌روزرسانی محتوای صفحه
         const title = data.title || "نامشخص";
         document.getElementById("title").textContent = title;
         document.getElementById("overview").textContent = data.overview || "خلاصه‌ای در دسترس نیست.";
@@ -22,7 +32,7 @@ async function getSeriesDetails() {
         document.getElementById("year").innerHTML = `<strong>سال تولید:</strong> ${data.year || "نامشخص"}`;
         document.getElementById("rating").innerHTML = `<strong>امتیاز:</strong> ${data.rating || "نامشخص"}/10`;
 
-        // Update images
+        // به‌روزرسانی تصاویر
         const poster = data.poster || "https://via.placeholder.com/500";
         document.getElementById("poster").src = poster;
         document.getElementById("poster").alt = `پوستر سریال ${title}`;
@@ -30,7 +40,7 @@ async function getSeriesDetails() {
             ? `url('${data.backdrop}')`
             : "url('https://via.placeholder.com/1920x1080')";
 
-        // Update trailer
+        // به‌روزرسانی تریلر
         const trailerContainer = document.getElementById("trailer");
         if (data.trailer) {
             trailerContainer.innerHTML = `<iframe src="${data.trailer}" title="تریلر سریال ${title}" frameborder="0" allowfullscreen class="w-full h-64 md:h-96 mx-auto"></iframe>`;
@@ -38,7 +48,7 @@ async function getSeriesDetails() {
             trailerContainer.innerHTML = '<p class="text-yellow-500">تریلر در دسترس نیست</p>';
         }
 
-        // Update meta tags and page title
+        // به‌روزرسانی متا تگ‌ها و عنوان صفحه
         document.getElementById("meta-title").textContent = `${title} - فیری مووی`;
         document.querySelector('meta[name="description"]').setAttribute("content", `${data.overview || "جزئیات و دانلود سریال " + title + " در فیری مووی."}`);
         document.querySelector('meta[property="og:title"]').setAttribute("content", `${title} - فیری مووی`);
@@ -48,7 +58,7 @@ async function getSeriesDetails() {
         document.querySelector('meta[name="twitter:description"]').setAttribute("content", data.overview || "جزئیات و دانلود سریال در فیری مووی.");
         document.querySelector('meta[name="twitter:image"]').setAttribute("content", poster);
 
-        // Update structured data (Schema)
+        // به‌روزرسانی داده‌های ساختاریافته (Schema)
         const schema = {
             "@context": "https://schema.org",
             "@type": "TVSeries",
@@ -71,7 +81,7 @@ async function getSeriesDetails() {
         };
         document.getElementById("series-schema").textContent = JSON.stringify(schema);
 
-        // Generate download links
+        // تولید لینک‌های دانلود
         const downloadLinksContainer = document.getElementById("download-links");
         let downloadHtml = '';
         if (data.download_links && Object.keys(data.download_links).length > 0) {
@@ -90,26 +100,27 @@ async function getSeriesDetails() {
         }
         downloadLinksContainer.innerHTML = downloadHtml;
 
-        // Add to watchlist functionality
+        // افزودن قابلیت اضافه کردن به واچ‌لیست
         document.getElementById("add-to-watchlist").addEventListener("click", () => {
             let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
             const normalizedSeriesId = String(seriesId);
             if (!watchlist.series.includes(normalizedSeriesId)) {
                 watchlist.series.push(normalizedSeriesId);
                 localStorage.setItem("watchlist", JSON.stringify(watchlist));
-                alert("سریال به واچ لیست اضافه شد!");
+                alert("سریال به واچ‌لیست اضافه شد!");
             } else {
-                alert("سریال قبلاً در واچ لیست است!");
+                alert("سریال قبلاً در واچ‌لیست است!");
             }
         });
 
     } catch (error) {
+        // نمایش خطا در کنسول و صفحه
         console.error("خطا در دریافت اطلاعات:", error);
         document.getElementById("download-links").innerHTML = `<p class="text-red-500">خطا در دریافت اطلاعات: ${error.message}</p>`;
     }
 }
 
-// Theme toggle functionality
+// عملکرد تغییر تم
 document.getElementById("theme-toggle").addEventListener("click", () => {
     document.documentElement.classList.toggle("dark");
     const icon = document.querySelector("#theme-toggle i");
@@ -117,10 +128,10 @@ document.getElementById("theme-toggle").addEventListener("click", () => {
     icon.classList.toggle("fa-moon");
 });
 
-// Mobile menu toggle functionality
+// عملکرد منوی موبایل
 document.getElementById("menu-toggle").addEventListener("click", () => {
     document.getElementById("mobile-menu").classList.toggle("hidden");
 });
 
-// Execute the function to fetch series details
+// اجرای تابع برای دریافت جزئیات سریال
 getSeriesDetails();
