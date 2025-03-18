@@ -1,0 +1,38 @@
+{
+  "developers": [
+    {
+      "name": "ریک سانچز",
+      "subtitle": "توسعه‌دهنده اصلی",
+      "photo": "https://example.com/rick-sanchez.jpg",
+      "twitter": "https://twitter.com/ricksanchez",
+      "instagram": "https://instagram.com/ricksanchez",
+      "linkedin": "https://linkedin.com/in/ricksanchez"
+    },
+    {
+      "name": "ارمین جوان",
+      "subtitle": "طراح رابط کاربری",
+      "photo": "https://example.com/armin-javaan.jpg",
+      "twitter": "https://twitter.com/arminjavaan",
+      "instagram": "https://instagram.com/arminjavaan",
+      "linkedin": "https://linkedin.com/in/arminjavaan"
+    }
+  ],
+  "sponsors": [
+    {
+      "name": "حامی اول",
+      "subtitle": "شریک فناوری",
+      "photo": "https://example.com/sponsor1.jpg",
+      "twitter": "https://twitter.com/sponsor1",
+      "instagram": "https://instagram.com/sponsor1",
+      "linkedin": "https://linkedin.com/in/sponsor1"
+    },
+    {
+      "name": "حامی دوم",
+      "subtitle": "حامی مالی",
+      "photo": "https://example.com/sponsor2.jpg",
+      "twitter": "https://twitter.com/sponsor2",
+      "instagram": "https://instagram.com/sponsor2",
+      "linkedin": "https://linkedin.com/in/sponsor2"
+    }
+  ]
+}
