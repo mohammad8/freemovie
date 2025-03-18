@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="/freemovie/fav/favicon.ico" type="favicon/ico">
     <script src="https://cdn.counter.dev/script.js" data-id="42aac39f-23a3-416e-a788-12c3bafefb62" data-utcoffset="4"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <style>
         body { font-family: 'Vazir', sans-serif; direction: rtl; }
         .skeleton { background: #333; animation: pulse 1.5s infinite; height: 16rem; border-radius: 0.5rem; }
@@ -19,39 +20,22 @@
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
     <!-- header -->
     <header class="bg-gray-800 p-4 shadow-md">
-        <div class="container mx-auto flex flex-col items-center">
-            <!-- Logo Row -->
-            <div class="flex items-center mb-4">
-                <a href="https://m4tinbeigi-official.github.io/freemovie/">
-                    <img src="https://m4tinbeigi-official.github.io/freemovie/logo.png" alt="لوگو" class="h-10 mr-2">
-                </a>
-                <h1 class="text-xl font-bold">فیری مووی</h1>
-            </div>
-            <!-- Navigation Row -->
-            <nav class="nav-container">
-                <a href="/freemovie" class="hover:text-gray-300">خانه</a>
-                <a href="/freemovie/search/index.html" class="hover:text-gray-300">جستجو</a>
-                <a href="/freemovie/watchlist/index.html" class="hover:text-gray-300">واچ لیست</a>
+        <div class="container mx-auto flex flex-row justify-between items-center">
+            <!-- Navigation -->
+            <nav class="flex items-center space-x-4">
+                <a href="/freemovie" class="hover:text-gray-300 p-4"><i class="fas fa-home"></i></a>
+                
+                <a href="/freemovie/watchlist/index.html" class="hover:text-gray-300"><i class="fas fa-bookmark"></i></a>
+                <a href="/freemovie/search/index.html" class="hover:text-gray-300"><i class="fas fa-search"></i></a>
                 <button id="theme-toggle" class="hover:text-gray-300"><i class="fas fa-sun"></i></button>
             </nav>
-        </div>
-
-        <!-- Notification Section -->
-        <section id="notification" class="container mx-auto py-4 text-center bg-blue-900 text-white rounded-lg m-4 hidden">
-            <div class="flex justify-between items-center">
-                <p class="text-lg flex-1">
-                    اطلاعیه: از این پس می‌توانید از طریق آدرس 
-                    <a href="https://FreeMovieZ.IR" class="underline hover:text-gray-300">FreeMovieZ.IR</a> 
-                    وارد سایت شوید. برای حمایت از فیری مووی، لطفاً دکمه زیر را فشار دهید و توییتی منتشر کنید!
-                </p>
-                <button id="close-notification" class="ml-4 text-white hover:text-gray-300">
-                    <i class="fas fa-times"></i>
-                </button>
+            <!-- Logo -->
+            <div>
+                <a href="https://m4tinbeigi-official.github.io/freemovie/">
+                    <img src="https://m4tinbeigi-official.github.io/freemovie/logo.png" alt="لوگو" class="h-10">
+                </a>
             </div>
-            <button id="support-button" class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                حمایت از فیری مووی
-            </button>
-        </section>
+        </div>
     </header>
 
 <!-- New Movies Section -->

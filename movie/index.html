@@ -60,21 +60,21 @@
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
     <!-- هدر -->
     <header class="bg-gray-800 p-4 shadow-md">
-        <div class="container mx-auto flex flex-col items-center">
-            <!-- Logo Row -->
-            <div class="flex items-center mb-4">
-                <a href="https://m4tinbeigi-official.github.io/freemovie/">
-                    <img src="https://m4tinbeigi-official.github.io/freemovie/logo.png" alt="لوگو" class="h-10 mr-2">
-                </a>
-                <h1 class="text-xl font-bold">فیری مووی</h1>
-            </div>
-            <!-- Navigation Row -->
-            <nav class="nav-container">
-                <a href="/freemovie" class="hover:text-gray-300">خانه</a>
-                <a href="/freemovie/search/index.html" class="hover:text-gray-300">جستجو</a>
-                <a href="/freemovie/watchlist/index.html" class="hover:text-gray-300">واچ لیست</a>
+        <div class="container mx-auto flex flex-row justify-between items-center">
+            <!-- Navigation -->
+            <nav class="flex items-center space-x-4">
+                <a href="/freemovie" class="hover:text-gray-300 p-4"><i class="fas fa-home"></i></a>
+                
+                <a href="/freemovie/watchlist/index.html" class="hover:text-gray-300"><i class="fas fa-bookmark"></i></a>
+                <a href="/freemovie/search/index.html" class="hover:text-gray-300"><i class="fas fa-search"></i></a>
                 <button id="theme-toggle" class="hover:text-gray-300"><i class="fas fa-sun"></i></button>
             </nav>
+            <!-- Logo -->
+            <div>
+                <a href="https://m4tinbeigi-official.github.io/freemovie/">
+                    <img src="https://m4tinbeigi-official.github.io/freemovie/logo.png" alt="لوگو" class="h-10">
+                </a>
+            </div>
         </div>
     </header>
 
