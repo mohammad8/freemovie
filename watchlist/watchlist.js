@@ -11,7 +11,6 @@ async function loadWatchlist() {
         return;
     }
 
-    // Show loading skeletons
     moviesContainer.innerHTML = '<div class="skeleton w-full h-64"></div>';
     seriesContainer.innerHTML = '<div class="skeleton w-full h-64"></div>';
 
@@ -32,7 +31,6 @@ async function loadWatchlist() {
     moviesContainer.innerHTML = "";
     seriesContainer.innerHTML = "";
 
-    // Fetch movies and series in parallel
     const moviePromises = normalizedWatchlist.movies.map(movieId =>
         fetchAndDisplayItem(movieId, "movie", moviesContainer, tmdbMovieUrl)
     );
@@ -40,11 +38,9 @@ async function loadWatchlist() {
         fetchAndDisplayItem(seriesId, "series", seriesContainer, tmdbSeriesUrl)
     );
 
-    try {
-        await Promise.all([...moviePromises, ...seriesPromises]);
-    } catch (error) {
+    await Promise.all([...moviePromises, ...seriesPromises]).catch(error => {
         console.error("خطا در بارگذاری واچ‌لیست:", error);
-    }
+    });
 }
 
 async function fetchAndDisplayItem(itemId, type, container, apiUrl) {
@@ -55,9 +51,7 @@ async function fetchAndDisplayItem(itemId, type, container, apiUrl) {
         }
 
         const data = await response.json();
-        if (!data.success) {
-            throw new Error(data.error || "خطا در دریافت اطلاعات");
-        }
+        console.log(`Response for ${type} ID ${itemId}:`, data); // For debugging
 
         const item = {
             id: itemId,
@@ -99,5 +93,4 @@ function removeFromWatchlist(itemId, type) {
     loadWatchlist();
 }
 
-// Load watchlist on page load
 document.addEventListener("DOMContentLoaded", loadWatchlist);
