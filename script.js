@@ -1,6 +1,5 @@
 const apiUrl = "https://freemoviez.ir/api/tmdb.php";
 
-// Utility function to fetch and display content
 async function fetchAndDisplayContent() {
     const movieContainer = document.getElementById("new-movies");
     const tvContainer = document.getElementById("trending-tv");
@@ -27,17 +26,14 @@ async function fetchAndDisplayContent() {
             const movies = items.filter(item => item.type === 'movie');
             const tvSeries = items.filter(item => item.type === 'tv');
 
-            // Local fallback image path (adjust this to your actual image path)
-            const fallbackImage = "/freemovie/images/no-image.png"; // Ensure this file exists in your project
-
             movies.forEach(movie => {
-                const posterPath = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : fallbackImage;
+                const posterPath = movie.poster_path || "https://via.placeholder.com/300x450?text=No+Image";
                 const title = movie.title || "نامشخص";
                 const overview = movie.overview ? movie.overview.slice(0, 100) + "..." : "توضیحات موجود نیست";
 
                 movieContainer.innerHTML += `
                     <div class="group relative">
-                        <img src="${posterPath}" alt="${title}" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null; this.src='${fallbackImage}';">
+                        <img src="${posterPath}" alt="${title}" class="w-full h-auto rounded-lg shadow-lg">
                         <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
                             <h3 class="text-lg font-bold text-white">${title}</h3>
                             <p class="text-sm text-gray-200">${overview}</p>
@@ -48,13 +44,13 @@ async function fetchAndDisplayContent() {
             });
 
             tvSeries.forEach(tv => {
-                const posterPath = tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : fallbackImage;
+                const posterPath = tv.poster_path || "https://via.placeholder.com/300x450?text=No+Image";
                 const title = tv.title || "نامشخص";
                 const overview = tv.overview ? tv.overview.slice(0, 100) + "..." : "توضیحات موجود نیست";
 
                 tvContainer.innerHTML += `
                     <div class="group relative">
-                        <img src="${posterPath}" alt="${title}" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null; this.src='${fallbackImage}';">
+                        <img src="${posterPath}" alt="${title}" class="w-full h-auto rounded-lg shadow-lg">
                         <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
                             <h3 class="text-lg font-bold text-white">${title}</h3>
                             <p class="text-sm text-gray-200">${overview}</p>
@@ -74,9 +70,6 @@ async function fetchAndDisplayContent() {
             movieContainer.innerHTML = '<p class="text-center text-red-500">داده‌ای یافت نشد!</p>';
             tvContainer.innerHTML = '<p class="text-center text-red-500">داده‌ای یافت نشد!</p>';
         }
-
-        // Store the timestamp of the last update
-        localStorage.setItem('lastUpdate', Date.now());
     } catch (error) {
         console.error("خطا در دریافت داده‌ها:", error);
         movieContainer.innerHTML = '<p class="text-center text-red-500">خطایی رخ داد! لطفاً دوباره تلاش کنید.</p>';
@@ -84,28 +77,6 @@ async function fetchAndDisplayContent() {
     }
 }
 
-// Function to check if an update is needed
-function shouldUpdate() {
-    const lastUpdate = localStorage.getItem('lastUpdate');
-    const now = Date.now();
-    const thirtyMinutes = 30 * 60 * 1000; // 30 minutes in milliseconds
-
-    return !lastUpdate || (now - lastUpdate >= thirtyMinutes);
-}
-
-// Function to initialize content fetching
-function initializeContentFetching() {
-    if (shouldUpdate()) {
-        fetchAndDisplayContent();
-    }
-    setInterval(() => {
-        if (shouldUpdate()) {
-            fetchAndDisplayContent();
-        }
-    }, 30 * 60 * 1000); // 30 minutes
-}
-
-// Notification management
 function manageNotification() {
     const notification = document.getElementById("notification");
     const closeButton = document.getElementById("close-notification");
@@ -125,37 +96,28 @@ function manageNotification() {
     });
 }
 
-// Report bug functionality
+// report bug
+
 document.addEventListener('DOMContentLoaded', function() {
     const fab = document.getElementById('fab');
     const fabOptions = document.getElementById('fabOptions');
 
+
     fab.addEventListener('click', function(event) {
-        event.stopPropagation();
+        event.stopPropagation(); 
         fabOptions.classList.toggle('hidden');
     });
+
 
     document.addEventListener('click', function(event) {
         if (!fab.contains(event.target) && !fabOptions.contains(event.target)) {
             fabOptions.classList.add('hidden');
         }
     });
+});
 
-    initializeContentFetching();
+
+document.addEventListener("DOMContentLoaded", () => {
+    fetchAndDisplayContent();
     manageNotification();
 });
-
-// Theme toggle functionality
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
-themeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark');
-    const isDark = body.classList.contains('dark');
-    themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-});
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme === 'light') {
-    body.classList.remove('dark');
-    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-}
