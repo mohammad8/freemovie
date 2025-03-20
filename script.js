@@ -109,7 +109,7 @@ async function fetchAndDisplayContent() {
 
                 // Remove "300" before ".jpg"
                 let posterUrl = poster;
-                posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
+                //posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
 
                 const title = tv.name || 'نامشخص';
                 const overview = tv.overview ? tv.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
