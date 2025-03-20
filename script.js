@@ -96,11 +96,11 @@ function manageNotification() {
     });
 }
 
-function manageImportantNotice() {
-    const notice = document.getElementById("important-notice");
-    const closeButton = document.getElementById("close-notice");
+function manageDisclaimerNotice() {
+    const notice = document.getElementById("disclaimer-notice");
+    const closeButton = document.getElementById("close-disclaimer");
 
-    if (!localStorage.getItem("importantNoticeClosed")) {
+    if (!localStorage.getItem("disclaimerNoticeClosed")) {
         notice.classList.remove("hidden");
     } else {
         notice.classList.add("hidden");
@@ -108,7 +108,7 @@ function manageImportantNotice() {
 
     closeButton.addEventListener("click", () => {
         notice.classList.add("hidden");
-        localStorage.setItem("importantNoticeClosed", "true");
+        localStorage.setItem("disclaimerNoticeClosed", "true");
     });
 }
 
@@ -132,5 +132,5 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener("DOMContentLoaded", () => {
     fetchAndDisplayContent();
     manageNotification();
-    manageImportantNotice();
+    manageDisclaimerNotice();
 });

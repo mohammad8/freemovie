@@ -21,24 +21,12 @@
         .skeleton { background: #333; animation: pulse 1.5s infinite; height: 16rem; border-radius: 0.5rem; }
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
         .nav-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
-        #important-notice { z-index: 50; direction: rtl; }
+        #disclaimer-notice { z-index: 10; direction: rtl; }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
-    <!-- اطلاعیه مهم -->
-    <div id="important-notice" class="fixed top-0 left-0 w-full bg-yellow-500 text-black p-4 z-50 shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <p class="text-sm md:text-base">
-                📢 <strong>اطلاعیه مهم:</strong> این وب‌سایت فقط یک واسط برای نمایش اطلاعات فیلم و سریال‌هاست و هیچ‌گونه محتوایی را میزبانی یا ذخیره‌سازی نمی‌کند. تمام اطلاعات از وب‌سرویس‌های عمومی دریافت می‌شود. برای جزئیات بیشتر، لطفاً <a href="/freemovie/disclaimer/index.html" class="underline hover:text-gray-800">صفحه سلب مسئولیت</a> را مطالعه کنید.
-            </p>
-            <button id="close-notice" class="text-black hover:text-gray-800 focus:outline-none">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div>
-
     <!-- هدر -->
-    <header class="bg-gray-800 p-4 shadow-md mt-14">
+    <header class="bg-gray-800 p-4 shadow-md">
         <div class="container mx-auto flex flex-row justify-between items-center">
             <!-- ناوبری -->
             <nav class="flex items-center space-x-4">
@@ -58,7 +46,18 @@
 
     <!-- بخش فیلم‌های جدید -->
     <section class="container mx-auto py-8">
-        <h2 class="text-2xl font-bold mb-8 text-center">جدیدترین فیلم‌ها</h2>
+        <h2 class="text-2xl font-bold mb-4 text-center">جدیدترین فیلم‌ها</h2>
+        <!-- بیانیه سلب مسئولیت -->
+        <div id="disclaimer-notice" class="bg-gray-700 text-white p-4 rounded-lg shadow-md mb-6 mx-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <p class="text-sm md:text-base">
+                    📢 <strong>سلب مسئولیت:</strong> این وب‌سایت فقط اطلاعات فیلم و سریال را نمایش می‌دهد و هیچ محتوایی را میزبانی نمی‌کند. اطلاعات از APIهای عمومی و لینک‌های دانلود از <a href="https://almasmovie.website/" target="_blank" class="underline hover:text-gray-300">الماس مووی</a> دریافت می‌شود. برای جزئیات بیشتر، <a href="/freemovie/disclaimer/index.html" class="underline hover:text-gray-300">صفحه سلب مسئولیت</a> را ببینید.
+                </p>
+                <button id="close-disclaimer" class="mt-2 md:mt-0 text-white hover:text-gray-300 focus:outline-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
         <div id="new-movies" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4">
             <!-- Skeleton placeholders -->
             <div class="skeleton w-full"></div>
@@ -103,6 +102,7 @@
                 صابر راستی کردار<br>
             </p>
             <a href="developer/index.html">توسعه‌دهندگان</a> | <a href="about-freemovie/index.html">درباره فیری مووی</a>
+			<br>
             <a href="disclaimer/index.html">سلب مسئولیت</a> | <a href="disclaimer/index-en.html">DMCA</a>
             <div class="social-icons mb-2">
                 <a class="github-button" href="https://github.com/m4tinbeigi-official/freemovie" data-icon="octicon-star" data-show-count="true" aria-label="Star m4tinbeigi-official/freemovie on GitHub">Star</a>
@@ -115,5 +115,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9208c4d9e930afbf',t:'MTc0MjAwNzcxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9236b49c1ca54954',t:'MTc0MjQ4OTM5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9236cd258dc84bfc',t:'MTc0MjQ5MDM5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
