@@ -1,5 +1,5 @@
-const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // Your TMDb API key
-const omdbApiKey = '38fa39d5'; // Replace with your OMDB API key
+const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
+const omdbApiKey = '38fa39d5'; // OMDB API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL
 const defaultPoster = 'https://via.placeholder.com/500'; // Default poster fallback
@@ -19,49 +19,53 @@ async function getMovieDetails() {
 
         // Fetch movie details from TMDb
         const movieRes = await fetch(movieUrl);
-        if (!movieRes.ok) throw new Error(`Server error (movie details): ${movieRes.status}`);
+        if (!movieRes.ok) throw new Error(`خطای سرور (جزئیات فیلم): ${movieRes.status}`);
         const movieData = await movieRes.json();
 
         // Fetch external IDs from TMDb
         const externalIdsRes = await fetch(externalIdsUrl);
-        if (!externalIdsRes.ok) throw new Error(`Server error (external IDs): ${externalIdsRes.status}`);
+        if (!externalIdsRes.ok) throw new Error(`خطای سرور (شناسه‌های خارجی): ${externalIdsRes.status}`);
         const externalIdsData = await externalIdsRes.json();
 
         // Fetch trailer data from TMDb
         const trailerRes = await fetch(trailerUrl);
-        if (!trailerRes.ok) throw new Error(`Server error (trailer): ${trailerRes.status}`);
+        if (!trailerRes.ok) throw new Error(`خطای سرور (تریلر): ${trailerRes.status}`);
         const trailerData = await trailerRes.json();
 
         // Fetch poster from OMDB using imdb_id
+        let poster = defaultPoster;
         const imdbID = externalIdsData.imdb_id || '';
-        let poster = defaultPoster; // Default fallback
         if (imdbID) {
             const omdbUrl = `https://www.omdbapi.com/?i=${imdbID}&apikey=${omdbApiKey}`;
-            const omdbRes = await fetch(omdbUrl);
-            if (!omdbRes.ok) throw new Error(`Server error (OMDB): ${omdbRes.status}`);
-            const omdbData = await omdbRes.json();
-            poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+            try {
+                const omdbRes = await fetch(omdbUrl);
+                if (!omdbRes.ok) throw new Error(`خطای سرور (OMDB): ${omdbRes.status}`);
+                const omdbData = await omdbRes.json();
+                poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+            } catch (omdbError) {
+                console.warn('خطا در دریافت پوستر از OMDB:', omdbError.message);
+            }
         }
 
-        // Process movie data
+        // Process TMDb movie data
         const year = movieData.release_date ? movieData.release_date.split('-')[0] : 'نامشخص';
         const title = movieData.title || 'نامشخص';
         const backdrop = movieData.backdrop_path ? `${baseImageUrl}${movieData.backdrop_path}` : defaultBackdrop;
         const trailer = trailerData.results && trailerData.results[0] ? `https://www.youtube.com/embed/${trailerData.results[0].key}` : null;
 
-        // Update page content
+        // Update page content with TMDb data
         document.getElementById('title').textContent = title;
         document.getElementById('overview').textContent = movieData.overview || 'خلاصه‌ای در دسترس نیست.';
         document.getElementById('genre').innerHTML = `<strong>ژانر:</strong> ${movieData.genres ? movieData.genres.map(g => g.name).join(', ') : 'نامشخص'}`;
         document.getElementById('year').innerHTML = `<strong>سال تولید:</strong> ${year}`;
         document.getElementById('rating').innerHTML = `<strong>امتیاز:</strong> ${movieData.vote_average || 'بدون امتیاز'}/10`;
 
-        // Update images
+        // Update images (poster from OMDB, backdrop from TMDb)
         document.getElementById('poster').src = poster;
         document.getElementById('poster').alt = `پوستر فیلم ${title}`;
         document.getElementById('movie-bg').style.backgroundImage = `url('${backdrop}')`;
 
-        // Update trailer
+        // Update trailer from TMDb
         const trailerContainer = document.getElementById('trailer');
         if (trailer) {
             trailerContainer.src = trailer;
@@ -70,7 +74,7 @@ async function getMovieDetails() {
             trailerContainer.outerHTML = '<p class="text-yellow-500">تریلر در دسترس نیست</p>';
         }
 
-        // Update meta tags and title
+        // Update meta tags and title with TMDb data and OMDB poster
         document.getElementById('meta-title').textContent = `${title} - فیری مووی`;
         document.querySelector('meta[name="description"]').setAttribute('content', movieData.overview || `جزئیات و دانلود فیلم ${title} در فیری مووی.`);
         document.querySelector('meta[property="og:title"]').setAttribute('content', `${title} - فیری مووی`);
@@ -80,7 +84,7 @@ async function getMovieDetails() {
         document.querySelector('meta[name="twitter:description"]').setAttribute('content', movieData.overview || 'جزئیات و دانلود فیلم در فیری مووی.');
         document.querySelector('meta[name="twitter:image"]').setAttribute('content', poster);
 
-        // Update structured data (Schema)
+        // Update structured data with TMDb data and OMDB poster
         const schema = {
             '@context': 'https://schema.org',
             '@type': 'Movie',
@@ -91,9 +95,9 @@ async function getMovieDetails() {
             'image': poster,
             'aggregateRating': {
                 '@type': 'AggregateRating',
-                'ratingValue': movieData.vote_average || '0',
+                'ratingValue': movieData.vote_average ? movieData.vote_average.toString() : '0',
                 'bestRating': '10',
-                'ratingCount': '1'
+                'ratingCount': movieData.vote_count ? movieData.vote_count.toString() : '1'
             },
             'trailer': {
                 '@type': 'VideoObject',
@@ -102,11 +106,12 @@ async function getMovieDetails() {
         };
         document.getElementById('movie-schema').textContent = JSON.stringify(schema);
 
-        // Generate download links
+        // Generate download links with TMDb year and imdb_id
+        const imdbShort = imdbID ? imdbID.replace('tt', '') : '';
         const downloadLinks = `
-            <a href="https://berlin.saymyname.website/Movies/${year}/${imdbID.replace('tt', '')}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک اصلی)</a>
-            <a href="https://tokyo.saymyname.website/Movies/${year}/${imdbID.replace('tt', '')}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک کمکی)</a>
-            <a href="https://nairobi.saymyname.website/Movies/${year}/${imdbID.replace('tt', '')}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک کمکی)</a>
+            <a href="https://berlin.saymyname.website/Movies/${year}/${imdbShort}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک اصلی)</a>
+            <a href="https://tokyo.saymyname.website/Movies/${year}/${imdbShort}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک کمکی)</a>
+            <a href="https://nairobi.saymyname.website/Movies/${year}/${imdbShort}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک کمکی)</a>
             <button id="add-to-watchlist" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">افزودن به واچ لیست</button>
         `;
         document.getElementById('download-links').innerHTML = downloadLinks;
