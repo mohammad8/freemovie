@@ -1,5 +1,5 @@
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // Your TMDb API key
-const omdbApiKey = 'YOUR_OMDB_API_KEY'; // Replace with your OMDB API key
+const omdbApiKey = '38fa39d5'; // Replace with your OMDB API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL
 const defaultPoster = 'https://via.placeholder.com/500'; // Default poster fallback
