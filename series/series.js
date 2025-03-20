@@ -1,4 +1,5 @@
-const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // Your TMDb API key
+const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
+const omdbApiKey = '38fa39d5'; // OMDB API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/'; // TMDb base image URL
 const defaultPoster = 'https://via.placeholder.com/500x750?text=No+Image'; // Default poster fallback
@@ -15,7 +16,7 @@ async function getSeriesDetails() {
         // Define TMDb API endpoint with external_ids and videos appended
         const seriesDetailsUrl = `https://api.themoviedb.org/3/tv/${seriesId}?api_key=${apiKey}&language=${language}&append_to_response=external_ids,videos`;
 
-        // Fetch series data
+        // Fetch series data from TMDb
         const res = await fetch(seriesDetailsUrl);
         if (!res.ok) {
             throw new Error(`خطای سرور: ${res.status}`);
@@ -27,12 +28,25 @@ async function getSeriesDetails() {
             throw new Error('سریال با این شناسه یافت نشد');
         }
 
-        // Process series data
+        // Fetch poster from OMDB using imdb_id
+        let poster = defaultPoster;
+        const imdbId = seriesData.external_ids && seriesData.external_ids.imdb_id ? seriesData.external_ids.imdb_id : '';
+        if (imdbId) {
+            const omdbUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`;
+            try {
+                const omdbRes = await fetch(omdbUrl);
+                if (!omdbRes.ok) throw new Error(`خطای سرور (OMDB): ${omdbRes.status}`);
+                const omdbData = await omdbRes.json();
+                poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+            } catch (omdbError) {
+                console.warn('خطا در دریافت پوستر از OMDB:', omdbError.message);
+            }
+        }
+
+        // Process series data from TMDb
         const title = seriesData.name || 'نامشخص';
         const year = seriesData.first_air_date ? seriesData.first_air_date.substr(0, 4) : 'نامشخص';
-        const poster = seriesData.poster_path ? `${baseImageUrl}w500${seriesData.poster_path}` : defaultPoster;
         const backdrop = seriesData.backdrop_path ? `${baseImageUrl}w1280${seriesData.backdrop_path}` : defaultBackdrop;
-        const imdbId = seriesData.external_ids && seriesData.external_ids.imdb_id ? seriesData.external_ids.imdb_id : '';
         const numberOfSeasons = seriesData.number_of_seasons || 0;
 
         // Extract trailer from videos response
@@ -44,7 +58,7 @@ async function getSeriesDetails() {
             }
         }
 
-        // Update page content
+        // Update page content with TMDb data
         const titleElement = document.getElementById('title');
         if (titleElement) titleElement.textContent = title;
 
@@ -60,10 +74,12 @@ async function getSeriesDetails() {
         const ratingElement = document.getElementById('rating');
         if (ratingElement) ratingElement.innerHTML = `<strong>امتیاز:</strong> ${seriesData.vote_average ? Number(seriesData.vote_average).toFixed(1) : 'نامشخص'}/10`;
 
-        // Update images
+        // Update images (poster from OMDB with "300" removal, backdrop from TMDb)
+        let posterUrl = poster;
+        posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
         const posterElement = document.getElementById('poster');
         if (posterElement) {
-            posterElement.src = poster;
+            posterElement.src = posterUrl;
             posterElement.alt = `پوستر سریال ${title}`;
         }
 
@@ -96,7 +112,7 @@ async function getSeriesDetails() {
         if (ogDescription) ogDescription.setAttribute('content', seriesData.overview || 'جزئیات و دانلود سریال در فیری مووی.');
 
         const ogImage = document.querySelector('meta[property="og:image"]');
-        if (ogImage) ogImage.setAttribute('content', poster);
+        if (ogImage) ogImage.setAttribute('content', posterUrl);
 
         const twitterTitle = document.querySelector('meta[name="twitter:title"]');
         if (twitterTitle) twitterTitle.setAttribute('content', `${title} - فیری مووی`);
@@ -105,7 +121,7 @@ async function getSeriesDetails() {
         if (twitterDescription) twitterDescription.setAttribute('content', seriesData.overview || 'جزئیات و دانلود سریال در فیری مووی.');
 
         const twitterImage = document.querySelector('meta[name="twitter:image"]');
-        if (twitterImage) twitterImage.setAttribute('content', poster);
+        if (twitterImage) twitterImage.setAttribute('content', posterUrl);
 
         // Update structured data (Schema)
         const schema = {
@@ -115,12 +131,12 @@ async function getSeriesDetails() {
             'description': seriesData.overview || 'خلاصه‌ای در دسترس نیست.',
             'genre': seriesData.genres && seriesData.genres.length > 0 ? seriesData.genres.map(g => g.name).join(', ') : 'نامشخص',
             'datePublished': year,
-            'image': poster,
+            'image': posterUrl,
             'aggregateRating': {
                 '@type': 'AggregateRating',
                 'ratingValue': seriesData.vote_average ? Number(seriesData.vote_average).toFixed(1) : '0',
                 'bestRating': '10',
-                'ratingCount': '1'
+                'ratingCount': seriesData.vote_count ? seriesData.vote_count.toString() : '1'
             },
             'trailer': {
                 '@type': 'VideoObject',
