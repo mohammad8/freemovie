@@ -1,10 +1,19 @@
+// movieDetails.js
+import { loadApiKeys } from './apiKeySwitcher.js';
+
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
-const omdbApiKey = '38fa39d5'; // OMDB API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL
 const defaultPoster = 'https://via.placeholder.com/500'; // Default poster fallback
 const defaultBackdrop = 'https://via.placeholder.com/1920x1080'; // Default backdrop fallback
 const movieId = new URLSearchParams(window.location.search).get('id');
+
+let apiKeySwitcher; // Global variable to hold the switcher instance
+
+// Initialize the API key switcher
+async function initializeSwitcher() {
+    apiKeySwitcher = await loadApiKeys();
+}
 
 async function getMovieDetails() {
     try {
@@ -32,19 +41,14 @@ async function getMovieDetails() {
         if (!trailerRes.ok) throw new Error(`خطای سرور (تریلر): ${trailerRes.status}`);
         const trailerData = await trailerRes.json();
 
-        // Fetch poster from OMDB using imdb_id
+        // Fetch poster from OMDB using imdb_id with the API key switcher
         let poster = defaultPoster;
         const imdbID = externalIdsData.imdb_id || '';
         if (imdbID) {
-            const omdbUrl = `https://www.omdbapi.com/?i=${imdbID}&apikey=${omdbApiKey}`;
-            try {
-                const omdbRes = await fetch(omdbUrl);
-                if (!omdbRes.ok) throw new Error(`خطای سرور (OMDB): ${omdbRes.status}`);
-                const omdbData = await omdbRes.json();
-                poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
-            } catch (omdbError) {
-                console.warn('خطا در دریافت پوستر از OMDB:', omdbError.message);
-            }
+            const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
+                (key) => `https://www.omdbapi.com/?i=${imdbID}&apikey=${key}`
+            );
+            poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
         }
 
         // Process TMDb movie data
@@ -61,12 +65,11 @@ async function getMovieDetails() {
         document.getElementById('rating').innerHTML = `<strong>امتیاز:</strong> ${movieData.vote_average || 'بدون امتیاز'}/10`;
 
         // Update images (poster from OMDB, backdrop from TMDb)
-	
-		let posterUrl = poster;
-		posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
-		document.getElementById('poster').src = posterUrl;
-		document.getElementById('poster').alt = `پوستر فیلم ${title}`;
-		document.getElementById('movie-bg').style.backgroundImage = `url('${posterUrl}')`;
+        let posterUrl = poster;
+        posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
+        document.getElementById('poster').src = posterUrl;
+        document.getElementById('poster').alt = `پوستر فیلم ${title}`;
+        document.getElementById('movie-bg').style.backgroundImage = `url('${posterUrl}')`;
 
         // Update trailer from TMDb
         const trailerContainer = document.getElementById('trailer');
@@ -136,4 +139,8 @@ async function getMovieDetails() {
     }
 }
 
-getMovieDetails();
+// Ensure the switcher is initialized before running getMovieDetails
+document.addEventListener('DOMContentLoaded', async () => {
+    await initializeSwitcher();
+    getMovieDetails();
+});

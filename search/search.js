@@ -1,8 +1,17 @@
+// searchMovies.js
+import { loadApiKeys } from './apiKeySwitcher.js';
+
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
-const omdbApiKey = '38fa39d5'; // OMDB API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL
 const defaultPoster = 'https://via.placeholder.com/500x750?text=No+Image'; // Default fallback image
+
+let apiKeySwitcher; // Global variable to hold the switcher instance
+
+// Initialize the API key switcher
+async function initializeSwitcher() {
+    apiKeySwitcher = await loadApiKeys();
+}
 
 async function searchMovies(query) {
     const movieResults = document.getElementById('movie-results');
@@ -48,10 +57,9 @@ async function searchMovies(query) {
                         const externalIdsData = await externalIdsRes.json();
                         const imdbId = externalIdsData.imdb_id || '';
                         if (imdbId) {
-                            const omdbUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`;
-                            const omdbRes = await fetch(omdbUrl);
-                            if (!omdbRes.ok) throw new Error(`خطای سرور (OMDB): ${omdbRes.status}`);
-                            const omdbData = await omdbRes.json();
+                            const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
+                                (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
+                            );
                             poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
                         }
                     } catch (fetchError) {
@@ -93,10 +101,9 @@ async function searchMovies(query) {
                         const externalIdsData = await externalIdsRes.json();
                         const imdbId = externalIdsData.imdb_id || '';
                         if (imdbId) {
-                            const omdbUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`;
-                            const omdbRes = await fetch(omdbUrl);
-                            if (!omdbRes.ok) throw new Error(`خطای سرور (OMDB): ${omdbRes.status}`);
-                            const omdbData = await omdbRes.json();
+                            const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
+                                (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
+                            );
                             poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
                         }
                     } catch (fetchError) {
@@ -136,23 +143,26 @@ async function searchMovies(query) {
     }
 }
 
-document.getElementById('search').addEventListener(
-    'input',
-    debounce(function () {
-        const query = this.value.trim();
-        if (query.length > 2) {
-            searchMovies(query);
-        } else {
-            document.getElementById('movie-title').textContent = 'نتایج جستجو فیلم';
-            document.getElementById('tv-title').textContent = 'نتایج جستجو سریال';
-            document.getElementById('movie-results').innerHTML = `
-                <div class="skeleton"></div>
-                <div class="skeleton"></div>
-            `;
-            document.getElementById('tv-results').innerHTML = '';
-        }
-    }, 300)
-);
+document.addEventListener('DOMContentLoaded', async () => {
+    await initializeSwitcher();
+    document.getElementById('search').addEventListener(
+        'input',
+        debounce(function () {
+            const query = this.value.trim();
+            if (query.length > 2) {
+                searchMovies(query);
+            } else {
+                document.getElementById('movie-title').textContent = 'نتایج جستجو فیلم';
+                document.getElementById('tv-title').textContent = 'نتایج جستجو سریال';
+                document.getElementById('movie-results').innerHTML = `
+                    <div class="skeleton"></div>
+                    <div class="skeleton"></div>
+                `;
+                document.getElementById('tv-results').innerHTML = '';
+            }
+        }, 300)
+    );
+});
 
 function debounce(func, wait) {
     let timeout;

@@ -1,10 +1,18 @@
+// seriesDetails.js
+import { loadApiKeys } from './apiKeySwitcher.js';
+
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
-const omdbApiKey = '38fa39d5'; // OMDB API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/'; // TMDb base image URL
 const defaultPoster = 'https://via.placeholder.com/500x750?text=No+Image'; // Default poster fallback
 const defaultBackdrop = 'https://via.placeholder.com/1920x1080?text=No+Image'; // Default backdrop fallback
 const seriesId = new URLSearchParams(window.location.search).get('id');
+
+let apiKeySwitcher;
+
+async function initializeSwitcher() {
+    apiKeySwitcher = await loadApiKeys();
+}
 
 async function getSeriesDetails() {
     try {
@@ -32,15 +40,10 @@ async function getSeriesDetails() {
         let poster = defaultPoster;
         const imdbId = seriesData.external_ids && seriesData.external_ids.imdb_id ? seriesData.external_ids.imdb_id : '';
         if (imdbId) {
-            const omdbUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`;
-            try {
-                const omdbRes = await fetch(omdbUrl);
-                if (!omdbRes.ok) throw new Error(`خطای سرور (OMDB): ${omdbRes.status}`);
-                const omdbData = await omdbRes.json();
-                poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
-            } catch (omdbError) {
-                console.warn('خطا در دریافت پوستر از OMDB:', omdbError.message);
-            }
+            const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
+                (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
+            );
+            poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
         }
 
         // Process series data from TMDb
@@ -193,5 +196,7 @@ async function getSeriesDetails() {
     }
 }
 
-// Execute the function to fetch series details
-getSeriesDetails();
+document.addEventListener('DOMContentLoaded', async () => {
+    await initializeSwitcher();
+    getSeriesDetails();
+});

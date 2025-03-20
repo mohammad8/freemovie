@@ -1,5 +1,7 @@
+// fetchAndDisplayContent.js
+import { loadApiKeys } from 'apiKeySwitcher.js';
+
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
-const omdbApiKey = '38fa39d5'; // OMDB API key
 const language = 'fa'; // Language set to Persian
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL
 const defaultPoster = 'https://via.placeholder.com/300x450?text=No+Image'; // Default fallback image
@@ -9,6 +11,12 @@ const apiUrls = {
     now_playing: `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&language=${language}`,
     tv_trending: `https://api.themoviedb.org/3/trending/tv/week?api_key=${apiKey}&language=${language}`
 };
+
+let apiKeySwitcher;
+
+async function initializeSwitcher() {
+    apiKeySwitcher = await loadApiKeys();
+}
 
 async function fetchAndDisplayContent() {
     const movieContainer = document.getElementById('new-movies');
@@ -51,10 +59,9 @@ async function fetchAndDisplayContent() {
                     const detailsData = await detailsRes.json();
                     const imdbId = detailsData.imdb_id || '';
                     if (imdbId) {
-                        const omdbUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`;
-                        const omdbRes = await fetch(omdbUrl);
-                        if (!omdbRes.ok) throw new Error(`خطای سرور (OMDB): ${omdbRes.status}`);
-                        const omdbData = await omdbRes.json();
+                        const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
+                            (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
+                        );
                         poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
                     }
                 } catch (fetchError) {
@@ -91,10 +98,9 @@ async function fetchAndDisplayContent() {
                     const detailsData = await detailsRes.json();
                     const imdbId = detailsData.imdb_id || '';
                     if (imdbId) {
-                        const omdbUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`;
-                        const omdbRes = await fetch(omdbUrl);
-                        if (!omdbRes.ok) throw new Error(`خطای سرور (OMDB): ${omdbRes.status}`);
-                        const omdbData = await omdbRes.json();
+                        const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
+                            (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
+                        );
                         poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
                     }
                 } catch (fetchError) {
@@ -137,7 +143,6 @@ async function fetchAndDisplayContent() {
     }
 }
 
-// The rest of your code (manageNotification, manageDisclaimerNotice, etc.) remains unchanged
 function manageNotification() {
     const notification = document.getElementById('notification');
     const closeButton = document.getElementById('close-notification');
@@ -189,7 +194,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await initializeSwitcher();
     fetchAndDisplayContent();
     manageNotification();
     manageDisclaimerNotice();

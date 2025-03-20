@@ -1,8 +1,16 @@
+// watchlist.js
+import { loadApiKeys } from './apiKeySwitcher.js';
+
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
-const omdbApiKey = '38fa39d5'; // OMDB API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL for posters
 const defaultPoster = 'https://via.placeholder.com/300x450?text=No+Image'; // Default poster fallback
+
+let apiKeySwitcher;
+
+async function initializeSwitcher() {
+    apiKeySwitcher = await loadApiKeys();
+}
 
 async function loadWatchlist() {
     const moviesContainer = document.getElementById('movies-watchlist');
@@ -87,15 +95,10 @@ async function fetchAndDisplayItem(itemId, type, container) {
         const externalIdsData = await externalIdsRes.json();
         const imdbId = externalIdsData.imdb_id || '';
         if (imdbId) {
-            const omdbUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`;
-            try {
-                const omdbRes = await fetch(omdbUrl);
-                if (!omdbRes.ok) throw new Error(`خطای سرور (OMDB): ${omdbRes.status}`);
-                const omdbData = await omdbRes.json();
-                poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
-            } catch (omdbError) {
-                console.warn(`خطا در دریافت پوستر ${type} با شناسه ${itemId} از OMDB:`, omdbError.message);
-            }
+            const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
+                (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
+            );
+            poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
         }
 
         // Remove "300" before ".jpg"
@@ -142,4 +145,7 @@ function removeFromWatchlist(itemId, type) {
     loadWatchlist();
 }
 
-document.addEventListener('DOMContentLoaded', loadWatchlist);
+document.addEventListener('DOMContentLoaded', async () => {
+    await initializeSwitcher();
+    loadWatchlist();
+});
