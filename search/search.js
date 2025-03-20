@@ -1,36 +1,47 @@
-const serverUrl = "https://freemoviez.ir/api/search-movies.php"; // Adjust if hosted elsewhere
+const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // Your TMDb API key
+const language = 'fa-IR'; // Language set to Persian (Iran)
+const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL
+const defaultPoster = 'https://via.placeholder.com/500x750?text=No+Image'; // Default fallback image
 
 async function searchMovies(query) {
+    const movieResults = document.getElementById('movie-results');
+    const tvResults = document.getElementById('tv-results');
+    const movieTitle = document.getElementById('movie-title');
+    const tvTitle = document.getElementById('tv-title');
+
+    movieResults.innerHTML = '';
+    tvResults.innerHTML = '';
+    movieTitle.textContent = `نتایج جستجو فیلم ${query}`;
+    tvTitle.textContent = `نتایج جستجو سریال ${query}`;
+
     try {
-        const url = `${serverUrl}?query=${encodeURIComponent(query)}`;
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-        const data = await res.json();
-        const movieResults = document.getElementById("movie-results");
-        const tvResults = document.getElementById("tv-results");
-        const movieTitle = document.getElementById("movie-title");
-        const tvTitle = document.getElementById("tv-title");
-        movieResults.innerHTML = "";
-        tvResults.innerHTML = "";
+        // Define TMDb search endpoints
+        const movieSearchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=${language}&query=${encodeURIComponent(query)}`;
+        const tvSearchUrl = `https://api.themoviedb.org/3/search/tv?api_key=${apiKey}&language=${language}&query=${encodeURIComponent(query)}`;
 
-        // Update titles with query
-        movieTitle.textContent = `نتایج جستجو فیلم ${query}`;
-        tvTitle.textContent = `نتایج جستجو سریال ${query}`;
+        // Fetch movie data
+        const movieRes = await fetch(movieSearchUrl);
+        if (!movieRes.ok) throw new Error(`Server error (movies): ${movieRes.status}`);
+        const movieData = await movieRes.json();
+        const movies = movieData.results || [];
 
-        console.log("Server response:", data); // Debugging
+        // Fetch TV show data
+        const tvRes = await fetch(tvSearchUrl);
+        if (!tvRes.ok) throw new Error(`Server error (TV): ${tvRes.status}`);
+        const tvShows = await tvRes.json();
+        const tvSeries = tvShows.results || [];
 
-        if (data.success && Array.isArray(data.results) && data.results.length > 0) {
-            // Separate movies and TV shows
-            const movies = data.results.filter(item => item.type === "movie");
-            const tvShows = data.results.filter(item => item.type === "tv");
+        console.log('Movie results:', movieData); // Debugging
+        console.log('TV results:', tvShows); // Debugging
 
-            // Render TV shows (already prioritized in backend)
-            if (tvShows.length > 0) {
-                tvShows.forEach((tv) => {
-                    const poster = tv.poster; // Default handled in backend
-                    const tvId = tv.imdbID;
-                    const title = tv.title || "نامشخص";
-                    const year = tv.year || "نامشخص";
+        if (tvSeries.length > 0 || movies.length > 0) {
+            // Render TV shows first (prioritized as in original PHP)
+            if (tvSeries.length > 0) {
+                tvSeries.forEach((tv) => {
+                    const poster = tv.poster_path ? `${baseImageUrl}${tv.poster_path}` : defaultPoster;
+                    const tvId = tv.id;
+                    const title = tv.name || 'نامشخص';
+                    const year = tv.first_air_date ? tv.first_air_date.substr(0, 4) : 'نامشخص';
 
                     tvResults.innerHTML += `
                         <div class="group relative">
@@ -50,10 +61,10 @@ async function searchMovies(query) {
             // Render movies
             if (movies.length > 0) {
                 movies.forEach((movie) => {
-                    const poster = movie.poster; // Default handled in backend
-                    const movieId = movie.imdbID;
-                    const title = movie.title || "نامشخص";
-                    const year = movie.year || "نامشخص";
+                    const poster = movie.poster_path ? `${baseImageUrl}${movie.poster_path}` : defaultPoster;
+                    const movieId = movie.id;
+                    const title = movie.title || 'نامشخص';
+                    const year = movie.release_date ? movie.release_date.substr(0, 4) : 'نامشخص';
 
                     movieResults.innerHTML += `
                         <div class="group relative">
@@ -71,29 +82,29 @@ async function searchMovies(query) {
             }
         } else {
             movieResults.innerHTML = '<p class="text-center text-red-500">نتیجه‌ای یافت نشد!</p>';
-            tvResults.innerHTML = "";
+            tvResults.innerHTML = '';
         }
     } catch (error) {
-        console.error("خطا در دریافت اطلاعات:", error);
-        document.getElementById("movie-results").innerHTML = '<p class="text-center text-red-500">خطایی رخ داد! لطفاً دوباره تلاش کنید.</p>';
-        document.getElementById("tv-results").innerHTML = "";
+        console.error('خطا در دریافت اطلاعات:', error);
+        movieResults.innerHTML = '<p class="text-center text-red-500">خطایی رخ داد! لطفاً دوباره تلاش کنید.</p>';
+        tvResults.innerHTML = '';
     }
 }
 
-document.getElementById("search").addEventListener(
-    "input",
+document.getElementById('search').addEventListener(
+    'input',
     debounce(function () {
         const query = this.value.trim();
         if (query.length > 2) {
             searchMovies(query);
         } else {
-            document.getElementById("movie-title").textContent = "نتایج جستجو فیلم";
-            document.getElementById("tv-title").textContent = "نتایج جستجو سریال";
-            document.getElementById("movie-results").innerHTML = `
+            document.getElementById('movie-title').textContent = 'نتایج جستجو فیلم';
+            document.getElementById('tv-title').textContent = 'نتایج جستجو سریال';
+            document.getElementById('movie-results').innerHTML = `
                 <div class="skeleton"></div>
                 <div class="skeleton"></div>
             `;
-            document.getElementById("tv-results").innerHTML = "";
+            document.getElementById('tv-results').innerHTML = '';
         }
     }, 300)
 );
@@ -106,13 +117,13 @@ function debounce(func, wait) {
     };
 }
 
-document.getElementById("theme-toggle").addEventListener("click", () => {
-    document.documentElement.classList.toggle("dark");
-    const icon = document.querySelector("#theme-toggle i");
-    icon.classList.toggle("fa-sun");
-    icon.classList.toggle("fa-moon");
+document.getElementById('theme-toggle').addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+    const icon = document.querySelector('#theme-toggle i');
+    icon.classList.toggle('fa-sun');
+    icon.classList.toggle('fa-moon');
 });
 
-document.getElementById("menu-toggle").addEventListener("click", () => {
-    document.getElementById("mobile-menu").classList.toggle("hidden");
+document.getElementById('menu-toggle')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu')?.classList.toggle('hidden');
 });
