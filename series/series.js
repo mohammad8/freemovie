@@ -1,5 +1,5 @@
 // seriesDetails.js
-import { loadApiKeys } from '../apiKeySwitcher.js';
+//import { loadApiKeys } from '../apiKeySwitcher.js';
 
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
