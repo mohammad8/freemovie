@@ -70,7 +70,7 @@ async function fetchAndDisplayContent() {
 
                 // Remove "300" before ".jpg"
                 let posterUrl = poster;
-                posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
+                //posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
 
                 const title = movie.title || 'نامشخص';
                 const overview = movie.overview ? movie.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
