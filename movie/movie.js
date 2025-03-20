@@ -1,4 +1,5 @@
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // Your TMDb API key
+const omdbApiKey = 'YOUR_OMDB_API_KEY'; // Replace with your OMDB API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL
 const defaultPoster = 'https://via.placeholder.com/500'; // Default poster fallback
@@ -16,26 +17,35 @@ async function getMovieDetails() {
         const externalIdsUrl = `https://api.themoviedb.org/3/movie/${movieId}/external_ids?api_key=${apiKey}`;
         const trailerUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}`;
 
-        // Fetch movie details
+        // Fetch movie details from TMDb
         const movieRes = await fetch(movieUrl);
         if (!movieRes.ok) throw new Error(`Server error (movie details): ${movieRes.status}`);
         const movieData = await movieRes.json();
 
-        // Fetch external IDs
+        // Fetch external IDs from TMDb
         const externalIdsRes = await fetch(externalIdsUrl);
         if (!externalIdsRes.ok) throw new Error(`Server error (external IDs): ${externalIdsRes.status}`);
         const externalIdsData = await externalIdsRes.json();
 
-        // Fetch trailer data
+        // Fetch trailer data from TMDb
         const trailerRes = await fetch(trailerUrl);
         if (!trailerRes.ok) throw new Error(`Server error (trailer): ${trailerRes.status}`);
         const trailerData = await trailerRes.json();
 
+        // Fetch poster from OMDB using imdb_id
+        const imdbID = externalIdsData.imdb_id || '';
+        let poster = defaultPoster; // Default fallback
+        if (imdbID) {
+            const omdbUrl = `https://www.omdbapi.com/?i=${imdbID}&apikey=${omdbApiKey}`;
+            const omdbRes = await fetch(omdbUrl);
+            if (!omdbRes.ok) throw new Error(`Server error (OMDB): ${omdbRes.status}`);
+            const omdbData = await omdbRes.json();
+            poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+        }
+
         // Process movie data
-        const imdbID = externalIdsData.imdb_id ? externalIdsData.imdb_id.replace('tt', '') : '';
         const year = movieData.release_date ? movieData.release_date.split('-')[0] : 'نامشخص';
         const title = movieData.title || 'نامشخص';
-        const poster = movieData.poster_path ? `${baseImageUrl}${movieData.poster_path}` : defaultPoster;
         const backdrop = movieData.backdrop_path ? `${baseImageUrl}${movieData.backdrop_path}` : defaultBackdrop;
         const trailer = trailerData.results && trailerData.results[0] ? `https://www.youtube.com/embed/${trailerData.results[0].key}` : null;
 
@@ -94,9 +104,9 @@ async function getMovieDetails() {
 
         // Generate download links
         const downloadLinks = `
-            <a href="https://berlin.saymyname.website/Movies/${year}/${imdbID}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک اصلی)</a>
-            <a href="https://tokyo.saymyname.website/Movies/${year}/${imdbID}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک کمکی)</a>
-            <a href="https://nairobi.saymyname.website/Movies/${year}/${imdbID}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک کمکی)</a>
+            <a href="https://berlin.saymyname.website/Movies/${year}/${imdbID.replace('tt', '')}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک اصلی)</a>
+            <a href="https://tokyo.saymyname.website/Movies/${year}/${imdbID.replace('tt', '')}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک کمکی)</a>
+            <a href="https://nairobi.saymyname.website/Movies/${year}/${imdbID.replace('tt', '')}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" rel="nofollow">دانلود فیلم (لینک کمکی)</a>
             <button id="add-to-watchlist" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">افزودن به واچ لیست</button>
         `;
         document.getElementById('download-links').innerHTML = downloadLinks;
