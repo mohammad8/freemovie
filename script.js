@@ -1,4 +1,5 @@
-const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // Your TMDb API key
+const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
+const omdbApiKey = '38fa39d5'; // OMDB API key
 const language = 'fa'; // Language set to Persian
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL
 const defaultPoster = 'https://via.placeholder.com/300x450?text=No+Image'; // Default fallback image
@@ -25,13 +26,13 @@ async function fetchAndDisplayContent() {
     try {
         // Fetch movie data
         const movieRes = await fetch(apiUrls.now_playing);
-        if (!movieRes.ok) throw new Error(`Server error: ${movieRes.status}`);
+        if (!movieRes.ok) throw new Error(`خطای سرور (فیلم‌ها): ${movieRes.status}`);
         const movieData = await movieRes.json();
         const movies = movieData.results || [];
 
         // Fetch TV series data
         const tvRes = await fetch(apiUrls.tv_trending);
-        if (!tvRes.ok) throw new Error(`Server error: ${tvRes.status}`);
+        if (!tvRes.ok) throw new Error(`خطای سرور (سریال‌ها): ${tvRes.status}`);
         const tvData = await tvRes.json();
         const tvSeries = tvData.results || [];
 
@@ -40,14 +41,36 @@ async function fetchAndDisplayContent() {
 
         if (movies.length > 0 || tvSeries.length > 0) {
             // Process and display movies
-            movies.forEach(movie => {
-                const posterPath = movie.poster_path ? `${baseImageUrl}${movie.poster_path}` : defaultPoster;
+            for (const movie of movies) {
+                let poster = defaultPoster;
+                // Fetch IMDb ID and poster from OMDB
+                const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${movie.id}/external_ids?api_key=${apiKey}`;
+                try {
+                    const detailsRes = await fetch(movieDetailsUrl);
+                    if (!detailsRes.ok) throw new Error(`خطای سرور (جزئیات فیلم): ${detailsRes.status}`);
+                    const detailsData = await detailsRes.json();
+                    const imdbId = detailsData.imdb_id || '';
+                    if (imdbId) {
+                        const omdbUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`;
+                        const omdbRes = await fetch(omdbUrl);
+                        if (!omdbRes.ok) throw new Error(`خطای سرور (OMDB): ${omdbRes.status}`);
+                        const omdbData = await omdbRes.json();
+                        poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+                    }
+                } catch (fetchError) {
+                    console.warn(`خطا در دریافت پوستر فیلم ${movie.id} از OMDB:`, fetchError.message);
+                }
+
+                // Remove "300" before ".jpg"
+                let posterUrl = poster;
+                posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
+
                 const title = movie.title || 'نامشخص';
                 const overview = movie.overview ? movie.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
 
                 movieContainer.innerHTML += `
                     <div class="group relative">
-                        <img src="${posterPath}" alt="${title}" class="w-full h-auto rounded-lg shadow-lg">
+                        <img src="${posterUrl}" alt="${title}" class="w-full h-auto rounded-lg shadow-lg">
                         <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
                             <h3 class="text-lg font-bold text-white">${title}</h3>
                             <p class="text-sm text-gray-200">${overview}</p>
@@ -55,17 +78,39 @@ async function fetchAndDisplayContent() {
                         </div>
                     </div>
                 `;
-            });
+            }
 
             // Process and display TV series
-            tvSeries.forEach(tv => {
-                const posterPath = tv.poster_path ? `${baseImageUrl}${tv.poster_path}` : defaultPoster;
-                const title = tv.name || 'نامشخص'; // Use 'name' for TV series
+            for (const tv of tvSeries) {
+                let poster = defaultPoster;
+                // Fetch IMDb ID and poster from OMDB
+                const tvDetailsUrl = `https://api.themoviedb.org/3/tv/${tv.id}/external_ids?api_key=${apiKey}`;
+                try {
+                    const detailsRes = await fetch(tvDetailsUrl);
+                    if (!detailsRes.ok) throw new Error(`خطای سرور (جزئیات سریال): ${detailsRes.status}`);
+                    const detailsData = await detailsRes.json();
+                    const imdbId = detailsData.imdb_id || '';
+                    if (imdbId) {
+                        const omdbUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`;
+                        const omdbRes = await fetch(omdbUrl);
+                        if (!omdbRes.ok) throw new Error(`خطای سرور (OMDB): ${omdbRes.status}`);
+                        const omdbData = await omdbRes.json();
+                        poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+                    }
+                } catch (fetchError) {
+                    console.warn(`خطا در دریافت پوستر سریال ${tv.id} از OMDB:`, fetchError.message);
+                }
+
+                // Remove "300" before ".jpg"
+                let posterUrl = poster;
+                posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
+
+                const title = tv.name || 'نامشخص';
                 const overview = tv.overview ? tv.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
 
                 tvContainer.innerHTML += `
                     <div class="group relative">
-                        <img src="${posterPath}" alt="${title}" class="w-full h-auto rounded-lg shadow-lg">
+                        <img src="${posterUrl}" alt="${title}" class="w-full h-auto rounded-lg shadow-lg">
                         <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center p-4">
                             <h3 class="text-lg font-bold text-white">${title}</h3>
                             <p class="text-sm text-gray-200">${overview}</p>
@@ -73,7 +118,7 @@ async function fetchAndDisplayContent() {
                         </div>
                     </div>
                 `;
-            });
+            }
 
             if (movies.length === 0) {
                 movieContainer.innerHTML = '<p class="text-center text-red-500">فیلمی یافت نشد!</p>';
