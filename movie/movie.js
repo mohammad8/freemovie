@@ -61,9 +61,13 @@ async function getMovieDetails() {
         document.getElementById('rating').innerHTML = `<strong>امتیاز:</strong> ${movieData.vote_average || 'بدون امتیاز'}/10`;
 
         // Update images (poster from OMDB, backdrop from TMDb)
-        document.getElementById('poster').src = poster;
+		let posterUrl = poster;
+		if (posterUrl.endsWith('300')) {
+			posterUrl = posterUrl.slice(0, -3);
+		}
+		document.getElementById('poster').src = posterUrl;
         document.getElementById('poster').alt = `پوستر فیلم ${title}`;
-        document.getElementById('movie-bg').style.backgroundImage = `url('${backdrop}')`;
+        document.getElementById('movie-bg').style.backgroundImage = `url('${posterUrl}')`;
 
         // Update trailer from TMDb
         const trailerContainer = document.getElementById('trailer');
