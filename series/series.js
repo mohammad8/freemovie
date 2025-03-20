@@ -1,131 +1,148 @@
-// تعریف URL سرور و استخراج شناسه سریال از URL
-const serverUrl = "https://freemoviez.ir/api/tmdb-series.php"; // آدرس فرضی API
-const seriesId = new URLSearchParams(window.location.search).get("id");
+const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // Your TMDb API key
+const language = 'fa-IR'; // Language set to Persian (Iran)
+const baseImageUrl = 'https://image.tmdb.org/t/p/'; // TMDb base image URL
+const defaultPoster = 'https://via.placeholder.com/500x750?text=No+Image'; // Default poster fallback
+const defaultBackdrop = 'https://via.placeholder.com/1920x1080?text=No+Image'; // Default backdrop fallback
+const seriesId = new URLSearchParams(window.location.search).get('id');
 
-// تابع اصلی برای دریافت و نمایش جزئیات سریال
 async function getSeriesDetails() {
     try {
-        // بررسی وجود شناسه سریال در URL
+        // Check if series ID exists in URL
         if (!seriesId) {
-            throw new Error("شناسه سریال در URL وجود ندارد!");
+            throw new Error('شناسه سریال در URL وجود ندارد!');
         }
 
-        // ارسال درخواست به سرور
-        const res = await fetch(`${serverUrl}?id=${seriesId}`);
+        // Define TMDb API endpoint with external_ids and videos appended
+        const seriesDetailsUrl = `https://api.themoviedb.org/3/tv/${seriesId}?api_key=${apiKey}&language=${language}&append_to_response=external_ids,videos`;
+
+        // Fetch series data
+        const res = await fetch(seriesDetailsUrl);
         if (!res.ok) {
             throw new Error(`خطای سرور: ${res.status}`);
         }
+        const seriesData = await res.json();
 
-        // تبدیل پاسخ به JSON
-        const data = await res.json();
-
-        // بررسی موفقیت‌آمیز بودن پاسخ
-        if (!data.success) {
-            throw new Error(data.error || "خطا در دریافت اطلاعات سریال");
+        // Check if series data is valid
+        if (!seriesData || (seriesData.success === false)) {
+            throw new Error('سریال با این شناسه یافت نشد');
         }
 
-        // به‌روزرسانی محتوای صفحه
-        const title = data.title || "نامشخص";
-        const titleElement = document.getElementById("title");
+        // Process series data
+        const title = seriesData.name || 'نامشخص';
+        const year = seriesData.first_air_date ? seriesData.first_air_date.substr(0, 4) : 'نامشخص';
+        const poster = seriesData.poster_path ? `${baseImageUrl}w500${seriesData.poster_path}` : defaultPoster;
+        const backdrop = seriesData.backdrop_path ? `${baseImageUrl}w1280${seriesData.backdrop_path}` : defaultBackdrop;
+        const imdbId = seriesData.external_ids && seriesData.external_ids.imdb_id ? seriesData.external_ids.imdb_id : '';
+        const numberOfSeasons = seriesData.number_of_seasons || 0;
+
+        // Extract trailer from videos response
+        let trailer = '';
+        if (seriesData.videos && seriesData.videos.results) {
+            const trailerVideo = seriesData.videos.results.find(video => video.type.toLowerCase() === 'trailer' && video.site === 'YouTube');
+            if (trailerVideo) {
+                trailer = `https://www.youtube.com/embed/${trailerVideo.key}`;
+            }
+        }
+
+        // Update page content
+        const titleElement = document.getElementById('title');
         if (titleElement) titleElement.textContent = title;
 
-        const overviewElement = document.getElementById("overview");
-        if (overviewElement) overviewElement.textContent = data.overview || "خلاصه‌ای در دسترس نیست.";
+        const overviewElement = document.getElementById('overview');
+        if (overviewElement) overviewElement.textContent = seriesData.overview || 'خلاصه‌ای در دسترس نیست.';
 
-        const genreElement = document.getElementById("genre");
-        if (genreElement) genreElement.innerHTML = `<strong>ژانر:</strong> ${data.genre || "نامشخص"}`;
+        const genreElement = document.getElementById('genre');
+        if (genreElement) genreElement.innerHTML = `<strong>ژانر:</strong> ${seriesData.genres && seriesData.genres.length > 0 ? seriesData.genres.map(g => g.name).join(', ') : 'نامشخص'}`;
 
-        const yearElement = document.getElementById("year");
-        if (yearElement) yearElement.innerHTML = `<strong>سال تولید:</strong> ${data.year || "نامشخص"}`;
+        const yearElement = document.getElementById('year');
+        if (yearElement) yearElement.innerHTML = `<strong>سال تولید:</strong> ${year}`;
 
-        const ratingElement = document.getElementById("rating");
-        if (ratingElement) ratingElement.innerHTML = `<strong>امتیاز:</strong> ${data.rating || "نامشخص"}/10`;
+        const ratingElement = document.getElementById('rating');
+        if (ratingElement) ratingElement.innerHTML = `<strong>امتیاز:</strong> ${seriesData.vote_average ? Number(seriesData.vote_average).toFixed(1) : 'نامشخص'}/10`;
 
-        // به‌روزرسانی تصاویر
-        const poster = data.poster || "https://via.placeholder.com/500";
-        const posterElement = document.getElementById("poster");
+        // Update images
+        const posterElement = document.getElementById('poster');
         if (posterElement) {
             posterElement.src = poster;
             posterElement.alt = `پوستر سریال ${title}`;
         }
 
-        const seriesBgElement = document.getElementById("series-bg");
+        const seriesBgElement = document.getElementById('series-bg');
         if (seriesBgElement) {
-            seriesBgElement.style.backgroundImage = data.backdrop
-                ? `url('${data.backdrop}')`
-                : "url('https://via.placeholder.com/1920x1080')";
+            seriesBgElement.style.backgroundImage = `url('${backdrop}')`;
         }
 
-        // به‌روزرسانی تریلر
-        const trailerContainer = document.getElementById("trailer");
+        // Update trailer
+        const trailerContainer = document.getElementById('trailer');
         if (trailerContainer) {
-            if (data.trailer) {
-                trailerContainer.innerHTML = `<iframe src="${data.trailer}" title="تریلر سریال ${title}" frameborder="0" allowfullscreen class="w-full h-64 md:h-96 mx-auto"></iframe>`;
+            if (trailer) {
+                trailerContainer.innerHTML = `<iframe src="${trailer}" title="تریلر سریال ${title}" frameborder="0" allowfullscreen class="w-full h-64 md:h-96 mx-auto"></iframe>`;
             } else {
                 trailerContainer.innerHTML = '<p class="text-yellow-500">تریلر در دسترس نیست</p>';
             }
         }
 
-        // به‌روزرسانی متا تگ‌ها و عنوان صفحه
-        const metaTitleElement = document.getElementById("meta-title");
+        // Update meta tags and title
+        const metaTitleElement = document.getElementById('meta-title');
         if (metaTitleElement) metaTitleElement.textContent = `${title} - فیری مووی`;
 
         const metaDescription = document.querySelector('meta[name="description"]');
-        if (metaDescription) metaDescription.setAttribute("content", `${data.overview || "جزئیات و دانلود سریال " + title + " در فیری مووی."}`);
+        if (metaDescription) metaDescription.setAttribute('content', `${seriesData.overview || 'جزئیات و دانلود سریال ' + title + ' در فیری مووی.'}`);
 
         const ogTitle = document.querySelector('meta[property="og:title"]');
-        if (ogTitle) ogTitle.setAttribute("content", `${title} - فیری مووی`);
+        if (ogTitle) ogTitle.setAttribute('content', `${title} - فیری مووی`);
 
         const ogDescription = document.querySelector('meta[property="og:description"]');
-        if (ogDescription) ogDescription.setAttribute("content", data.overview || "جزئیات و دانلود سریال در فیری مووی.");
+        if (ogDescription) ogDescription.setAttribute('content', seriesData.overview || 'جزئیات و دانلود سریال در فیری مووی.');
 
         const ogImage = document.querySelector('meta[property="og:image"]');
-        if (ogImage) ogImage.setAttribute("content", poster);
+        if (ogImage) ogImage.setAttribute('content', poster);
 
         const twitterTitle = document.querySelector('meta[name="twitter:title"]');
-        if (twitterTitle) twitterTitle.setAttribute("content", `${title} - فیری مووی`);
+        if (twitterTitle) twitterTitle.setAttribute('content', `${title} - فیری مووی`);
 
         const twitterDescription = document.querySelector('meta[name="twitter:description"]');
-        if (twitterDescription) twitterDescription.setAttribute("content", data.overview || "جزئیات و دانلود سریال در فیری مووی.");
+        if (twitterDescription) twitterDescription.setAttribute('content', seriesData.overview || 'جزئیات و دانلود سریال در فیری مووی.');
 
         const twitterImage = document.querySelector('meta[name="twitter:image"]');
-        if (twitterImage) twitterImage.setAttribute("content", poster);
+        if (twitterImage) twitterImage.setAttribute('content', poster);
 
-        // به‌روزرسانی داده‌های ساختاریافته (Schema)
+        // Update structured data (Schema)
         const schema = {
-            "@context": "https://schema.org",
-            "@type": "TVSeries",
-            "name": title,
-            "description": data.overview || "خلاصه‌ای در دسترس نیست.",
-            "genre": data.genre || "نامشخص",
-            "datePublished": data.year || "",
-            "image": poster,
-            "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": data.rating || "0",
-                "bestRating": "10",
-                "ratingCount": "1"
+            '@context': 'https://schema.org',
+            '@type': 'TVSeries',
+            'name': title,
+            'description': seriesData.overview || 'خلاصه‌ای در دسترس نیست.',
+            'genre': seriesData.genres && seriesData.genres.length > 0 ? seriesData.genres.map(g => g.name).join(', ') : 'نامشخص',
+            'datePublished': year,
+            'image': poster,
+            'aggregateRating': {
+                '@type': 'AggregateRating',
+                'ratingValue': seriesData.vote_average ? Number(seriesData.vote_average).toFixed(1) : '0',
+                'bestRating': '10',
+                'ratingCount': '1'
             },
-            "trailer": {
-                "@type": "VideoObject",
-                "embedUrl": data.trailer || ""
+            'trailer': {
+                '@type': 'VideoObject',
+                'embedUrl': trailer || ''
             },
-            "numberOfSeasons": data.numberOfSeasons || "0"
+            'numberOfSeasons': numberOfSeasons
         };
-        const schemaElement = document.getElementById("series-schema");
+        const schemaElement = document.getElementById('series-schema');
         if (schemaElement) schemaElement.textContent = JSON.stringify(schema);
 
-        // تولید لینک‌های دانلود
-        const downloadLinksContainer = document.getElementById("download-links");
+        // Generate download links
+        const downloadLinksContainer = document.getElementById('download-links');
         if (downloadLinksContainer) {
             let downloadHtml = '';
-            if (data.download_links && Object.keys(data.download_links).length > 0) {
-                for (const season in data.download_links) {
+            if (imdbId && numberOfSeasons > 0) {
+                for (let season = 1; season <= numberOfSeasons; season++) {
                     downloadHtml += `<h3 class="text-xl font-bold mt-4">فصل ${season}</h3>`;
-                    for (const quality in data.download_links[season]) {
-                        const qualityNum = quality.split('_')[1];
+                    for (let quality = 1; quality <= 4; quality++) {
+                        const qualityNum = quality; // Assuming quality numbers are 1-4
+                        const downloadLink = `https://subtitle.saymyname.website/DL/filmgir/?i=${imdbId}&f=${season}&q=${quality}`;
                         downloadHtml += `
-                            <a href="${data.download_links[season][quality]}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mx-2 my-1 inline-block" rel="nofollow">
+                            <a href="${downloadLink}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mx-2 my-1 inline-block" rel="nofollow">
                                 دانلود کیفیت ${qualityNum}
                             </a>`;
                     }
@@ -136,31 +153,29 @@ async function getSeriesDetails() {
             downloadLinksContainer.innerHTML = downloadHtml;
         }
 
-        // افزودن قابلیت اضافه کردن به واچ‌لیست
-        const watchlistButton = document.getElementById("add-to-watchlist");
+        // Add to watchlist functionality
+        const watchlistButton = document.getElementById('add-to-watchlist');
         if (watchlistButton) {
-            watchlistButton.addEventListener("click", () => {
-                let watchlist = JSON.parse(localStorage.getItem("watchlist")) || { movies: [], series: [] };
+            watchlistButton.addEventListener('click', () => {
+                let watchlist = JSON.parse(localStorage.getItem('watchlist')) || { movies: [], series: [] };
                 const normalizedSeriesId = String(seriesId);
                 if (!watchlist.series.includes(normalizedSeriesId)) {
                     watchlist.series.push(normalizedSeriesId);
-                    localStorage.setItem("watchlist", JSON.stringify(watchlist));
-                    alert("سریال به واچ‌لیست اضافه شد!");
+                    localStorage.setItem('watchlist', JSON.stringify(watchlist));
+                    alert('سریال به واچ‌لیست اضافه شد!');
                 } else {
-                    alert("سریال قبلاً در واچ‌لیست است!");
+                    alert('سریال قبلاً در واچ‌لیست است!');
                 }
             });
         }
-
     } catch (error) {
-        // نمایش خطا در کنسول و صفحه
-        console.error("خطا در دریافت اطلاعات:", error);
-        const downloadLinksContainer = document.getElementById("download-links");
+        console.error('خطا در دریافت اطلاعات:', error);
+        const downloadLinksContainer = document.getElementById('download-links');
         if (downloadLinksContainer) {
             downloadLinksContainer.innerHTML = `<p class="text-red-500">خطا در دریافت اطلاعات: ${error.message}</p>`;
         }
     }
 }
 
-// اجرای تابع برای دریافت جزئیات سریال
+// Execute the function to fetch series details
 getSeriesDetails();
