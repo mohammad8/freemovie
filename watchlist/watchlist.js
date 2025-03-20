@@ -1,4 +1,5 @@
-const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // Your TMDb API key
+const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
+const omdbApiKey = '38fa39d5'; // OMDB API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL for posters
 const defaultPoster = 'https://via.placeholder.com/300x450?text=No+Image'; // Default poster fallback
@@ -70,17 +71,42 @@ async function fetchAndDisplayItem(itemId, type, container) {
             ? `https://api.themoviedb.org/3/movie/${itemId}?api_key=${apiKey}&language=${language}`
             : `https://api.themoviedb.org/3/tv/${itemId}?api_key=${apiKey}&language=${language}`;
 
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error(`خطای سرور: ${response.status}`);
+        const externalIdsUrl = type === 'movie'
+            ? `https://api.themoviedb.org/3/movie/${itemId}/external_ids?api_key=${apiKey}`
+            : `https://api.themoviedb.org/3/tv/${itemId}/external_ids?api_key=${apiKey}`;
 
+        // Fetch TMDb data
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error(`خطای سرور (داده‌های ${type}): ${response.status}`);
         const data = await response.json();
-        console.log(`Response for ${type} ID ${itemId}:`, data); // Debugging
+
+        // Fetch IMDb ID and poster from OMDB
+        let poster = defaultPoster;
+        const externalIdsRes = await fetch(externalIdsUrl);
+        if (!externalIdsRes.ok) throw new Error(`خطای سرور (شناسه‌های خارجی): ${externalIdsRes.status}`);
+        const externalIdsData = await externalIdsRes.json();
+        const imdbId = externalIdsData.imdb_id || '';
+        if (imdbId) {
+            const omdbUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`;
+            try {
+                const omdbRes = await fetch(omdbUrl);
+                if (!omdbRes.ok) throw new Error(`خطای سرور (OMDB): ${omdbRes.status}`);
+                const omdbData = await omdbRes.json();
+                poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+            } catch (omdbError) {
+                console.warn(`خطا در دریافت پوستر ${type} با شناسه ${itemId} از OMDB:`, omdbError.message);
+            }
+        }
+
+        // Remove "300" before ".jpg"
+        let posterUrl = poster;
+        posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
 
         const item = {
             id: itemId,
             title: type === 'movie' ? (data.title || 'نامشخص') : (data.name || 'نامشخص'),
             overview: data.overview || 'خلاصه‌ای در دسترس نیست.',
-            poster: data.poster_path ? `${baseImageUrl}${data.poster_path}` : defaultPoster,
+            poster: posterUrl,
         };
 
         const itemCard = `
