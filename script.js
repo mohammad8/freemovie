@@ -96,18 +96,31 @@ function manageNotification() {
     });
 }
 
-// report bug
+function manageImportantNotice() {
+    const notice = document.getElementById("important-notice");
+    const closeButton = document.getElementById("close-notice");
 
+    if (!localStorage.getItem("importantNoticeClosed")) {
+        notice.classList.remove("hidden");
+    } else {
+        notice.classList.add("hidden");
+    }
+
+    closeButton.addEventListener("click", () => {
+        notice.classList.add("hidden");
+        localStorage.setItem("importantNoticeClosed", "true");
+    });
+}
+
+// گزارش باگ
 document.addEventListener('DOMContentLoaded', function() {
     const fab = document.getElementById('fab');
     const fabOptions = document.getElementById('fabOptions');
 
-
     fab.addEventListener('click', function(event) {
-        event.stopPropagation(); 
+        event.stopPropagation();
         fabOptions.classList.toggle('hidden');
     });
-
 
     document.addEventListener('click', function(event) {
         if (!fab.contains(event.target) && !fabOptions.contains(event.target)) {
@@ -116,8 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
 document.addEventListener("DOMContentLoaded", () => {
     fetchAndDisplayContent();
     manageNotification();
+    manageImportantNotice();
 });

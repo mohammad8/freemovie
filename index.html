@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <style>
         body { font-family: 'Vazir', sans-serif; direction: rtl; }
-        *{
+        * {
             box-sizing: border-box;
             padding: 0;
             margin: 0;
@@ -21,21 +21,33 @@
         .skeleton { background: #333; animation: pulse 1.5s infinite; height: 16rem; border-radius: 0.5rem; }
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
         .nav-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+        #important-notice { z-index: 50; direction: rtl; }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
-    <!-- header -->
-    <header class="bg-gray-800 p-4 shadow-md">
+    <!-- اطلاعیه مهم -->
+    <div id="important-notice" class="fixed top-0 left-0 w-full bg-yellow-500 text-black p-4 z-50 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <p class="text-sm md:text-base">
+                📢 <strong>اطلاعیه مهم:</strong> این وب‌سایت فقط یک واسط برای نمایش اطلاعات فیلم و سریال‌هاست و هیچ‌گونه محتوایی را میزبانی یا ذخیره‌سازی نمی‌کند. تمام اطلاعات از وب‌سرویس‌های عمومی دریافت می‌شود. برای جزئیات بیشتر، لطفاً <a href="/freemovie/disclaimer/index.html" class="underline hover:text-gray-800">صفحه سلب مسئولیت</a> را مطالعه کنید.
+            </p>
+            <button id="close-notice" class="text-black hover:text-gray-800 focus:outline-none">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- هدر -->
+    <header class="bg-gray-800 p-4 shadow-md mt-14">
         <div class="container mx-auto flex flex-row justify-between items-center">
-            <!-- Navigation -->
+            <!-- ناوبری -->
             <nav class="flex items-center space-x-4">
                 <a href="/freemovie" class="hover:text-gray-300 p-4"><i class="fas fa-home"></i></a>
-                
                 <a href="/freemovie/watchlist/index.html" class="hover:text-gray-300"><i class="fas fa-bookmark"></i></a>
                 <a href="/freemovie/search/index.html" class="hover:text-gray-300"><i class="fas fa-search"></i></a>
                 <button id="theme-toggle" class="hover:text-gray-300"><i class="fas fa-sun"></i></button>
             </nav>
-            <!-- Logo -->
+            <!-- لوگو -->
             <div>
                 <a href="https://m4tinbeigi-official.github.io/freemovie/">
                     <img src="https://m4tinbeigi-official.github.io/freemovie/logo.png" alt="لوگو" class="h-10">
@@ -44,42 +56,44 @@
         </div>
     </header>
 
-<!-- New Movies Section -->
-<section class="container mx-auto py-8">
-    <h2 class="text-2xl font-bold mb-8 text-center">جدیدترین فیلم‌ها</h2>
-    <div id="new-movies" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4">
-        <!-- Skeleton placeholders -->
-        <div class="skeleton w-full"></div>
-        <div class="skeleton w-full"></div>
-        <div class="skeleton w-full"></div>
-        <div class="skeleton w-full"></div>
-    </div>
-</section>
+    <!-- بخش فیلم‌های جدید -->
+    <section class="container mx-auto py-8">
+        <h2 class="text-2xl font-bold mb-8 text-center">جدیدترین فیلم‌ها</h2>
+        <div id="new-movies" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4">
+            <!-- Skeleton placeholders -->
+            <div class="skeleton w-full"></div>
+            <div class="skeleton w-full"></div>
+            <div class="skeleton w-full"></div>
+            <div class="skeleton w-full"></div>
+        </div>
+    </section>
 
-<!-- Trending TV Series Section -->
-<section class="container mx-auto py-8">
-    <h2 class="text-2xl font-bold mb-8 text-center">سریال‌های پرطرفدار</h2>
-    <div id="trending-tv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4">
-        <!-- Skeleton placeholders -->
-        <div class="skeleton w-full"></div>
-        <div class="skeleton w-full"></div>
-        <div class="skeleton w-full"></div>
-        <div class="skeleton w-full"></div>
-    </div>
-</section>
-<!-- report bug -->
-<div class="fixed bottom-5 right-5 z-50">
-    <button id="fab" class="bg-gray-500 w-12 h-12 md:w-14 md:h-14 bg-[#1A1A2E] border-2 border-[#FFC107] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 animate-pulse">
-        <img src="images/bug-regular-24.png" alt="ریپورت باگ" class="w-6 h-6 md:w-7 md:h-7 filter invert-[85%] sepia-[100%] saturate-[1000%] hue-rotate-0">
-    </button>
-    <div id="fabOptions" class="hidden absolute bottom-16 right-0 bg-gray-500 rounded-lg shadow-lg w-48 p-2">
-        <a href="https://github.com/m4tinbeigi-official/freemovie/issues/new?template=%DA%AF%D8%B2%D8%A7%D8%B1%D8%B4-%D9%85%D8%B4%DA%A9%D9%84-%DB%8C%D8%A7-%D9%BE%DB%8C%D8%B4%D9%86%D9%87%D8%A7%D8%AF-%D8%AC%D8%AF%DB%8C%D8%AF.md" target="_blank" class=" block text-black font-bold py-2 text-center hover:bg-[#FFC107] hover:text-[#1A1A2E] transition-colors duration-200">گزارش مشکلات در گیت‌هاب</a>
-    </div>
-	<div id="fabOptions" class="hidden absolute bottom-16 right-0 bg-gray-500 rounded-lg shadow-lg w-48 p-2">
-        <a href="https://feedback.onl/fa/b/freemovie" target="_blank" class=" block text-black font-bold py-2 text-center hover:bg-[#FFC107] hover:text-[#1A1A2E] transition-colors duration-200">ارسال بازخورد</a>
-    </div>
-</div>
+    <!-- بخش سریال‌های پرطرفدار -->
+    <section class="container mx-auto py-8">
+        <h2 class="text-2xl font-bold mb-8 text-center">سریال‌های پرطرفدار</h2>
+        <div id="trending-tv" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4">
+            <!-- Skeleton placeholders -->
+            <div class="skeleton w-full"></div>
+            <div class="skeleton w-full"></div>
+            <div class="skeleton w-full"></div>
+            <div class="skeleton w-full"></div>
+        </div>
+    </section>
 
+    <!-- دکمه گزارش باگ -->
+    <div class="fixed bottom-5 right-5 z-50">
+        <button id="fab" class="bg-gray-500 w-12 h-12 md:w-14 md:h-14 bg-[#1A1A2E] border-2 border-[#FFC107] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 animate-pulse">
+            <img src="images/bug-regular-24.png" alt="ریپورت باگ" class="w-6 h-6 md:w-7 md:h-7 filter invert-[85%] sepia-[100%] saturate-[1000%] hue-rotate-0">
+        </button>
+        <div id="fabOptions" class="hidden absolute bottom-16 right-0 bg-gray-500 rounded-lg shadow-lg w-48 p-2">
+            <a href="https://github.com/m4tinbeigi-official/freemovie/issues/new?template=%DA%AF%D8%B2%D8%A7%D8%B1%D8%B4-%D9%85%D8%B4%DA%A9%D9%84-%DB%8C%D8%A7-%D9%BE%DB%8C%D8%B4%D9%86%D9%87%D8%A7%D8%AF-%D8%AC%D8%AF%DB%8C%D8%AF.md" target="_blank" class="block text-black font-bold py-2 text-center hover:bg-[#FFC107] hover:text-[#1A1A2E] transition-colors duration-200">گزارش مشکلات در گیت‌هاب</a>
+        </div>
+        <div id="fabOptions" class="hidden absolute bottom-16 right-0 bg-gray-500 rounded-lg shadow-lg w-48 p-2">
+            <a href="https://feedback.onl/fa/b/freemovie" target="_blank" class="block text-black font-bold py-2 text-center hover:bg-[#FFC107] hover:text-[#1A1A2E] transition-colors duration-200">ارسال بازخورد</a>
+        </div>
+    </div>
+
+    <!-- فوتر -->
     <footer class="bg-gray-800 p-4 mt-auto">
         <div class="container mx-auto text-center">
             <p>
@@ -88,7 +102,8 @@
                 <a href="https://rastikerdar.github.io/vazir-font/" class="hover:text-gray-300">وزیرمتن</a> به یاد 
                 صابر راستی کردار<br>
             </p>
-			<a href="developer/index.html" >توسعه‌دهندگان</a>  | <a href="about-freemovie/index.html">درباره فیری مووی</a>
+            <a href="developer/index.html">توسعه‌دهندگان</a> | <a href="about-freemovie/index.html">درباره فیری مووی</a>
+            <a href="disclaimer/index.html">سلب مسئولیت</a> | <a href="disclaimer/index-en.html">DMCA</a>
             <div class="social-icons mb-2">
                 <a class="github-button" href="https://github.com/m4tinbeigi-official/freemovie" data-icon="octicon-star" data-show-count="true" aria-label="Star m4tinbeigi-official/freemovie on GitHub">Star</a>
                 <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -98,7 +113,7 @@
 
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9208c4d9e930afbf',t:'MTc0MjAwNzcxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9236b49c1ca54954',t:'MTc0MjQ4OTM5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
