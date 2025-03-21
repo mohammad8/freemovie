@@ -1,10 +1,10 @@
 // script.js
-const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
-const language = 'fa'; // Language set to Persian
-const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL
-const defaultPoster = 'https://m4tinbeigi-official.github.io/freemovie/images/default-freemovie-300.png'; // Default fallback image
+const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // کلید API TMDb
+const language = 'fa'; // زبان پارسی
+const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // آدرس پایه تصاویر TMDb
+const defaultPoster = 'https://m4tinbeigi-official.github.io/freemovie/images/default-freemovie-300.png'; // پوستر پیش‌فرض
 
-// TMDb API endpoints
+// آدرس‌های API TMDb
 const apiUrls = {
     now_playing: `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&language=${language}`,
     tv_trending: `https://api.themoviedb.org/3/trending/tv/week?api_key=${apiKey}&language=${language}`
@@ -14,6 +14,7 @@ let apiKeySwitcher;
 
 async function initializeSwitcher() {
     apiKeySwitcher = await loadApiKeys();
+    console.log('سوئیچر کلید API مقداردهی شد');
 }
 
 async function fetchAndDisplayContent() {
@@ -30,13 +31,11 @@ async function fetchAndDisplayContent() {
     tvContainer.innerHTML = skeletonHTML;
 
     try {
-        // Fetch movie data
         const movieRes = await fetch(apiUrls.now_playing);
         if (!movieRes.ok) throw new Error(`خطای سرور (فیلم‌ها): ${movieRes.status}`);
         const movieData = await movieRes.json();
         const movies = movieData.results || [];
 
-        // Fetch TV series data
         const tvRes = await fetch(apiUrls.tv_trending);
         if (!tvRes.ok) throw new Error(`خطای سرور (سریال‌ها): ${tvRes.status}`);
         const tvData = await tvRes.json();
@@ -46,10 +45,8 @@ async function fetchAndDisplayContent() {
         tvContainer.innerHTML = '';
 
         if (movies.length > 0 || tvSeries.length > 0) {
-            // Process and display movies
             for (const movie of movies) {
                 let poster = defaultPoster;
-                // Fetch IMDb ID and poster from OMDB
                 const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${movie.id}/external_ids?api_key=${apiKey}`;
                 try {
                     const detailsRes = await fetch(movieDetailsUrl);
@@ -82,10 +79,8 @@ async function fetchAndDisplayContent() {
                 `;
             }
 
-            // Process and display TV series
             for (const tv of tvSeries) {
                 let poster = defaultPoster;
-                // Fetch IMDb ID and poster from OMDB
                 const tvDetailsUrl = `https://api.themoviedb.org/3/tv/${tv.id}/external_ids?api_key=${apiKey}`;
                 try {
                     const detailsRes = await fetch(tvDetailsUrl);
@@ -140,6 +135,11 @@ function manageNotification() {
     const closeButton = document.getElementById('close-notification');
     const supportButton = document.getElementById('support-button');
 
+    if (!notification) {
+        console.warn('عنصر notification یافت نشد');
+        return;
+    }
+
     if (!localStorage.getItem('notificationClosed')) {
         notification.classList.remove('hidden');
     }
@@ -157,6 +157,11 @@ function manageNotification() {
 function manageDisclaimerNotice() {
     const notice = document.getElementById('disclaimer-notice');
     const closeButton = document.getElementById('close-disclaimer');
+
+    if (!notice) {
+        console.warn('عنصر disclaimer-notice یافت نشد');
+        return;
+    }
 
     if (!localStorage.getItem('disclaimerNoticeClosed')) {
         notice.classList.remove('hidden');
@@ -177,57 +182,77 @@ function manageSupportPopup() {
     const downloadTwitterButton = document.getElementById('download-twitter');
     const downloadInstagramButton = document.getElementById('download-instagram');
 
+    if (!popup) {
+        console.error('عنصر support-popup یافت نشد');
+        return;
+    }
+
     let popupCount = parseInt(localStorage.getItem('popupCount') || '0', 10);
+    console.log('تعداد نمایش پاپ‌آپ تاکنون:', popupCount);
 
     if (popupCount < 2) {
         popup.classList.remove('hidden');
         popupCount += 1;
         localStorage.setItem('popupCount', popupCount.toString());
+        console.log('پاپ‌آپ نمایش داده شد. تعداد جدید:', popupCount);
+    } else {
+        console.log('پاپ‌آپ بیش از 2 بار نمایش داده شده است');
     }
 
     closeButton.addEventListener('click', () => {
         popup.classList.add('hidden');
+        console.log('پاپ‌آپ بسته شد');
     });
 
     tweetButton.addEventListener('click', () => {
         const tweetText = encodeURIComponent('من از فیری مووی حمایت می‌کنم! یک سایت عالی برای تماشای فیلم و سریال: https://b2n.ir/freemovie');
         window.open(`https://twitter.com/intent/tweet?text=${tweetText}`, '_blank');
+        console.log('دکمه توییت کلیک شد');
     });
 
     downloadTwitterButton.addEventListener('click', () => {
-        const twitterImageUrl = 'https://via.placeholder.com/150'; // Replace with actual Twitter image URL
+        const twitterImageUrl = 'https://via.placeholder.com/150'; // آدرس واقعی تصویر توییتر را جایگزین کنید
         const link = document.createElement('a');
         link.href = twitterImageUrl;
         link.download = 'freemovie-twitter-support.jpg';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        console.log('تصویر توییتر دانلود شد');
     });
 
     downloadInstagramButton.addEventListener('click', () => {
-        const instagramImageUrl = 'https://via.placeholder.com/150'; // Replace with actual Instagram image URL
+        const instagramImageUrl = 'https://via.placeholder.com/150'; // آدرس واقعی تصویر اینستاگرام را جایگزین کنید
         const link = document.createElement('a');
         link.href = instagramImageUrl;
         link.download = 'freemovie-instagram-support.jpg';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        console.log('تصویر اینستاگرام دانلود شد');
     });
 
     popup.addEventListener('click', (event) => {
         if (event.target === popup) {
             popup.classList.add('hidden');
+            console.log('پاپ‌آپ با کلیک خارج بسته شد');
         }
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+function manageFabButton() {
     const fab = document.getElementById('fab');
     const fabOptions = document.getElementById('fabOptions');
+
+    if (!fab || !fabOptions) {
+        console.warn('عناصر fab یا fabOptions یافت نشدند');
+        return;
+    }
 
     fab.addEventListener('click', function(event) {
         event.stopPropagation();
         fabOptions.classList.toggle('hidden');
+        console.log('دکمه FAB کلیک شد');
     });
 
     document.addEventListener('click', function(event) {
@@ -235,26 +260,44 @@ document.addEventListener('DOMContentLoaded', function() {
             fabOptions.classList.add('hidden');
         }
     });
-});
-
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
-themeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark');
-    const isDark = body.classList.contains('dark');
-    themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-});
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme === 'light') {
-    body.classList.remove('dark');
-    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
 }
 
+function manageThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    if (!themeToggle) {
+        console.warn('عنصر theme-toggle یافت نشد');
+        return;
+    }
+
+    themeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark');
+        const isDark = body.classList.contains('dark');
+        themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        console.log('تم تغییر کرد به:', isDark ? 'تاریک' : 'روشن');
+    });
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        body.classList.remove('dark');
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    }
+}
+
+// شنونده واحد برای بارگذاری صفحه
 document.addEventListener('DOMContentLoaded', async () => {
-    await initializeSwitcher();
-    fetchAndDisplayContent();
-    manageNotification();
-    manageDisclaimerNotice();
-    manageSupportPopup();
+    console.log('صفحه بارگذاری شد');
+    try {
+        await initializeSwitcher();
+        await fetchAndDisplayContent();
+        manageNotification();
+        manageDisclaimerNotice();
+        manageSupportPopup();
+        manageFabButton();
+        manageThemeToggle();
+    } catch (error) {
+        console.error('خطا در بارگذاری اولیه:', error);
+    }
 });
