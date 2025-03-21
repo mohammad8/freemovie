@@ -1,6 +1,4 @@
 // watchlist.js
-import { loadApiKeys } from '../apiKeySwitcher.js';
-
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL for posters
@@ -9,7 +7,7 @@ const defaultPoster = 'https://via.placeholder.com/300x450?text=No+Image'; // De
 let apiKeySwitcher;
 
 async function initializeSwitcher() {
-    apiKeySwitcher = await loadApiKeys();
+    apiKeySwitcher = await loadApiKeys(); // استفاده از loadApiKeys سراسری
 }
 
 async function loadWatchlist() {
@@ -130,6 +128,7 @@ async function fetchAndDisplayItem(itemId, type, container) {
     }
 }
 
+// تعریف تابع به‌صورت سراسری برای دسترسی از HTML
 function removeFromWatchlist(itemId, type) {
     const watchlist = JSON.parse(localStorage.getItem('watchlist')) || { movies: [], series: [] };
     const normalizedItemId = String(itemId);

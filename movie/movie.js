@@ -1,6 +1,4 @@
 // movieDetails.js
-//import { loadApiKeys } from './apiKeySwitcher.js';
-
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL
@@ -12,7 +10,7 @@ let apiKeySwitcher; // Global variable to hold the switcher instance
 
 // Initialize the API key switcher
 async function initializeSwitcher() {
-    apiKeySwitcher = await loadApiKeys();
+    apiKeySwitcher = await loadApiKeys(); // استفاده از loadApiKeys سراسری
 }
 
 async function getMovieDetails() {
