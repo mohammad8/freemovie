@@ -182,4 +182,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     fab.addEventListener('click', function(event) {
         event.stopPropagation();
-        fabOptions.classList.toggle('hidden
+        fabOptions.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', function(event) {
+        if (!fab.contains(event.target) && !fabOptions.contains(event.target)) {
+            fabOptions.classList.add('hidden');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await initializeSwitcher();
+    fetchAndDisplayContent();
+    manageNotification();
+    manageDisclaimerNotice();
+});
