@@ -53,7 +53,7 @@ class ApiKeySwitcher {
 // Load API keys from JSON file
 async function loadApiKeys() {
     try {
-        const response = await fetch('/path/to/omdbKeys.json'); // Adjust this path to the actual location of omdbKeys.json
+        const response = await fetch('./omdbKeys.json'); // فرض بر این است که omdbKeys.json در همان پوشه است
         if (!response.ok) {
             throw new Error(`خطا در بارگذاری فایل JSON: ${response.status}`);
         }
@@ -61,8 +61,6 @@ async function loadApiKeys() {
         return new ApiKeySwitcher(keys);
     } catch (error) {
         console.error('خطا در بارگذاری کلیدهای API:', error);
-        return new ApiKeySwitcher(['38fa39d5']); // Fallback to default key
+        return new ApiKeySwitcher(['38fa39d5']); // کلید پیش‌فرض
     }
 }
-
-export { loadApiKeys };

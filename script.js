@@ -1,5 +1,4 @@
-// fetchAndDisplayContent.js
-
+// script.js
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
 const language = 'fa'; // Language set to Persian
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL
@@ -67,9 +66,9 @@ async function fetchAndDisplayContent() {
                     console.warn(`خطا در دریافت پوستر فیلم ${movie.id} از OMDB:`, fetchError.message);
                 }
 
-                // Remove "300" before ".jpg"
+                // Remove "300" before ".jpg" (commented out as per your code)
                 let posterUrl = poster;
-                //posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
+                // posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
 
                 const title = movie.title || 'نامشخص';
                 const overview = movie.overview ? movie.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
@@ -106,9 +105,9 @@ async function fetchAndDisplayContent() {
                     console.warn(`خطا در دریافت پوستر سریال ${tv.id} از OMDB:`, fetchError.message);
                 }
 
-                // Remove "300" before ".jpg"
+                // Remove "300" before ".jpg" (commented out as per your code)
                 let posterUrl = poster;
-                //posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
+                // posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
 
                 const title = tv.name || 'نامشخص';
                 const overview = tv.overview ? tv.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
@@ -183,19 +182,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     fab.addEventListener('click', function(event) {
         event.stopPropagation();
-        fabOptions.classList.toggle('hidden');
-    });
-
-    document.addEventListener('click', function(event) {
-        if (!fab.contains(event.target) && !fabOptions.contains(event.target)) {
-            fabOptions.classList.add('hidden');
-        }
-    });
-});
-
-document.addEventListener('DOMContentLoaded', async () => {
-    await initializeSwitcher();
-    fetchAndDisplayContent();
-    manageNotification();
-    manageDisclaimerNotice();
-});
+        fabOptions.classList.toggle('hidden
