@@ -1,9 +1,24 @@
-// searchMovies.js
+// search.js
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // TMDb base image URL
 const defaultPoster = 'https://m4tinbeigi-official.github.io/freemovie/images/default-freemovie.png'; // Default poster fallback
+
 let apiKeySwitcher; // Global variable to hold the switcher instance
+
+// تابع برای دریافت یا ذخیره تصویر از/در کش با استفاده از localStorage
+function getCachedImage(id, fetchFunction) {
+    const cachedImage = localStorage.getItem(`image_${id}`);
+    if (cachedImage) {
+        console.log(`تصویر کش‌شده برای شناسه ${id} از Local Storage بارگذاری شد`);
+        return Promise.resolve(cachedImage);
+    }
+    return fetchFunction().then(poster => {
+        localStorage.setItem(`image_${id}`, poster);
+        console.log(`تصویر برای شناسه ${id} در Local Storage ذخیره شد`);
+        return poster;
+    });
+}
 
 // Initialize the API key switcher
 async function initializeSwitcher() {
@@ -41,12 +56,20 @@ async function searchMovies(query) {
         console.log('Movie results:', movieData); // Debugging
         console.log('TV results:', tvShows); // Debugging
 
+        // مجموعه‌ای برای جلوگیری از تکرار
+        const seenIds = new Set();
+
         if (tvSeries.length > 0 || movies.length > 0) {
             // Render TV shows first (prioritized as in original PHP)
             if (tvSeries.length > 0) {
                 for (const tv of tvSeries) {
+                    if (seenIds.has(tv.id)) {
+                        console.warn(`سریال تکراری با شناسه ${tv.id} حذف شد`);
+                        continue;
+                    }
+                    seenIds.add(tv.id);
+
                     let poster = defaultPoster;
-                    // Fetch IMDb ID and poster from OMDB
                     const tvExternalIdsUrl = `https://api.themoviedb.org/3/tv/${tv.id}/external_ids?api_key=${apiKey}`;
                     try {
                         const externalIdsRes = await fetch(tvExternalIdsUrl);
@@ -54,18 +77,19 @@ async function searchMovies(query) {
                         const externalIdsData = await externalIdsRes.json();
                         const imdbId = externalIdsData.imdb_id || '';
                         if (imdbId) {
-                            const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
-                                (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
-                            );
-                            poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+                            poster = await getCachedImage(imdbId, async () => {
+                                const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
+                                    (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
+                                );
+                                return omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+                            });
                         }
                     } catch (fetchError) {
                         console.warn(`خطا در دریافت پوستر سریال ${tv.id} از OMDB:`, fetchError.message);
                     }
 
                     // Remove "300" before ".jpg"
-                    let posterUrl = poster;
-                    posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
+                    let posterUrl = poster.replace(/300(?=\.jpg$)/i, '');
 
                     const tvId = tv.id;
                     const title = tv.name || 'نامشخص';
@@ -89,8 +113,13 @@ async function searchMovies(query) {
             // Render movies
             if (movies.length > 0) {
                 for (const movie of movies) {
+                    if (seenIds.has(movie.id)) {
+                        console.warn(`فیلم تکراری با شناسه ${movie.id} حذف شد`);
+                        continue;
+                    }
+                    seenIds.add(movie.id);
+
                     let poster = defaultPoster;
-                    // Fetch IMDb ID and poster from OMDB
                     const movieExternalIdsUrl = `https://api.themoviedb.org/3/movie/${movie.id}/external_ids?api_key=${apiKey}`;
                     try {
                         const externalIdsRes = await fetch(movieExternalIdsUrl);
@@ -98,18 +127,19 @@ async function searchMovies(query) {
                         const externalIdsData = await externalIdsRes.json();
                         const imdbId = externalIdsData.imdb_id || '';
                         if (imdbId) {
-                            const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
-                                (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
-                            );
-                            poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+                            poster = await getCachedImage(imdbId, async () => {
+                                const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
+                                    (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
+                                );
+                                return omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+                            });
                         }
                     } catch (fetchError) {
                         console.warn(`خطا در دریافت پوستر فیلم ${movie.id} از OMDB:`, fetchError.message);
                     }
 
                     // Remove "300" before ".jpg"
-                    let posterUrl = poster;
-                    posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
+                    let posterUrl = poster.replace(/300(?=\.jpg$)/i, '');
 
                     const movieId = movie.id;
                     const title = movie.title || 'نامشخص';
