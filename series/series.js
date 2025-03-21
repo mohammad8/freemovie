@@ -1,6 +1,4 @@
 // seriesDetails.js
-//import { loadApiKeys } from '../apiKeySwitcher.js';
-
 const apiKey = '1dc4cbf81f0accf4fa108820d551dafc'; // TMDb API key
 const language = 'fa-IR'; // Language set to Persian (Iran)
 const baseImageUrl = 'https://image.tmdb.org/t/p/'; // TMDb base image URL
@@ -11,7 +9,7 @@ const seriesId = new URLSearchParams(window.location.search).get('id');
 let apiKeySwitcher;
 
 async function initializeSwitcher() {
-    apiKeySwitcher = await loadApiKeys();
+    apiKeySwitcher = await loadApiKeys(); // استفاده از loadApiKeys سراسری
 }
 
 async function getSeriesDetails() {
