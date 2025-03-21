@@ -140,8 +140,7 @@ async function searchMovies(query) {
                     }
 
                     // Remove "300" before ".jpg"
-                    let posterUrl = poster;
-					//.replace(/300(?=\.jpg$)/i, '');
+                    let posterUrl = poster.replace(/300(?=\.jpg$)/i, '');
 
                     const movieId = movie.id;
                     const title = movie.title || 'نامشخص';

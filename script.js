@@ -74,7 +74,8 @@ async function fetchAndDisplayContent() {
                 }
                 seenIds.add(movie.id);
 
-                let poster = defaultPoster;
+                let poster = defaultPoster.replace(/300(?=\.jpg$)/i, '');
+
                 const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${movie.id}/external_ids?api_key=${apiKey}`;
                 try {
                     const detailsRes = await fetch(movieDetailsUrl);
