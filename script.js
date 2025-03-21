@@ -66,10 +66,7 @@ async function fetchAndDisplayContent() {
                     console.warn(`خطا در دریافت پوستر فیلم ${movie.id} از OMDB:`, fetchError.message);
                 }
 
-                // Remove "300" before ".jpg" (commented out as per your code)
                 let posterUrl = poster;
-                // posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
-
                 const title = movie.title || 'نامشخص';
                 const overview = movie.overview ? movie.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
 
@@ -105,10 +102,7 @@ async function fetchAndDisplayContent() {
                     console.warn(`خطا در دریافت پوستر سریال ${tv.id} از OMDB:`, fetchError.message);
                 }
 
-                // Remove "300" before ".jpg" (commented out as per your code)
                 let posterUrl = poster;
-                // posterUrl = posterUrl.replace(/300(?=\.jpg$)/i, '');
-
                 const title = tv.name || 'نامشخص';
                 const overview = tv.overview ? tv.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
 
@@ -176,6 +170,57 @@ function manageDisclaimerNotice() {
     });
 }
 
+function manageSupportPopup() {
+    const popup = document.getElementById('support-popup');
+    const closeButton = document.getElementById('close-popup');
+    const tweetButton = document.getElementById('tweet-support');
+    const downloadTwitterButton = document.getElementById('download-twitter');
+    const downloadInstagramButton = document.getElementById('download-instagram');
+
+    let popupCount = parseInt(localStorage.getItem('popupCount') || '0', 10);
+
+    if (popupCount < 2) {
+        popup.classList.remove('hidden');
+        popupCount += 1;
+        localStorage.setItem('popupCount', popupCount.toString());
+    }
+
+    closeButton.addEventListener('click', () => {
+        popup.classList.add('hidden');
+    });
+
+    tweetButton.addEventListener('click', () => {
+        const tweetText = encodeURIComponent('من از فیری مووی حمایت می‌کنم! یک سایت عالی برای تماشای فیلم و سریال: https://b2n.ir/freemovie');
+        window.open(`https://twitter.com/intent/tweet?text=${tweetText}`, '_blank');
+    });
+
+    downloadTwitterButton.addEventListener('click', () => {
+        const twitterImageUrl = 'https://via.placeholder.com/150'; // Replace with actual Twitter image URL
+        const link = document.createElement('a');
+        link.href = twitterImageUrl;
+        link.download = 'freemovie-twitter-support.jpg';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
+    downloadInstagramButton.addEventListener('click', () => {
+        const instagramImageUrl = 'https://via.placeholder.com/150'; // Replace with actual Instagram image URL
+        const link = document.createElement('a');
+        link.href = instagramImageUrl;
+        link.download = 'freemovie-instagram-support.jpg';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
+    popup.addEventListener('click', (event) => {
+        if (event.target === popup) {
+            popup.classList.add('hidden');
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const fab = document.getElementById('fab');
     const fabOptions = document.getElementById('fabOptions');
@@ -192,9 +237,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+themeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark');
+    const isDark = body.classList.contains('dark');
+    themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+});
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'light') {
+    body.classList.remove('dark');
+    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     await initializeSwitcher();
     fetchAndDisplayContent();
     manageNotification();
     manageDisclaimerNotice();
+    manageSupportPopup();
 });
