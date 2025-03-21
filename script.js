@@ -10,6 +10,21 @@ const apiUrls = {
     tv_trending: `https://api.themoviedb.org/3/trending/tv/week?api_key=${apiKey}&language=${language}`
 };
 
+// شیء کش برای ذخیره تصاویر
+const imageCache = {};
+
+// تابع برای دریافت یا ذخیره تصویر از/در کش
+function getCachedImage(id, fetchFunction) {
+    if (imageCache[id]) {
+        console.log(`تصویر کش‌شده برای شناسه ${id} بارگذاری شد`);
+        return Promise.resolve(imageCache[id]);
+    }
+    return fetchFunction().then(poster => {
+        imageCache[id] = poster;
+        return poster;
+    });
+}
+
 let apiKeySwitcher;
 
 async function initializeSwitcher() {
@@ -31,21 +46,34 @@ async function fetchAndDisplayContent() {
     tvContainer.innerHTML = skeletonHTML;
 
     try {
+        // دریافت داده‌های فیلم‌ها
         const movieRes = await fetch(apiUrls.now_playing);
         if (!movieRes.ok) throw new Error(`خطای سرور (فیلم‌ها): ${movieRes.status}`);
         const movieData = await movieRes.json();
         const movies = movieData.results || [];
 
+        // دریافت داده‌های سریال‌ها
         const tvRes = await fetch(apiUrls.tv_trending);
         if (!tvRes.ok) throw new Error(`خطای سرور (سریال‌ها): ${tvRes.status}`);
         const tvData = await tvRes.json();
         const tvSeries = tvData.results || [];
 
+        // پاکسازی اولیه کانتینرها
         movieContainer.innerHTML = '';
         tvContainer.innerHTML = '';
 
-        if (movies.length > 0 || tvSeries.length > 0) {
+        // مجموعه‌ای برای جلوگیری از تکرار
+        const seenIds = new Set();
+
+        // پردازش و نمایش فیلم‌ها
+        if (movies.length > 0) {
             for (const movie of movies) {
+                if (seenIds.has(movie.id)) {
+                    console.warn(`فیلم تکراری با شناسه ${movie.id} حذف شد`);
+                    continue;
+                }
+                seenIds.add(movie.id);
+
                 let poster = defaultPoster;
                 const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${movie.id}/external_ids?api_key=${apiKey}`;
                 try {
@@ -54,16 +82,18 @@ async function fetchAndDisplayContent() {
                     const detailsData = await detailsRes.json();
                     const imdbId = detailsData.imdb_id || '';
                     if (imdbId) {
-                        const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
-                            (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
-                        );
-                        poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+                        poster = await getCachedImage(imdbId, async () => {
+                            const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
+                                (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
+                            );
+                            return omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+                        });
                     }
                 } catch (fetchError) {
                     console.warn(`خطا در دریافت پوستر فیلم ${movie.id} از OMDB:`, fetchError.message);
                 }
 
-                let posterUrl = poster;
+                const posterUrl = poster;
                 const title = movie.title || 'نامشخص';
                 const overview = movie.overview ? movie.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
 
@@ -78,8 +108,19 @@ async function fetchAndDisplayContent() {
                     </div>
                 `;
             }
+        } else {
+            movieContainer.innerHTML = '<p class="text-center text-red-500">فیلمی یافت نشد!</p>';
+        }
 
+        // پردازش و نمایش سریال‌ها
+        if (tvSeries.length > 0) {
             for (const tv of tvSeries) {
+                if (seenIds.has(tv.id)) {
+                    console.warn(`سریال تکراری با شناسه ${tv.id} حذف شد`);
+                    continue;
+                }
+                seenIds.add(tv.id);
+
                 let poster = defaultPoster;
                 const tvDetailsUrl = `https://api.themoviedb.org/3/tv/${tv.id}/external_ids?api_key=${apiKey}`;
                 try {
@@ -88,16 +129,18 @@ async function fetchAndDisplayContent() {
                     const detailsData = await detailsRes.json();
                     const imdbId = detailsData.imdb_id || '';
                     if (imdbId) {
-                        const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
-                            (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
-                        );
-                        poster = omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+                        poster = await getCachedImage(imdbId, async () => {
+                            const omdbData = await apiKeySwitcher.fetchWithKeySwitch(
+                                (key) => `https://www.omdbapi.com/?i=${imdbId}&apikey=${key}`
+                            );
+                            return omdbData.Poster && omdbData.Poster !== 'N/A' ? omdbData.Poster : defaultPoster;
+                        });
                     }
                 } catch (fetchError) {
                     console.warn(`خطا در دریافت پوستر سریال ${tv.id} از OMDB:`, fetchError.message);
                 }
 
-                let posterUrl = poster;
+                const posterUrl = poster;
                 const title = tv.name || 'نامشخص';
                 const overview = tv.overview ? tv.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
 
@@ -112,14 +155,12 @@ async function fetchAndDisplayContent() {
                     </div>
                 `;
             }
-
-            if (movies.length === 0) {
-                movieContainer.innerHTML = '<p class="text-center text-red-500">فیلمی یافت نشد!</p>';
-            }
-            if (tvSeries.length === 0) {
-                tvContainer.innerHTML = '<p class="text-center text-red-500">سریالی یافت نشد!</p>';
-            }
         } else {
+            tvContainer.innerHTML = '<p class="text-center text-red-500">سریالی یافت نشد!</p>';
+        }
+
+        // اگر هیچ داده‌ای موجود نبود
+        if (seenIds.size === 0) {
             movieContainer.innerHTML = '<p class="text-center text-red-500">داده‌ای یافت نشد!</p>';
             tvContainer.innerHTML = '<p class="text-center text-red-500">داده‌ای یافت نشد!</p>';
         }
@@ -194,7 +235,6 @@ function manageSupportPopup() {
     const downloadTwitterButton = document.getElementById('download-twitter');
     const downloadInstagramButton = document.getElementById('download-instagram');
 
-    // بررسی وجود عنصر پاپ‌آپ
     if (!popup) {
         console.error('عنصر support-popup یافت نشد');
         return;
@@ -202,7 +242,6 @@ function manageSupportPopup() {
 
     console.log('تابع manageSupportPopup اجرا شد');
 
-    // بررسی وضعیت نمایش پاپ‌آپ
     const isPopupShown = localStorage.getItem('isPopupShown') === 'true';
     if (!isPopupShown) {
         popup.classList.remove('hidden');
@@ -212,7 +251,6 @@ function manageSupportPopup() {
         console.log('پاپ‌آپ قبلاً نمایش داده شده است');
     }
 
-    // مدیریت رویداد بستن پاپ‌آپ
     if (closeButton) {
         closeButton.addEventListener('click', () => {
             popup.classList.add('hidden');
@@ -220,7 +258,6 @@ function manageSupportPopup() {
         });
     }
 
-    // مدیریت رویداد توییت
     if (tweetButton) {
         tweetButton.addEventListener('click', () => {
             const tweetText = encodeURIComponent('من از فیری مووی حمایت می‌کنم! یک سایت عالی برای تماشای فیلم و سریال: https://b2n.ir/freemovie');
@@ -229,23 +266,20 @@ function manageSupportPopup() {
         });
     }
 
-    // مدیریت دانلود تصویر توییتر
     if (downloadTwitterButton) {
         downloadTwitterButton.addEventListener('click', () => {
-            const twitterImageUrl = 'https://github.com/m4tinbeigi-official/freemovie/images/story.png'; // آدرس واقعی تصویر
+            const twitterImageUrl = 'https://github.com/m4tinbeigi-official/freemovie/images/story.png';
             downloadImage(twitterImageUrl, 'freemovie-twitter-support.jpg');
         });
     }
 
-    // مدیریت دانلود تصویر اینستاگرام
     if (downloadInstagramButton) {
         downloadInstagramButton.addEventListener('click', () => {
-            const instagramImageUrl = 'https://github.com/m4tinbeigi-official/freemovie/images/tweet.png'; // آدرس واقعی تصویر
+            const instagramImageUrl = 'https://github.com/m4tinbeigi-official/freemovie/images/tweet.png';
             downloadImage(instagramImageUrl, 'freemovie-instagram-support.jpg');
         });
     }
 
-    // بستن پاپ‌آپ با کلیک خارج از آن
     popup.addEventListener('click', (event) => {
         if (event.target === popup) {
             popup.classList.add('hidden');
@@ -262,7 +296,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         await fetchAndDisplayContent();
         manageNotification();
         manageDisclaimerNotice();
-        manageSupportPopup(); // فراخوانی تابع بهینه‌شده
+        manageSupportPopup();
         manageFabButton();
         manageThemeToggle();
     } catch (error) {
@@ -316,18 +350,5 @@ function manageThemeToggle() {
     }
 }
 
-// شنونده واحد برای بارگذاری صفحه
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log('صفحه بارگذاری شد');
-    try {
-        await initializeSwitcher();
-        await fetchAndDisplayContent();
-        manageNotification();
-        manageDisclaimerNotice();
-        manageSupportPopup();
-        manageFabButton();
-        manageThemeToggle();
-    } catch (error) {
-        console.error('خطا در بارگذاری اولیه:', error);
-    }
-});
+// حذف شنونده تکراری DOMContentLoaded
+// فقط یکی از این دو شنونده کافی است، بنابراین دومی حذف شده است
