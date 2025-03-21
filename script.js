@@ -94,7 +94,7 @@ async function fetchAndDisplayContent() {
                     console.warn(`خطا در دریافت پوستر فیلم ${movie.id} از OMDB:`, fetchError.message);
                 }
 
-                const posterUrl = poster;
+                const posterUrl = poster.replace(/300(?=\.jpg$)/i, '');
 
                 const title = movie.title || 'نامشخص';
                 const overview = movie.overview ? movie.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
@@ -142,7 +142,7 @@ async function fetchAndDisplayContent() {
                     console.warn(`خطا در دریافت پوستر سریال ${tv.id} از OMDB:`, fetchError.message);
                 }
 
-                const posterUrl = poster;
+                const posterUrl = poster.replace(/300(?=\.jpg$)/i, '');
                 const title = tv.name || 'نامشخص';
                 const overview = tv.overview ? tv.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
 
