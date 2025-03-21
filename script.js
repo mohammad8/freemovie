@@ -95,6 +95,7 @@ async function fetchAndDisplayContent() {
                 }
 
                 const posterUrl = poster;
+
                 const title = movie.title || 'نامشخص';
                 const overview = movie.overview ? movie.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
 
@@ -122,7 +123,7 @@ async function fetchAndDisplayContent() {
                 }
                 seenIds.add(tv.id);
 
-                let poster = defaultPoster;
+				let poster = defaultPoster.replace(/300(?=\.jpg$)/i, '');
                 const tvDetailsUrl = `https://api.themoviedb.org/3/tv/${tv.id}/external_ids?api_key=${apiKey}`;
                 try {
                     const detailsRes = await fetch(tvDetailsUrl);
