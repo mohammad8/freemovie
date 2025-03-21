@@ -175,6 +175,18 @@ function manageDisclaimerNotice() {
     });
 }
 
+// تابع کمکی برای دانلود تصاویر
+function downloadImage(url, filename) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    console.log(`${filename} دانلود شد`);
+}
+
+// تابع مدیریت پاپ‌آپ حمایت
 function manageSupportPopup() {
     const popup = document.getElementById('support-popup');
     const closeButton = document.getElementById('close-popup');
@@ -182,56 +194,58 @@ function manageSupportPopup() {
     const downloadTwitterButton = document.getElementById('download-twitter');
     const downloadInstagramButton = document.getElementById('download-instagram');
 
+    // بررسی وجود عنصر پاپ‌آپ
     if (!popup) {
         console.error('عنصر support-popup یافت نشد');
         return;
     }
 
-    let popupCount = parseInt(localStorage.getItem('popupCount') || '0', 10);
-    console.log('تعداد نمایش پاپ‌آپ تاکنون:', popupCount);
+    console.log('تابع manageSupportPopup اجرا شد');
 
-    if (popupCount < 2) {
+    // بررسی وضعیت نمایش پاپ‌آپ
+    const isPopupShown = localStorage.getItem('isPopupShown') === 'true';
+    if (!isPopupShown) {
         popup.classList.remove('hidden');
-        popupCount += 1;
-        localStorage.setItem('popupCount', popupCount.toString());
-        console.log('پاپ‌آپ نمایش داده شد. تعداد جدید:', popupCount);
+        localStorage.setItem('isPopupShown', 'true');
+        console.log('پاپ‌آپ برای اولین بار نمایش داده شد');
     } else {
-        console.log('پاپ‌آپ بیش از 2 بار نمایش داده شده است');
+        console.log('پاپ‌آپ قبلاً نمایش داده شده است');
     }
 
-    closeButton.addEventListener('click', () => {
-        popup.classList.add('hidden');
-        console.log('پاپ‌آپ بسته شد');
-    });
+    // مدیریت رویداد بستن پاپ‌آپ
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            popup.classList.add('hidden');
+            console.log('پاپ‌آپ بسته شد');
+        });
+    }
 
-    tweetButton.addEventListener('click', () => {
-        const tweetText = encodeURIComponent('من از فیری مووی حمایت می‌کنم! یک سایت عالی برای تماشای فیلم و سریال: https://b2n.ir/freemovie');
-        window.open(`https://twitter.com/intent/tweet?text=${tweetText}`, '_blank');
-        console.log('دکمه توییت کلیک شد');
-    });
+    // مدیریت رویداد توییت
+    if (tweetButton) {
+        tweetButton.addEventListener('click', () => {
+            const tweetText = encodeURIComponent('من از فیری مووی حمایت می‌کنم! یک سایت عالی برای تماشای فیلم و سریال: https://b2n.ir/freemovie');
+            window.open(`https://twitter.com/intent/tweet?text=${tweetText}`, '_blank');
+            console.log('دکمه توییت کلیک شد');
+        });
+    }
 
-    downloadTwitterButton.addEventListener('click', () => {
-        const twitterImageUrl = 'https://via.placeholder.com/150'; // آدرس واقعی تصویر توییتر را جایگزین کنید
-        const link = document.createElement('a');
-        link.href = twitterImageUrl;
-        link.download = 'freemovie-twitter-support.jpg';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        console.log('تصویر توییتر دانلود شد');
-    });
+    // مدیریت دانلود تصویر توییتر
+    if (downloadTwitterButton) {
+        downloadTwitterButton.addEventListener('click', () => {
+            const twitterImageUrl = 'https://github.com/m4tinbeigi-official/freemovie/images/story.png'; // آدرس واقعی تصویر
+            downloadImage(twitterImageUrl, 'freemovie-twitter-support.jpg');
+        });
+    }
 
-    downloadInstagramButton.addEventListener('click', () => {
-        const instagramImageUrl = 'https://via.placeholder.com/150'; // آدرس واقعی تصویر اینستاگرام را جایگزین کنید
-        const link = document.createElement('a');
-        link.href = instagramImageUrl;
-        link.download = 'freemovie-instagram-support.jpg';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        console.log('تصویر اینستاگرام دانلود شد');
-    });
+    // مدیریت دانلود تصویر اینستاگرام
+    if (downloadInstagramButton) {
+        downloadInstagramButton.addEventListener('click', () => {
+            const instagramImageUrl = 'https://github.com/m4tinbeigi-official/freemovie/images/tweet.png'; // آدرس واقعی تصویر
+            downloadImage(instagramImageUrl, 'freemovie-instagram-support.jpg');
+        });
+    }
 
+    // بستن پاپ‌آپ با کلیک خارج از آن
     popup.addEventListener('click', (event) => {
         if (event.target === popup) {
             popup.classList.add('hidden');
@@ -239,6 +253,22 @@ function manageSupportPopup() {
         }
     });
 }
+
+// اجرای توابع پس از بارگذاری صفحه
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('صفحه بارگذاری شد');
+    try {
+        await initializeSwitcher();
+        await fetchAndDisplayContent();
+        manageNotification();
+        manageDisclaimerNotice();
+        manageSupportPopup(); // فراخوانی تابع بهینه‌شده
+        manageFabButton();
+        manageThemeToggle();
+    } catch (error) {
+        console.error('خطا در بارگذاری اولیه:', error);
+    }
+});
 
 function manageFabButton() {
     const fab = document.getElementById('fab');
