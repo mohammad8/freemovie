@@ -20,7 +20,7 @@ async function getMovieDetails() {
         }
 
         // Define TMDb API endpoints
-        const movieUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=${language}`;
+        const movieUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=${language}&append_to_response=credits`;
         const externalIdsUrl = `https://api.themoviedb.org/3/movie/${movieId}/external_ids?api_key=${apiKey}`;
         const trailerUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}`;
 
@@ -55,6 +55,8 @@ async function getMovieDetails() {
         const title = movieData.title || 'نامشخص';
         const backdrop = movieData.backdrop_path ? `${baseImageUrl}${movieData.backdrop_path}` : defaultBackdrop;
         const budget = movieData.budget ? `${movieData.budget.toLocaleString()} دلار` : 'نامشخص';
+        const director = movieData.credits && movieData.credits.crew ? movieData.credits.crew.find(crew => crew.job === 'Director') : null;
+        const directorName = director ? director.name : 'کارگردان مشخص نیست';
         const productionCountries = movieData.production_countries ? movieData.production_countries.map((country) => country.name).join(', ') : 'نامشخص';
         const trailer = trailerData.results && trailerData.results[0] ? `https://www.youtube.com/embed/${trailerData.results[0].key}` : null;
         const spokenLanguages = movieData.spoken_languages && movieData.spoken_languages.map((lang) => lang.english_name).join(', ') || 'نامشخص';
@@ -69,7 +71,7 @@ async function getMovieDetails() {
         document.getElementById('spokenLanguages').innerHTML = `<strong>زبان فیلم :</strong> ${spokenLanguages}`;
         document.getElementById('budget').innerHTML = `<strong>بودجه فیلم :</strong> ${budget}`;
         document.getElementById('productionCountries').innerHTML = `<strong>محصول کشور :</strong> ${productionCountries}`;
-        
+        document.getElementById('director').innerHTML = `<strong>کارگردان :</strong> ${directorName}`;        
 
         // Update images (poster from OMDB, backdrop from TMDb)
         let posterUrl = poster;
