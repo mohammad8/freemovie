@@ -56,7 +56,7 @@ async function getMovieDetails() {
         const trailer = trailerData.results && trailerData.results[0] ? `https://www.youtube.com/embed/${trailerData.results[0].key}` : null;
 
         // Update page content with TMDb data
-        document.getElementById('title').textContent = title;
+        document.getElementById('title').textContent = title + " " + year;
         document.getElementById('overview').textContent = movieData.overview || 'خلاصه‌ای در دسترس نیست.';
         document.getElementById('genre').innerHTML = `<strong>ژانر:</strong> ${movieData.genres ? movieData.genres.map(g => g.name).join(', ') : 'نامشخص'}`;
         document.getElementById('year').innerHTML = `<strong>سال تولید:</strong> ${year}`;
