@@ -64,7 +64,7 @@ async function getMovieDetails() {
         document.getElementById('overview').innerHTML =`<strong>خلاصه داستان :</strong> ${movieData.overview || 'خلاصه‌ای در دسترس نیست.'}`;
         document.getElementById('genre').innerHTML = `<strong>ژانر:</strong> ${movieData.genres ? movieData.genres.map(g => g.name).join(', ') : 'نامشخص'}`;
         document.getElementById('year').innerHTML = `<strong>سال تولید:</strong> ${year}`;
-        document.getElementById('rating').innerHTML = `<strong>امتیاز:</strong> ${movieData.vote_average || 'بدون امتیاز'}/10`;
+        document.getElementById('rating').innerHTML = `<strong>امتیاز:</strong> ${(movieData.vote_average || movieData.vote_average === 0) ? Number(movieData.vote_average).toFixed(1) : 'بدون امتیاز'}/10`;
         document.getElementById('runTime').innerHTML = `<strong>مدت زمان فیلم :</strong> ${runTime} `;
         document.getElementById('spokenLanguages').innerHTML = `<strong>زبان فیلم :</strong> ${spokenLanguages}`;
         document.getElementById('budget').innerHTML = `<strong>بودجه فیلم :</strong> ${budget}`;
