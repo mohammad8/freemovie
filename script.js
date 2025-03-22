@@ -328,6 +328,9 @@ function manageFabButton() {
     });
 }
 
+window.addEventListener('DOMContentLoaded', manageFabButton);
+
+
 function manageThemeToggle() {
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
