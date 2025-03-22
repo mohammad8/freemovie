@@ -51,16 +51,25 @@ async function getMovieDetails() {
 
         // Process TMDb movie data
         const year = movieData.release_date ? movieData.release_date.split('-')[0] : 'نامشخص';
+        const runTime = movieData.runtime ? `${movieData.runtime} دقیقه` : 'نامشخص';
         const title = movieData.title || 'نامشخص';
         const backdrop = movieData.backdrop_path ? `${baseImageUrl}${movieData.backdrop_path}` : defaultBackdrop;
+        const budget = movieData.budget ? `${movieData.budget.toLocaleString()} دلار` : 'نامشخص';
+        const productionCountries = movieData.production_countries ? movieData.production_countries.map((country) => country.name).join(', ') : 'نامشخص';
         const trailer = trailerData.results && trailerData.results[0] ? `https://www.youtube.com/embed/${trailerData.results[0].key}` : null;
+        const spokenLanguages = movieData.spoken_languages && movieData.spoken_languages.map((lang) => lang.english_name).join(', ') || 'نامشخص';
 
         // Update page content with TMDb data
         document.getElementById('title').textContent = title + " " +  `(${year})`;
-        document.getElementById('overview').textContent = movieData.overview || 'خلاصه‌ای در دسترس نیست.';
+        document.getElementById('overview').innerHTML =`<strong>خلاصه داستان :</strong> ${movieData.overview || 'خلاصه‌ای در دسترس نیست.'}`;
         document.getElementById('genre').innerHTML = `<strong>ژانر:</strong> ${movieData.genres ? movieData.genres.map(g => g.name).join(', ') : 'نامشخص'}`;
         document.getElementById('year').innerHTML = `<strong>سال تولید:</strong> ${year}`;
         document.getElementById('rating').innerHTML = `<strong>امتیاز:</strong> ${movieData.vote_average || 'بدون امتیاز'}/10`;
+        document.getElementById('runTime').innerHTML = `<strong>مدت زمان فیلم :</strong> ${runTime} `;
+        document.getElementById('spokenLanguages').innerHTML = `<strong>زبان فیلم :</strong> ${spokenLanguages}`;
+        document.getElementById('budget').innerHTML = `<strong>بودجه فیلم :</strong> ${budget}`;
+        document.getElementById('productionCountries').innerHTML = `<strong>محصول کشور :</strong> ${productionCountries}`;
+        
 
         // Update images (poster from OMDB, backdrop from TMDb)
         let posterUrl = poster;
