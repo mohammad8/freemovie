@@ -15,14 +15,11 @@ const imageCache = {};
 
 // تابع برای دریافت یا ذخیره تصویر از/در کش
 function getCachedImage(id, fetchFunction) {
-    // اگه تصویر قبلاً کش شده و برابر با پیش‌فرض نیست، از کش استفاده کن
     if (imageCache[id] && imageCache[id] !== defaultPoster) {
         console.log(`تصویر کش‌شده برای شناسه ${id} بارگذاری شد`);
         return Promise.resolve(imageCache[id]);
     }
-    // در غیر این صورت، درخواست جدید انجام بده
     return fetchFunction().then(poster => {
-        // اگه پوستر برابر با پیش‌فرض نیست، کشش کن
         if (poster !== defaultPoster) {
             imageCache[id] = poster;
             console.log(`تصویر برای شناسه ${id} در کش ذخیره شد`);
@@ -54,6 +51,8 @@ async function fetchAndDisplayContent() {
     tvContainer.innerHTML = skeletonHTML;
 
     try {
+        showLoading(); // نمایش لودینگ قبل از شروع درخواست‌ها
+
         // دریافت داده‌های فیلم‌ها
         const movieRes = await fetch(apiUrls.now_playing);
         if (!movieRes.ok) throw new Error(`خطای سرور (فیلم‌ها): ${movieRes.status}`);
@@ -103,7 +102,6 @@ async function fetchAndDisplayContent() {
                 }
 
                 const posterUrl = poster.replace(/300(?=\.jpg$)/i, '');
-
                 const title = movie.title || 'نامشخص';
                 const overview = movie.overview ? movie.overview.slice(0, 100) + '...' : 'توضیحات موجود نیست';
 
@@ -178,6 +176,8 @@ async function fetchAndDisplayContent() {
         console.error('خطا در دریافت داده‌ها:', error);
         movieContainer.innerHTML = '<p class="text-center text-red-500">خطایی رخ داد! لطفاً دوباره تلاش کنید.</p>';
         tvContainer.innerHTML = '<p class="text-center text-red-500">خطایی رخ داد! لطفاً دوباره تلاش کنید.</p>';
+    } finally {
+        hideLoading(); // مخفی کردن لودینگ بعد از اتمام درخواست‌ها
     }
 }
 
