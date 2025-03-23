@@ -8,6 +8,7 @@ const movieId = new URLSearchParams(window.location.search).get('id');
 
 let apiKeySwitcher; // Global variable to hold the switcher instance
 
+
 // Initialize the API key switcher
 async function initializeSwitcher() {
     apiKeySwitcher = await loadApiKeys(); // استفاده از loadApiKeys سراسری
