@@ -16,29 +16,34 @@ class ApiKeySwitcher {
         console.log(`تعویض به کلید API جدید: ${this.getCurrentKey()}`);
     }
 
-    async fetchWithKeySwitch(urlTemplate, maxRetries = null) {
-        const retries = maxRetries !== null ? maxRetries : this.keys.length;
+    async fetchWithKeySwitch(urlTemplate, maxRetriesPerKey = 3) {
         let attempts = 0;
+        const totalAttemptsLimit = this.keys.length * maxRetriesPerKey; // حداکثر کل تلاش‌ها
 
-        while (attempts < retries) {
+        while (attempts < totalAttemptsLimit) {
             const url = urlTemplate(this.getCurrentKey());
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
                     if (response.status === 429) {
-                        console.warn('محدودیت نرخ OMDB API - تعویض کلید...');
-                        this.switchToNextKey();
+                        console.warn('محدودیت نرخ OMDB API - تلاش مجدد با همین کلید...');
+                        await new Promise(resolve => setTimeout(resolve, 1000)); // تاخیر ۱ ثانیه
                         attempts++;
-                        continue;
+                        continue; // دوباره با همون کلید تلاش کن
                     }
                     throw new Error(`خطای سرور (OMDB): ${response.status}`);
                 }
+                // اگه درخواست موفق بود، داده رو برگردون و حلقه رو بشکن
                 return await response.json();
             } catch (error) {
                 console.warn(`خطا در درخواست با کلید ${this.getCurrentKey()}: ${error.message}`);
-                this.switchToNextKey();
                 attempts++;
-                if (attempts >= retries) {
+                // اگه تعداد تلاش‌ها با این کلید به حد مجاز رسید، کلید رو عوض کن
+                if (attempts % maxRetriesPerKey === 0) {
+                    this.switchToNextKey();
+                }
+                await new Promise(resolve => setTimeout(resolve, 1000)); // تاخیر ۱ ثانیه قبل از تلاش بعدی
+                if (attempts >= totalAttemptsLimit) {
                     throw new Error('تمام کلیدهای API امتحان شدند و خطا ادامه دارد.');
                 }
             }
