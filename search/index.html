@@ -57,13 +57,13 @@
     </header>
     
     <main class="container mx-auto flex-1 py-8">
-        <div class="flex justify-center mb-8 items-center gap-2">
+        <div class="flex justify-center mb-8 items-center gap-2 sm:gap-4 ">
             <input type="text" id="search" class="w-full max-w-lg p-3 rounded-lg bg-gray-800 text-white" placeholder="فیلم یا سریالی که دنبالشی رو اینجا به فارسی یا انگلیسی بنویس ...">
             <button id="search-button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"><i class="fas fa-search"></i> جستجو</button>
         </div>
-        <div class="search-container">
+        <div class="search-container m-12">
             <section class="search-column">
-                <h2 id="movie-title" class="text-2xl font-bold mb-4 text-center">نتایج جستجو فیلم</h2>
+                <h2 id="movie-title" class="text-sm sm:text-lg md:text-xl xl:text-2xl font-bold mb-4 text-center bg-blue-500 w-full rounded-lg p-1">نتایج جستجو فیلم</h2>
                 <div id="movie-results" class="grid-container">
                     <!-- Skeleton placeholders -->
                     <div></div>
@@ -71,7 +71,7 @@
                 </div>
             </section>
             <section class="search-column">
-                <h2 id="tv-title" class="text-2xl font-bold mb-4 text-center">نتایج جستجو سریال</h2>
+                <h2 id="tv-title" class="text-sm sm:text-lg md:text-xl xl:text-2xl font-bold mb-4 text-center bg-blue-500 w-full rounded-lg p-1">نتایج جستجو سریال</h2>
                 <div id="tv-results" class="grid-container">
                     <!-- Initially empty -->
                 </div>
