@@ -37,6 +37,34 @@ async function initializeSwitcher() {
     console.log('سوئیچر کلید API مقداردهی شد');
 }
 
+// توابع مدیریت نوار پیشرفت
+function startLoadingBar() {
+    const loadingBar = document.getElementById('loading-bar');
+    if (loadingBar) {
+        loadingBar.style.width = '0';
+        setTimeout(() => {
+            loadingBar.style.width = '30%';
+        }, 100);
+    }
+}
+
+function updateLoadingBar(percentage) {
+    const loadingBar = document.getElementById('loading-bar');
+    if (loadingBar) {
+        loadingBar.style.width = percentage + '%';
+    }
+}
+
+function finishLoadingBar() {
+    const loadingBar = document.getElementById('loading-bar');
+    if (loadingBar) {
+        loadingBar.style.width = '100%';
+        setTimeout(() => {
+            loadingBar.style.width = '0';
+        }, 300);
+    }
+}
+
 async function fetchAndDisplayContent() {
     const movieContainer = document.getElementById('new-movies');
     const tvContainer = document.getElementById('trending-tv');
@@ -51,7 +79,7 @@ async function fetchAndDisplayContent() {
     tvContainer.innerHTML = skeletonHTML;
 
     try {
-        showLoading(); // نمایش لودینگ قبل از شروع درخواست‌ها
+        startLoadingBar(); // شروع نوار پیشرفت
 
         // دریافت داده‌های فیلم‌ها
         const movieRes = await fetch(apiUrls.now_playing);
@@ -177,7 +205,7 @@ async function fetchAndDisplayContent() {
         movieContainer.innerHTML = '<p class="text-center text-red-500">خطایی رخ داد! لطفاً دوباره تلاش کنید.</p>';
         tvContainer.innerHTML = '<p class="text-center text-red-500">خطایی رخ داد! لطفاً دوباره تلاش کنید.</p>';
     } finally {
-        hideLoading(); // مخفی کردن لودینگ بعد از اتمام درخواست‌ها
+        finishLoadingBar(); // پایان نوار پیشرفت
     }
 }
 
@@ -298,22 +326,6 @@ function manageSupportPopup() {
     });
 }
 
-// اجرای توابع پس از بارگذاری صفحه
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log('صفحه بارگذاری شد');
-    try {
-        await initializeSwitcher();
-        await fetchAndDisplayContent();
-        manageNotification();
-        manageDisclaimerNotice();
-        manageSupportPopup();
-        manageFabButton();
-        manageThemeToggle();
-    } catch (error) {
-        console.error('خطا در بارگذاری اولیه:', error);
-    }
-});
-
 function manageFabButton() {
     const fab = document.getElementById('fab');
     const fabOptions = document.getElementById('fabOptions');
@@ -335,8 +347,6 @@ function manageFabButton() {
         }
     });
 }
-
-window.addEventListener('DOMContentLoaded', manageFabButton);
 
 function manageThemeToggle() {
     const themeToggle = document.getElementById('theme-toggle');
@@ -361,3 +371,19 @@ function manageThemeToggle() {
         themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
     }
 }
+
+// اجرای توابع پس از بارگذاری صفحه
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('صفحه بارگذاری شد');
+    try {
+        await initializeSwitcher();
+        await fetchAndDisplayContent();
+        manageNotification();
+        manageDisclaimerNotice();
+        manageSupportPopup();
+        manageFabButton();
+        manageThemeToggle();
+    } catch (error) {
+        console.error('خطا در بارگذاری اولیه:', error);
+    }
+});
