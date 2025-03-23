@@ -53,8 +53,8 @@ class ApiKeySwitcher {
 
 async function loadApiKeys() {
     const possiblePaths = [
-        '/omdbKeys.json',        // مسیر روت پروژه
-        '../omdbKeys.json'       // یک فولدر قبل‌تر
+        '//freemovie/omdbKeys.json',        // مسیر روت پروژه
+        '..//freemovie/omdbKeys.json'       // یک فولدر قبل‌تر
     ];
 
     for (const path of possiblePaths) {
