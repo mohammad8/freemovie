@@ -48,13 +48,16 @@ async function searchMovies(query) {
     const movieTitle = document.getElementById('movie-title');
     const tvTitle = document.getElementById('tv-title');
 
+    // تبدیل به حروف کوچک و حذف فاصله‌های اضافی
+    const cleanedQuery = query.trim().toLowerCase();
+
     // نمایش لودینگ
     showLoading();
 
     try {
         // Define TMDb search endpoints
-        const movieSearchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=${language}&query=${encodeURIComponent(query)}`;
-        const tvSearchUrl = `https://api.themoviedb.org/3/search/tv?api_key=${apiKey}&language=${language}&query=${encodeURIComponent(query)}`;
+        const movieSearchUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=${language}&query=${encodeURIComponent(cleanedQuery)}`;
+        const tvSearchUrl = `https://api.themoviedb.org/3/search/tv?api_key=${apiKey}&language=${language}&query=${encodeURIComponent(cleanedQuery)}`;
 
         // دریافت همه داده‌ها قبل از نمایش
         const [movieRes, tvRes] = await Promise.all([
@@ -77,8 +80,8 @@ async function searchMovies(query) {
         // پاکسازی کانتینرها فقط بعد از لود کامل
         movieResults.innerHTML = '';
         tvResults.innerHTML = '';
-        movieTitle.textContent = `نتایج جستجو فیلم ${query}`;
-        tvTitle.textContent = `نتایج جستجو سریال ${query}`;
+        movieTitle.textContent = `نتایج جستجو فیلم ${cleanedQuery}`;
+        tvTitle.textContent = `نتایج جستجو سریال ${cleanedQuery}`;
 
         // مجموعه‌ای برای جلوگیری از تکرار
         const seenIds = new Set();
@@ -198,33 +201,34 @@ async function searchMovies(query) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     await initializeSwitcher();
-    document.getElementById('search').addEventListener(
-        'input',
-        debounce(function () {
-            const query = this.value.trim();
-            if (query.length > 2) {
-                searchMovies(query);
-            } else {
-                hideLoading(); // حذف لودینگ در صورت ورودی نامعتبر
-                document.getElementById('movie-title').textContent = 'نتایج جستجو فیلم';
-                document.getElementById('tv-title').textContent = 'نتایج جستجو سریال';
-                document.getElementById('movie-results').innerHTML = `
-                    <div class="skeleton"></div>
-                    <div class="skeleton"></div>
-                `;
-                document.getElementById('tv-results').innerHTML = '';
-            }
-        }, 300)
-    );
+    const searchInput = document.getElementById('search');
+    const searchButton = document.getElementById('search-button');
+
+    searchButton.addEventListener('click', () => {
+        const query = searchInput.value.trim();
+        if (query.length > 2) {
+            searchMovies(query);
+        } else {
+            hideLoading();
+            document.getElementById('movie-title').textContent = 'نتایج جستجو فیلم';
+            document.getElementById('tv-title').textContent = 'نتایج جستجو سریال';
+            document.getElementById('movie-results').innerHTML = `
+                <div class="skeleton"></div>
+                <div class="skeleton"></div>
+            `;
+            document.getElementById('tv-results').innerHTML = '';
+        }
+    });
+
+    // اجازه جستجو با Enter
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            searchButton.click();
+        }
+    });
 });
 
-function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-}
+// حذف debounce چون با دکمه کار نمی‌کنه
 
 document.getElementById('theme-toggle').addEventListener('click', () => {
     document.documentElement.classList.toggle('dark');
