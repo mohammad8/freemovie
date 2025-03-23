@@ -76,10 +76,10 @@ async function loadApiKeys() {
     return new ApiKeySwitcher(['38fa39d5']); // کلید پیش‌فرض
 }
 
-// استفاده از کد (اختیاری - برای تست)
+/* // استفاده از کد (اختیاری - برای تست)
 (async () => {
     const apiSwitcher = await loadApiKeys();
     const urlTemplate = (key) => `http://www.omdbapi.com/?apikey=${key}&t=Matrix`;
     const data = await apiSwitcher.fetchWithKeySwitch(urlTemplate);
     console.log(data);
-})();
+})(); */
